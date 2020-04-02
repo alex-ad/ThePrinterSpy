@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThePrinterSpyControl", "ThePrinterSpyControl\ThePrinterSpyControl.csproj", "{06C1A88C-A0DA-4B03-B848-0FE1731A7C1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThePrinterSpyService", "ThePrinterSpyService\ThePrinterSpyService.csproj", "{1E0F76A6-6E8F-4EFB-BA9A-2975FEC8F172}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06C1A88C-A0DA-4B03-B848-0FE1731A7C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06C1A88C-A0DA-4B03-B848-0FE1731A7C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06C1A88C-A0DA-4B03-B848-0FE1731A7C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06C1A88C-A0DA-4B03-B848-0FE1731A7C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E0F76A6-6E8F-4EFB-BA9A-2975FEC8F172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E0F76A6-6E8F-4EFB-BA9A-2975FEC8F172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E0F76A6-6E8F-4EFB-BA9A-2975FEC8F172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E0F76A6-6E8F-4EFB-BA9A-2975FEC8F172}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F3468303-1D87-427A-9F61-EF265794B5EB}
+	EndGlobalSection
+EndGlobal
