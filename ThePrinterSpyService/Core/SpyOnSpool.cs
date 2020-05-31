@@ -1,0 +1,120 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Management;
+using System.Threading.Tasks;
+using ThePrinterSpyService.Models;
+
+namespace ThePrinterSpyService.Core
+{
+    public class SpyOnSpool
+    {
+        public static PrintSpyDbContext PrintSpyContext = new PrintSpyDbContext();
+
+        public enum Command
+        {
+            Stop = 0,
+            Run = 1
+        }
+        public Command Status { get; private set; }
+
+        private readonly Computer _currentComputer;
+        private readonly User _currentUser;
+        private readonly Dictionary<int, PrinterChangeNotification> _printersMonitor;
+        private readonly Dictionary<int, int> _pagesPrinted;
+
+        public SpyOnSpool()
+        {
+            _currentComputer = Computer.Add(Environment.MachineName);
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
+            ManagementObjectCollection collection = searcher.Get();
+            string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
+            
+            _currentUser = User.Add(username);
+            _printersMonitor = new Dictionary<int, PrinterChangeNotification>();
+            _pagesPrinted = new Dictionary<int, int>();
+            Status = Command.Stop;
+        }
+
+        public async Task RunAsync()
+        {
+            Status = Command.Run;
+
+            await TaskEx.Run(() =>
+            {
+                try
+                {
+                    List<Printer> localPrinters = Printer.GetLocalPrinters(_currentComputer.Id, _currentUser.Id);
+                    foreach (Printer p in localPrinters)
+                    {
+                        if (!p.Enabled) continue;
+                        _printersMonitor.Add(p.Id, new PrinterChangeNotification(p.Name, p.Id));
+                        _printersMonitor[p.Id].OnPrinterJobChange += OnPrinterJobChange;
+                        _printersMonitor[p.Id].OnPrinterNameChange += OnPrinterNameChange;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ProceedError(ex);
+                }
+            });
+        }
+
+        public void Stop()
+        {
+            Status = Command.Stop;
+        }
+
+        private void AddPrintJob(JobInfo job, int userId, int computerId, int serverId, int printerId)
+        {
+            PrintDataStruct jobInfo = new PrintDataStruct
+            {
+                PrinterId = printerId,
+                UserId = userId,
+                ComputerId = computerId,
+                ServerId = serverId,
+                DocName = job.pDocument,
+                Pages = (int)job.PagesPrinted,
+                TimeStamp = new DateTime(job.Submitted.wYear, job.Submitted.wMonth, job.Submitted.wDay, job.Submitted.wHour, job.Submitted.wMinute, job.Submitted.wSecond, DateTimeKind.Utc),
+                JobId = (int)job.JobId
+            };
+
+            PrintData.AddOrUpdate(jobInfo);
+        }
+
+        private void ProceedError(Exception exception)
+        {
+            Status = Command.Stop;
+            Log.AddException(exception);
+        }
+
+        private void OnPrinterJobChange(object sender, PrinterJobChangeEventArgs e)
+        {
+            if (!_pagesPrinted.ContainsKey(e.JobId))
+                _pagesPrinted.Add(e.JobId, (int)e.JobInfo.PagesPrinted);
+            else if (_pagesPrinted[e.JobId] == (int)e.JobInfo.PagesPrinted)
+                return;
+            _pagesPrinted[e.JobId] = (int)e.JobInfo.PagesPrinted;
+
+            AddPrintJob(new JobInfo
+            {
+                PagesPrinted = e.JobInfo.PagesPrinted,
+                pDocument = e.JobName,
+                Submitted = e.JobInfo.Submitted,
+                JobId = (uint)e.JobId
+            }, _currentUser.Id, _currentComputer.Id, _currentComputer.Id, e.PrinterId);
+
+            Debug.WriteLine($"INFO ::: {e.PrinterId} - {e.JobId} - {e.JobName} - {e.JobStatus} - {e.JobInfo.PagesPrinted}/{e.JobInfo.TotalPages}");
+        }
+
+        private void OnPrinterNameChange(object sender, PrinterNameChangeEventArgs e)
+        {
+            _printersMonitor[e.PrinterId].OnPrinterJobChange -= OnPrinterJobChange;
+            _printersMonitor[e.PrinterId] = null;
+            _printersMonitor[e.PrinterId] = new PrinterChangeNotification(e.PrinterName, e.PrinterId);
+            _printersMonitor[e.PrinterId].OnPrinterJobChange += OnPrinterJobChange;
+            Printer.Rename(e.PrinterId, e.PrinterName);
+        }
+    }
+}

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
 
 namespace ThePrinterSpyService
 {
@@ -11,14 +8,23 @@ namespace ThePrinterSpyService
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
-        static void Main()
+        static void Main(string[] args)
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            //debug begin
+            if (Environment.UserInteractive)
             {
-                new Service1()
-            };
-            ServiceBase.Run(ServicesToRun);
+                Service service1 = new Service();
+                service1.TestStartupAndStop(args);
+            }
+            else
+            {
+                ServiceBase[] servicesToRun = { new Service() };
+                ServiceBase.Run(servicesToRun);
+            }
+            //debug end
+
+            /*ServiceBase[] servicesToRun = { new Service() };
+            ServiceBase.Run(servicesToRun);*/
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("ThePrinterSpyControl")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("alex-ad")]
 [assembly: AssemblyProduct("ThePrinterSpyControl")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
