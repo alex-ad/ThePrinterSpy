@@ -32,6 +32,24 @@ namespace ThePrinterSpyControl.Views
             treeComputers.SelectedItemChanged += TreeComputers_SelectedItemChanged;
             treeDepartments.SelectedItemChanged += TreeDepartments_SelectedItemChanged;
             treePrinters.SelectionChanged += TreePrinters_SelectionChanged;
+            textNewPrinterName.TextChanged += TextNewPrinterName_TextChanged;
+            checkPrinterEnabled.Click += CheckPrinterEnabled_Click;
+        }
+
+        private void CheckPrinterEnabled_Click(object sender, RoutedEventArgs e)// -------------------------- обновление отображения принтера в списке принтеров
+        {
+            var c = sender as CheckBox;
+            if (c == null) return;
+            bool chk = c.IsChecked ?? false;
+            if (MainViewModel.SelectedPrinter.Id < 1) return;
+            PrinterManagement.SetEnabled(new PrinterChangeEnabled(MainViewModel.SelectedPrinter.Id, chk));
+        }
+
+        private void TextNewPrinterName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var t = sender as TextBox;
+            if (t?.Text.Length < 2) return;
+            MainViewModel.SelectedPrinter.NewName = t.Text;
         }
 
         private void TreePrinters_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -56,7 +74,13 @@ namespace ThePrinterSpyControl.Views
             if (e.NewValue is ComputerNodeHead)
                 MainViewModel.BuildPrintDataCollection(((ComputerNodeHead)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Computer);
             else
+            {
+                MainViewModel.SelectedPrinter.Id = ((PrinterNodeTail) e.NewValue).Id;
+                MainViewModel.SelectedPrinter.OldName = ((PrinterNodeTail) e.NewValue).Name;
+                MainViewModel.SelectedPrinter.NewName = ((PrinterNodeTail) e.NewValue).Name;
+                MainViewModel.SelectedPrinter.Enabled = ((PrinterNodeTail) e.NewValue).Enabled;
                 MainViewModel.BuildPrintDataCollection(((PrinterNodeTail)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Printer);
+            }
         }
 
         private void TreeUsers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -64,7 +88,13 @@ namespace ThePrinterSpyControl.Views
             if (e.NewValue is UserNodeHead)
                 MainViewModel.BuildPrintDataCollection(((UserNodeHead)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.User);
             else
+            {
+                MainViewModel.SelectedPrinter.Id = ((PrinterNodeTail)e.NewValue).Id;
+                MainViewModel.SelectedPrinter.OldName = ((PrinterNodeTail)e.NewValue).Name;
+                MainViewModel.SelectedPrinter.NewName = ((PrinterNodeTail)e.NewValue).Name;
+                MainViewModel.SelectedPrinter.Enabled = ((PrinterNodeTail)e.NewValue).Enabled;
                 MainViewModel.BuildPrintDataCollection(((PrinterNodeTail)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Printer);
+            }
         }
 
         private void SaveAsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)

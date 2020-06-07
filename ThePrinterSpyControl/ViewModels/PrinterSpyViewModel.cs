@@ -46,6 +46,7 @@ namespace ThePrinterSpyControl.ViewModels
         public ObservableCollection<PrintDataGrid> PrintDatas { get; }
         public TotalCountStat TotalStat { get; } 
         public AppConfig AppConfig { get; set; }
+        public SelectedPrinter SelectedPrinter { get; set; }
 
         private RelayCommand<string> _showOptionsWindowCommand = null;
         public RelayCommand<string> ShowOptionsWindowCommand => _showOptionsWindowCommand ?? (_showOptionsWindowCommand = new RelayCommand<string>(ShowOptionsWindows, CanShowOptionsWindows));
@@ -63,6 +64,7 @@ namespace ThePrinterSpyControl.ViewModels
 
             TotalStat = new TotalCountStat();
             AppConfig = new AppConfig(_context);
+            SelectedPrinter = new SelectedPrinter();
 
             GetTotalStat();
             BuildPrintersByUserCollection();
@@ -306,14 +308,13 @@ namespace ThePrinterSpyControl.ViewModels
                 where d.UserId == id
                       && (
                         (
-                            d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) > -1
-                            && d.TimeStamp.CompareTo(AppConfig.ReportDate.End) < 1
+                            (d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) > -1 || d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) == 0)
+                            && (d.TimeStamp.CompareTo(AppConfig.ReportDate.End) < 1 || d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) == 0)
                             && AppConfig.ReportDate.IsEnabled
                         )
                         || (!AppConfig.ReportDate.IsEnabled)
                       )
                 select new { d, p, u };
-
 
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;
@@ -404,7 +405,6 @@ namespace ThePrinterSpyControl.ViewModels
                       )
                 select new { d, p, u };
 
-
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;
             if (!query.Any()) return;
@@ -452,6 +452,7 @@ namespace ThePrinterSpyControl.ViewModels
 
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;
+
             if (!query.Any()) return;
 
             int totalPages = 0; int totalDocs = 0;
@@ -494,7 +495,6 @@ namespace ThePrinterSpyControl.ViewModels
                           || (!AppConfig.ReportDate.IsEnabled)
                       )
                 select new { d, p, u };
-
 
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;

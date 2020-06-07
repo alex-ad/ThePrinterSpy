@@ -17,8 +17,10 @@ namespace ThePrinterSpyService.Models
         {
             if (IsExists(name))
                 return Get(name);
+
             ActiveDirectory ad = new ActiveDirectory();
-            ad.TryGetUser(name);
+            if (SpyOnSpool.PrintSpyContext.Configs.Find(1)?.AdEnabled == 1)
+                ad.TryGetUser(name);
             User user = SpyOnSpool.PrintSpyContext.Users.Add(new User
             {
                 AccountName = name,

@@ -12,13 +12,6 @@ namespace ThePrinterSpyService.Core
     {
         public static PrintSpyDbContext PrintSpyContext = new PrintSpyDbContext();
 
-        public enum Command
-        {
-            Stop = 0,
-            Run = 1
-        }
-        public Command Status { get; private set; }
-
         private readonly Computer _currentComputer;
         private readonly User _currentUser;
         private readonly Dictionary<int, PrinterChangeNotification> _printersMonitor;
@@ -34,13 +27,10 @@ namespace ThePrinterSpyService.Core
             _currentUser = User.Add(username);
             _printersMonitor = new Dictionary<int, PrinterChangeNotification>();
             _pagesPrinted = new Dictionary<int, int>();
-            Status = Command.Stop;
         }
 
         public async Task RunAsync()
         {
-            Status = Command.Run;
-
             await TaskEx.Run(() =>
             {
                 try
@@ -63,7 +53,6 @@ namespace ThePrinterSpyService.Core
 
         public void Stop()
         {
-            Status = Command.Stop;
         }
 
         private void AddPrintJob(JobInfo job, int userId, int computerId, int serverId, int printerId)
@@ -85,8 +74,8 @@ namespace ThePrinterSpyService.Core
 
         private void ProceedError(Exception exception)
         {
-            Status = Command.Stop;
             Log.AddException(exception);
+            Stop();
         }
 
         private void OnPrinterJobChange(object sender, PrinterJobChangeEventArgs e)

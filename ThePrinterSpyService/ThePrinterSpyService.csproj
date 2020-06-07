@@ -107,6 +107,7 @@
       <DependentUpon>Installer.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Computer.cs" />
+    <Compile Include="Models\Config.cs" />
     <Compile Include="Models\PrintData.cs" />
     <Compile Include="Models\Printer.cs" />
     <Compile Include="Models\PrintSpyDbContext.cs" />

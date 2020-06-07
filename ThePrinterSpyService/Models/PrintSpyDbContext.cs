@@ -14,5 +14,6 @@ namespace ThePrinterSpyService.Models
         public virtual DbSet<Server> Servers { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<PrintData> PrintDatas { get; set; }
+        public virtual DbSet<Config> Configs { get; set; }
     }
 }

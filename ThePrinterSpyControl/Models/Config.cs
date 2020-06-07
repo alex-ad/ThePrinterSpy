@@ -19,5 +19,6 @@ namespace ThePrinterSpyControl.Models
         public string AdServer { get; set; }
         public string AdUser { get; set; }
         public string AdPassword { get; set; }
+        public string AdDn { get; set; }
     }
 }

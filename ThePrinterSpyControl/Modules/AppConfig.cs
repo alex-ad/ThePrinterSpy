@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using ThePrinterSpyControl.Models;
+using ThePrinterSpyControl.ViewModels;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
 namespace ThePrinterSpyControl.Modules
@@ -37,7 +38,7 @@ namespace ThePrinterSpyControl.Modules
         public AppConfig(PrintSpyEntities dbaseContext) : this()
         {
             _context = dbaseContext;
-            var data = _context.Config.Find(1);
+            var data = _context.Configs.Find(1);
             ActiveDirectory = new ActiveDirectoryConfig(new AdConfig
             {
                 Enabled = data.AdEnabled,
@@ -87,7 +88,7 @@ namespace ThePrinterSpyControl.Modules
 
         public void SaveToDbase()
         {
-            var data = _context.Config.Find(1);
+            var data = _context.Configs.Find(1);
             data.AdEnabled = ActiveDirectory.IsEnabled ? (byte) 1 : (byte) 0;
             data.AdPassword = ActiveDirectory.Password;
             data.AdServer = ActiveDirectory.Server;

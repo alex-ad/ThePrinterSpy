@@ -12,15 +12,16 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="Config">
+        <EntityType Name="Configs">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AdEnabled" Type="tinyint" Nullable="false" />
-          <Property Name="AdServer" Type="nvarchar" MaxLength="50" />
-          <Property Name="AdUser" Type="nvarchar" MaxLength="50" />
-          <Property Name="AdPassword" Type="nvarchar" MaxLength="50" />
+          <Property Name="AdServer" Type="nvarchar(max)" />
+          <Property Name="AdUser" Type="nvarchar(max)" />
+          <Property Name="AdPassword" Type="nvarchar(max)" />
+          <Property Name="AdDn" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="PrintDatas">
           <Key>
@@ -68,7 +69,7 @@
         </EntityType>
         <EntityContainer Name="PrintSpyModelStoreContainer">
           <EntitySet Name="Computers" EntityType="Self.Computers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Configs" EntityType="Self.Configs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrintDatas" EntityType="Self.PrintDatas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Printers" EntityType="Self.Printers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Servers" EntityType="Self.Servers" Schema="dbo" store:Type="Tables" />
@@ -135,17 +136,18 @@
           <EntitySet Name="Printers" EntityType="Self.Printer" />
           <EntitySet Name="Servers" EntityType="Self.Server" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="Config" EntityType="PrintSpyModel.Config" />
+          <EntitySet Name="Configs" EntityType="PrintSpyModel.Config" />
         </EntityContainer>
         <EntityType Name="Config">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AdEnabled" Type="Byte" Nullable="false" />
-          <Property Name="AdServer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdServer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdDn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -209,9 +211,10 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-          <EntitySetMapping Name="Config">
+          <EntitySetMapping Name="Configs">
             <EntityTypeMapping TypeName="PrintSpyModel.Config">
-              <MappingFragment StoreEntitySet="Config">
+              <MappingFragment StoreEntitySet="Configs">
+                <ScalarProperty Name="AdDn" ColumnName="AdDn" />
                 <ScalarProperty Name="AdPassword" ColumnName="AdPassword" />
                 <ScalarProperty Name="AdUser" ColumnName="AdUser" />
                 <ScalarProperty Name="AdServer" ColumnName="AdServer" />
@@ -233,7 +236,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />

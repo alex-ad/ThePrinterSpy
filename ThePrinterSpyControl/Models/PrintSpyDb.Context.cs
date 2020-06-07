@@ -30,6 +30,6 @@ namespace ThePrinterSpyControl.Models
         public virtual DbSet<Printer> Printers { get; set; }
         public virtual DbSet<Server> Servers { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Config> Config { get; set; }
+        public virtual DbSet<Config> Configs { get; set; }
     }
 }

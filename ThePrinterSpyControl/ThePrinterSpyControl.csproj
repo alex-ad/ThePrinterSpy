@@ -65,6 +65,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -95,15 +96,17 @@
     <Compile Include="Models\Config.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DbaseConfig.cs" />
+    <Compile Include="ViewModels\DbaseConfig.cs" />
     <Compile Include="Models\PrintData.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Printer.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PrinterNameMaskConfig.cs" />
-    <Compile Include="Models\ReportDateConfig.cs" />
+    <Compile Include="ViewModels\PrinterChangeEnabled.cs" />
+    <Compile Include="ViewModels\PrinterNameMaskConfig.cs" />
+    <Compile Include="ViewModels\PrinterChangeNames.cs" />
+    <Compile Include="ViewModels\ReportDateConfig.cs" />
     <Compile Include="Models\Server.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
@@ -120,9 +123,11 @@
     <Compile Include="Models\PrintDataGrid.cs" />
     <Compile Include="Models\PrinterNodeHead.cs" />
     <Compile Include="Models\PrinterNodeTail.cs" />
-    <Compile Include="Models\TotalCountStat.cs" />
+    <Compile Include="ViewModels\SelectedPrinter.cs" />
+    <Compile Include="ViewModels\TotalCountStat.cs" />
     <Compile Include="Models\UserNodeHead.cs" />
     <Compile Include="Models\UserNodeTail.cs" />
+    <Compile Include="Modules\PrinterManagement.cs" />
     <Compile Include="Modules\TabVisibilityValueConverter.cs" />
     <Compile Include="ViewModels\PrinterSpyViewModel.cs" />
     <Compile Include="Models\PrintSpyDb.cs">
@@ -233,6 +238,7 @@
       <DependentUpon>PrintSpyDb.edmx</DependentUpon>
       <LastGenOutput>PrintSpyDb.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\PrintSpyDb.edmx.sql" />
     <Content Include="Models\PrintSpyDb.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PrintSpyDb.edmx</DependentUpon>
