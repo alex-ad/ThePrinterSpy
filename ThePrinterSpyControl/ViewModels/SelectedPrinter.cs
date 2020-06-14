@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ThePrinterSpyControl.Modules;
 
 namespace ThePrinterSpyControl.ViewModels
 {
@@ -14,6 +15,7 @@ namespace ThePrinterSpyControl.ViewModels
         private string _newName;
         private string _oldName;
         private bool _enabled;
+        private string _computerName;
 
         public int Id
         {
@@ -22,6 +24,7 @@ namespace ThePrinterSpyControl.ViewModels
             {
                 if (value == _id) return;
                 _id = value;
+                TryGetComputerName(_id, out _computerName);
                 OnPropertyChanged();
             }
         }
@@ -55,8 +58,15 @@ namespace ThePrinterSpyControl.ViewModels
             {
                 if (value == _enabled) return;
                 _enabled = value;
+                PrinterManagement.SetEnabled(this);
                 OnPropertyChanged();
             }
+        }
+
+        public string ComputerName
+        {
+            get => _computerName;
+            private set => _computerName = value;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -64,6 +74,25 @@ namespace ThePrinterSpyControl.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void TryGetComputerName(int printerId, out string computerName)
+        {
+            computerName = string.Empty;
+            var query = from p in PrinterSpyViewModel.Context.Printers
+                where p.Id == printerId
+                select p.ComputerId;
+
+            if (!query.Any()) return;
+
+            try
+            {
+                computerName = PrinterSpyViewModel.Computers.FirstOrDefault(x => x.Id == query.ToList()[0]).NetbiosName;
+            }
+            catch
+            {
+                computerName = string.Empty;
+            }
         }
     }
 }

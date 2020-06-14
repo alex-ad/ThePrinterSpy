@@ -167,10 +167,10 @@
                                 <ColumnDefinition Width="151*"/>
                                 <ColumnDefinition Width="49*"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="checkPrinterEnabled" Grid.Row="0" Grid.ColumnSpan="3" Content="Вкючен"  IsChecked="{Binding SelectedPrinter.Enabled}" Height="24" VerticalAlignment="Bottom"/>
+                            <CheckBox x:Name="checkPrinterEnabled" Grid.Row="0" Grid.ColumnSpan="3" Content="Вкючен"  IsChecked="{Binding SelectedPrinter.Enabled}" IsEnabled="{Binding SelectedPrinter.Id}" Height="24" VerticalAlignment="Bottom"/>
                             <TextBox x:Name="textNewPrinterName" Grid.Row="1" Grid.Column="0" Text="{Binding SelectedPrinter.NewName}" Padding="0" Margin="0,4,3,4" Height="24" Grid.ColumnSpan="2"/>
-                            <Button x:Name="btnPrinterRename" Grid.Row="1" Grid.Column="2" Content="OK" HorizontalAlignment="Stretch" Height="24" Margin="0,4" />
-                            <Button x:Name="btnPrinterDeleteFromDb" Grid.Row="2" Grid.Column="2" Content="Del" HorizontalAlignment="Stretch" Height="24" Margin="0,4"/>
+                            <Button x:Name="btnPrinterRename" Grid.Row="1" Grid.Column="2" Content="OK" HorizontalAlignment="Stretch" Height="24" Margin="0,4" IsEnabled="{Binding Text.Length, ElementName=textNewPrinterName}" />
+                            <Button x:Name="btnPrinterDeleteFromDb" Grid.Row="2" Grid.Column="2" Content="Del" HorizontalAlignment="Stretch" Height="24" Margin="0,4" IsEnabled="{Binding SelectedPrinter.Id}"/>
                         </Grid>
                     </StackPanel>
                 </DockPanel>

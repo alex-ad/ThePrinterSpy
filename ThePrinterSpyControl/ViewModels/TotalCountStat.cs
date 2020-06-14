@@ -5,14 +5,14 @@ namespace ThePrinterSpyControl.ViewModels
 {
     public class TotalCountStat : INotifyPropertyChanged
     {
-        private int _users;
-        private int _printersAll;
-        private int _printersEnabled;
-        private int _computers;
-        private int _departments;
-        private int _docsByNode;
-        private int _pagesByNode;
-        private string _reportPeriod;
+        private static int _users;
+        private static int _printersAll;
+        private static int _printersEnabled;
+        private static int _computers;
+        private static int _departments;
+        private static int _docsByNode;
+        private static int _pagesByNode;
+        private static string _reportPeriod;
 
         public int Users
         {

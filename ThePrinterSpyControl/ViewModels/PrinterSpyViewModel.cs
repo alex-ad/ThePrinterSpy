@@ -39,23 +39,24 @@ namespace ThePrinterSpyControl.ViewModels
             Department = 5
         }
 
-        public ObservableCollection<UserNodeHead> Users { get; }
-        public ObservableCollection<ComputerNodeHead> Computers { get; }
+        public static ObservableCollection<UserNodeHead> Users { get; private set; }
+        public static ObservableCollection<ComputerNodeHead> Computers { get; private set; }
         public ObservableCollection<DepartmentsNodeHead> Departments { get; }
-        public ObservableCollection<PrinterNodeHead> Printers { get; }
+        public  ObservableCollection<PrinterNodeHead> Printers { get; }
         public ObservableCollection<PrintDataGrid> PrintDatas { get; }
-        public TotalCountStat TotalStat { get; } 
+        public static TotalCountStat TotalStat { get; set; }
         public AppConfig AppConfig { get; set; }
         public SelectedPrinter SelectedPrinter { get; set; }
+        //public static PrintSpyEntities Context; // ------------------------------------ PRIVATE READONLY ?????????????????
 
+        private readonly DBase _base;
         private RelayCommand<string> _showOptionsWindowCommand = null;
         public RelayCommand<string> ShowOptionsWindowCommand => _showOptionsWindowCommand ?? (_showOptionsWindowCommand = new RelayCommand<string>(ShowOptionsWindows, CanShowOptionsWindows));
 
-        private readonly PrintSpyEntities _context;
-
         public PrinterSpyViewModel()
         {
-            _context = new PrintSpyEntities();
+            //Context = new PrintSpyEntities();
+            _base = new DBase();
             Users = new ObservableCollection<UserNodeHead>();
             Computers = new ObservableCollection<ComputerNodeHead>();
             Departments = new ObservableCollection<DepartmentsNodeHead>();
@@ -63,7 +64,7 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas = new ObservableCollection<PrintDataGrid>();
 
             TotalStat = new TotalCountStat();
-            AppConfig = new AppConfig(_context);
+            //AppConfig = new AppConfig(Context);
             SelectedPrinter = new SelectedPrinter();
 
             GetTotalStat();
@@ -133,18 +134,18 @@ namespace ThePrinterSpyControl.ViewModels
 
         private void GetTotalStat()
         {
-            TotalStat.Users = _context.Users.Count();
-            TotalStat.PrintersAll = _context.Printers.Count();
-            TotalStat.PrintersEnabled = _context.Printers.Sum(x => x.Enabled ? 1 : 0);
-            TotalStat.Computers = _context.Computers.Count();
+            TotalStat.Users = Context.Users.Count();
+            TotalStat.PrintersAll = Context.Printers.Count();
+            TotalStat.PrintersEnabled = Context.Printers.Sum(x => x.Enabled ? 1 : 0);
+            TotalStat.Computers = Context.Computers.Count();
         }
 
         public void BuildPrintersByUserCollection()
         {
-            foreach (User u in _context.Users)
+            foreach (User u in Context.Users)
             {
                 var query =
-                    from p in _context.Printers
+                    from p in Context.Printers
                     where p.UserId == u.Id
                     select p;
 
@@ -177,10 +178,10 @@ namespace ThePrinterSpyControl.ViewModels
 
         public void BuildPrintersByComputerCollection()
         {
-            foreach (Computer c in _context.Computers)
+            foreach (Computer c in Context.Computers)
             {
                 var query =
-                    from p in _context.Printers
+                    from p in Context.Printers
                     where p.ComputerId == c.Id
                     select p;
 
@@ -213,7 +214,7 @@ namespace ThePrinterSpyControl.ViewModels
         public void BuildUsersByDepartmentsCollection()
         {
             var query =
-                from u in _context.Users
+                from u in Context.Users
                 select u;
             
             List<string> depts = query.Select(x => x.Department).Distinct().ToList();
@@ -235,8 +236,8 @@ namespace ThePrinterSpyControl.ViewModels
 
                 foreach (User u in query.Where(x => x.Department == d))
                 {
-                    int totalPrintersAll = _context.Printers.Count(x => x.UserId == u.Id);
-                    int totalPrintersEnabled = _context.Printers.Count(x => (x.UserId == u.Id) && (x.Enabled));
+                    int totalPrintersAll = Context.Printers.Count(x => x.UserId == u.Id);
+                    int totalPrintersEnabled = Context.Printers.Count(x => (x.UserId == u.Id) && (x.Enabled));
                     totalDeptPrintersAll += totalPrintersAll;
                     totalDeptPrintersEnabled += totalPrintersEnabled;
                     totalDeptUsers++;
@@ -257,7 +258,7 @@ namespace ThePrinterSpyControl.ViewModels
 
         public void BuildPrinterCollection()
         {
-            var printerNames = _context.Printers.Select(p=>new
+            var printerNames = Context.Printers.Select(p=>new
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -302,9 +303,9 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas.Clear();
 
             var query =
-                from d in _context.PrintDatas
-                join p in _context.Printers on d.PrinterId equals p.Id
-                join u in _context.Users on d.UserId equals u.Id
+                from d in Context.PrintDatas
+                join p in Context.Printers on d.PrinterId equals p.Id
+                join u in Context.Users on d.UserId equals u.Id
                 where d.UserId == id
                       && (
                         (
@@ -345,9 +346,9 @@ namespace ThePrinterSpyControl.ViewModels
         {
             PrintDatas.Clear();
             var query =
-                from d in _context.PrintDatas
-                from p in _context.Printers
-                from u in _context.Users
+                from d in Context.PrintDatas
+                from p in Context.Printers
+                from u in Context.Users
                 where d.UserId == u.Id
                       && u.Department == name
                       && d.PrinterId == p.Id
@@ -391,9 +392,9 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas.Clear();
 
             var query =
-                from d in _context.PrintDatas
-                join p in _context.Printers on d.PrinterId equals p.Id
-                join u in _context.Users on d.UserId equals u.Id
+                from d in Context.PrintDatas
+                join p in Context.Printers on d.PrinterId equals p.Id
+                join u in Context.Users on d.UserId equals u.Id
                 where d.ComputerId == id
                       && (
                           (
@@ -435,9 +436,9 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas.Clear();
 
             var query =
-                from d in _context.PrintDatas
-                join p in _context.Printers on d.PrinterId equals p.Id
-                join u in _context.Users on d.UserId equals u.Id
+                from d in Context.PrintDatas
+                join p in Context.Printers on d.PrinterId equals p.Id
+                join u in Context.Users on d.UserId equals u.Id
                 where d.PrinterId == id
                       && (
                           (
@@ -481,10 +482,10 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas.Clear();
 
             var query =
-                from d in _context.PrintDatas
+                from d in Context.PrintDatas
                 from i in ids
-                join p in _context.Printers on d.PrinterId equals p.Id
-                join u in _context.Users on d.UserId equals u.Id
+                join p in Context.Printers on d.PrinterId equals p.Id
+                join u in Context.Users on d.UserId equals u.Id
                 where d.PrinterId == i
                       && (
                           (

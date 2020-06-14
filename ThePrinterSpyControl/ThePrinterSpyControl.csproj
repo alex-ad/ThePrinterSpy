@@ -96,6 +96,7 @@
     <Compile Include="Models\Config.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Modules\DBase.cs" />
     <Compile Include="ViewModels\DbaseConfig.cs" />
     <Compile Include="Models\PrintData.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
@@ -103,9 +104,7 @@
     <Compile Include="Models\Printer.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\PrinterChangeEnabled.cs" />
     <Compile Include="ViewModels\PrinterNameMaskConfig.cs" />
-    <Compile Include="ViewModels\PrinterChangeNames.cs" />
     <Compile Include="ViewModels\ReportDateConfig.cs" />
     <Compile Include="Models\Server.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>

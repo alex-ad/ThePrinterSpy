@@ -34,15 +34,28 @@ namespace ThePrinterSpyControl.Views
             treePrinters.SelectionChanged += TreePrinters_SelectionChanged;
             textNewPrinterName.TextChanged += TextNewPrinterName_TextChanged;
             checkPrinterEnabled.Click += CheckPrinterEnabled_Click;
+            btnPrinterRename.Click += BtnPrinterRename_Click;
+            btnPrinterDeleteFromDb.Click += BtnPrinterDeleteFromDb_Click;
         }
 
-        private void CheckPrinterEnabled_Click(object sender, RoutedEventArgs e)// -------------------------- обновление отображения принтера в списке принтеров
+        private void BtnPrinterDeleteFromDb_Click(object sender, RoutedEventArgs e)
+        {
+            PrinterManagement.DeleteFromDb(MainViewModel.SelectedPrinter);
+            MainViewModel.SelectedPrinter.Id = 0;
+        }
+
+        private void BtnPrinterRename_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(MainViewModel.SelectedPrinter.ComputerName) || string.IsNullOrEmpty(MainViewModel.SelectedPrinter.NewName) || string.Equals(MainViewModel.SelectedPrinter.NewName, MainViewModel.SelectedPrinter.OldName,StringComparison.CurrentCultureIgnoreCase)) return;
+            PrinterManagement.Rename(MainViewModel.SelectedPrinter);
+            MainViewModel.SelectedPrinter.OldName = MainViewModel.SelectedPrinter.NewName;
+        }
+
+        private void CheckPrinterEnabled_Click(object sender, RoutedEventArgs e)
         {
             var c = sender as CheckBox;
             if (c == null) return;
-            bool chk = c.IsChecked ?? false;
-            if (MainViewModel.SelectedPrinter.Id < 1) return;
-            PrinterManagement.SetEnabled(new PrinterChangeEnabled(MainViewModel.SelectedPrinter.Id, chk));
+            MainViewModel.SelectedPrinter.Enabled = c.IsChecked ?? false;
         }
 
         private void TextNewPrinterName_TextChanged(object sender, TextChangedEventArgs e)
@@ -71,6 +84,7 @@ namespace ThePrinterSpyControl.Views
 
         private void TreeComputers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            MainViewModel.SelectedPrinter.Id = 0;
             if (e.NewValue is ComputerNodeHead)
                 MainViewModel.BuildPrintDataCollection(((ComputerNodeHead)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Computer);
             else
@@ -85,6 +99,7 @@ namespace ThePrinterSpyControl.Views
 
         private void TreeUsers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            MainViewModel.SelectedPrinter.Id = 0;
             if (e.NewValue is UserNodeHead)
                 MainViewModel.BuildPrintDataCollection(((UserNodeHead)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.User);
             else
