@@ -47,7 +47,6 @@ namespace ThePrinterSpyControl.ViewModels
         public static TotalCountStat TotalStat { get; set; }
         public AppConfig AppConfig { get; set; }
         public SelectedPrinter SelectedPrinter { get; set; }
-        //public static PrintSpyEntities Context; // ------------------------------------ PRIVATE READONLY ?????????????????
 
         private readonly DBase _base;
         private RelayCommand<string> _showOptionsWindowCommand = null;
@@ -55,7 +54,6 @@ namespace ThePrinterSpyControl.ViewModels
 
         public PrinterSpyViewModel()
         {
-            //Context = new PrintSpyEntities();
             _base = new DBase();
             Users = new ObservableCollection<UserNodeHead>();
             Computers = new ObservableCollection<ComputerNodeHead>();
@@ -64,7 +62,7 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas = new ObservableCollection<PrintDataGrid>();
 
             TotalStat = new TotalCountStat();
-            //AppConfig = new AppConfig(Context);
+            AppConfig = new AppConfig();
             SelectedPrinter = new SelectedPrinter();
 
             GetTotalStat();
@@ -132,22 +130,20 @@ namespace ThePrinterSpyControl.ViewModels
             await Task.Run(() => BuildDataByUserId(id));
         }*/
 
-        private void GetTotalStat()
+        private async void GetTotalStat()
         {
-            TotalStat.Users = Context.Users.Count();
-            TotalStat.PrintersAll = Context.Printers.Count();
-            TotalStat.PrintersEnabled = Context.Printers.Sum(x => x.Enabled ? 1 : 0);
-            TotalStat.Computers = Context.Computers.Count();
+            TotalStat.Users = await _base.GetUsersCount();
+            TotalStat.PrintersAll = await _base.GetPrintersCount();
+            TotalStat.PrintersEnabled = await _base.GetEnabledPrintersCount();
+            TotalStat.Computers = await _base.GetComputersCount();
         }
 
-        public void BuildPrintersByUserCollection()
+        public async void BuildPrintersByUserCollection()
         {
-            foreach (User u in Context.Users)
+            foreach (User u in await _base.GetUsersList())
             {
-                var query =
-                    from p in Context.Printers
-                    where p.UserId == u.Id
-                    select p;
+                if (await _base.GetPrintersByUserCount(u) < 1) continue;
+                var printers = await _base.GetPrintersByUser(u);
 
                 UserNodeHead uNodeHead = new UserNodeHead
                 {
@@ -156,34 +152,29 @@ namespace ThePrinterSpyControl.ViewModels
                     AccountName = u.AccountName
                 };
 
-                if (query.Any())
+                uNodeHead.Printers = new ObservableCollection<PrinterNodeTail>();
+                int enabled = printers.Count(p => p.Enabled);
+                foreach (var p in printers)
                 {
-                    uNodeHead.Printers = new ObservableCollection<PrinterNodeTail>();
-                    int enabled = query.Sum(x => x.Enabled ? 1 : 0);
-                    foreach (var p in query)
+                    uNodeHead.Printers.Add(new PrinterNodeTail
                     {
-                        uNodeHead.Printers.Add(new PrinterNodeTail
-                        {
-                            Id = p.Id,
-                            Name = p.Name,
-                            Enabled = p.Enabled
-                        });
-                    }
-                    uNodeHead.Comment = $"[{enabled}/{query.Count()}]";
+                        Id = p.Id,
+                        Name = p.Name,
+                        Enabled = p.Enabled
+                    });
                 }
+                uNodeHead.Comment = $"[{enabled}/{printers.Count()}]";
                 Users.Add(uNodeHead);
                 //Application.Current.Dispatcher.Invoke(new Action(() => Users.Add(uNodeHead)));
             }
         }
 
-        public void BuildPrintersByComputerCollection()
+        public async void BuildPrintersByComputerCollection()
         {
-            foreach (Computer c in Context.Computers)
+            foreach (Computer c in await _base.GetComputersList())
             {
-                var query =
-                    from p in Context.Printers
-                    where p.ComputerId == c.Id
-                    select p;
+                if (await _base.GetPrintersByComputerCount(c) < 1) continue;
+                var printers = await _base.GetPrintersByComputer(c);
 
                 ComputerNodeHead cNodeHead = new ComputerNodeHead
                 {
@@ -191,40 +182,33 @@ namespace ThePrinterSpyControl.ViewModels
                     NetbiosName = c.Name
                 };
 
-                if (query.Any())
+                cNodeHead.Printers = new ObservableCollection<PrinterNodeTail>();
+                int enabled = printers.Count(x => x.Enabled);
+                foreach (var p in printers)
                 {
-                    cNodeHead.Printers = new ObservableCollection<PrinterNodeTail>();
-                    int enabled = query.Sum(x => x.Enabled ? 1 : 0);
-                    foreach (var p in query)
+                    cNodeHead.Printers.Add(new PrinterNodeTail
                     {
-                        cNodeHead.Printers.Add(new PrinterNodeTail
-                        {
-                           Id = p.Id,
-                           Name = p.Name,
-                           Enabled = p.Enabled
-                        });
-                    }
-                    cNodeHead.Comment = $"[{enabled}/{query.Count()}]";
+                       Id = p.Id,
+                       Name = p.Name,
+                       Enabled = p.Enabled
+                    });
                 }
+                cNodeHead.Comment = $"[{enabled}/{printers.Count()}]";
                 Computers.Add(cNodeHead);
                // Application.Current.Dispatcher.Invoke(new Action(() => Computers.Add(cNodeHead)));
             }
         }
 
-        public void BuildUsersByDepartmentsCollection()
+        public async void BuildUsersByDepartmentsCollection()
         {
-            var query =
-                from u in Context.Users
-                select u;
+            var users = await _base.GetUsersList();
             
-            List<string> depts = query.Select(x => x.Department).Distinct().ToList();
+            List<string> depts = users.Select(x => x.Department).Distinct().ToList();
             TotalStat.Departments = depts.Count();
             int id = 0;
 
             foreach (string d in depts)
             {
-                int totalDeptPrintersAll = 0;
-                int totalDeptPrintersEnabled = 0;
                 int totalDeptUsers = 0;
                 id++;
 
@@ -234,12 +218,10 @@ namespace ThePrinterSpyControl.ViewModels
                     Name = d
                 };
 
-                foreach (User u in query.Where(x => x.Department == d))
+                foreach (User u in users.Where(x => x.Department == d))
                 {
-                    int totalPrintersAll = Context.Printers.Count(x => x.UserId == u.Id);
-                    int totalPrintersEnabled = Context.Printers.Count(x => (x.UserId == u.Id) && (x.Enabled));
-                    totalDeptPrintersAll += totalPrintersAll;
-                    totalDeptPrintersEnabled += totalPrintersEnabled;
+                    int totalPrintersAll = await _base.GetPrintersCount();
+                    int totalPrintersEnabled = await _base.GetEnabledPrintersByUserCount(u);
                     totalDeptUsers++;
                     UserNodeTail uNodeTail = new UserNodeTail
                     {
@@ -256,14 +238,10 @@ namespace ThePrinterSpyControl.ViewModels
             }
         }
 
-        public void BuildPrinterCollection()
+        public async void BuildPrinterCollection()
         {
-            var printerNames = Context.Printers.Select(p=>new
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Enabled = p.Enabled
-            }).Where(p=>p.Enabled).ToList();
+            if (await _base.GetEnabledPrintersCount() < 1) return;
+            var printerNames = await _base.GetEnabledPrintersList();
 
             while (printerNames.Any())
             {
@@ -298,42 +276,30 @@ namespace ThePrinterSpyControl.ViewModels
             }
         }
 
-        private void BuildDataByUserId(int id)
+        private async void BuildDataByUserId(int id)
         {
             PrintDatas.Clear();
 
-            var query =
-                from d in Context.PrintDatas
-                join p in Context.Printers on d.PrinterId equals p.Id
-                join u in Context.Users on d.UserId equals u.Id
-                where d.UserId == id
-                      && (
-                        (
-                            (d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) > -1 || d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) == 0)
-                            && (d.TimeStamp.CompareTo(AppConfig.ReportDate.End) < 1 || d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) == 0)
-                            && AppConfig.ReportDate.IsEnabled
-                        )
-                        || (!AppConfig.ReportDate.IsEnabled)
-                      )
-                select new { d, p, u };
+            var data = await _base.GetDataByUserId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
+                AppConfig.ReportDate.IsEnabled);
+            if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;
-            if (!query.Any()) return;
 
             int totalPages = 0; int totalDocs = 0;
-            foreach (var d in query)
+            foreach (var d in data)
             {
-                totalPages += d.d.Pages;
+                totalPages += d.Data.Pages;
                 totalDocs++;
-                string userName = (d.u.FullName?.Length > 0) ? d.u.FullName : d.u.AccountName;
+                string userName = (d.User.FullName?.Length > 0) ? d.User.FullName : d.User.AccountName;
                 PrintDatas.Add(new PrintDataGrid
                 {
-                    DocName = d.d.DocName,
-                    Pages = d.d.Pages,
-                    TimeStamp = d.d.TimeStamp,
+                    DocName = d.Data.DocName,
+                    Pages = d.Data.Pages,
+                    TimeStamp = d.Data.TimeStamp,
                     UserName = userName,
-                    PrinterName = d.p.Name
+                    PrinterName = d.Printer.Name
                 });
             }
 
@@ -342,43 +308,29 @@ namespace ThePrinterSpyControl.ViewModels
             TotalStat.ReportPeriod = AppConfig.ReportDate.ToString();
         }
 
-        private void BuildDataByDepartmentId(string name)
+        private async void BuildDataByDepartmentId(string name)
         {
             PrintDatas.Clear();
-            var query =
-                from d in Context.PrintDatas
-                from p in Context.Printers
-                from u in Context.Users
-                where d.UserId == u.Id
-                      && u.Department == name
-                      && d.PrinterId == p.Id
-                      && (
-                          (
-                              d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) > -1
-                              && d.TimeStamp.CompareTo(AppConfig.ReportDate.End) < 1
-                              && AppConfig.ReportDate.IsEnabled
-                          )
-                          || (!AppConfig.ReportDate.IsEnabled)
-                      )
-                select new { d, p, u };
+            var data = await _base.GetDataByDepartmentName(name, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
+                AppConfig.ReportDate.IsEnabled);
+            if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;
-            if (!query.Any()) return;
 
             int totalPages = 0; int totalDocs = 0;
-            foreach (var d in query)
+            foreach (var d in data)
             {
-                totalPages += d.d.Pages;
+                totalPages += d.Data.Pages;
                 totalDocs++;
-                string userName = (d.u.FullName?.Length > 0) ? d.u.FullName : d.u.AccountName;
+                string userName = (d.User.FullName?.Length > 0) ? d.User.FullName : d.User.AccountName;
                 PrintDatas.Add(new PrintDataGrid
                 {
-                    DocName = d.d.DocName,
-                    Pages = d.d.Pages,
-                    TimeStamp = d.d.TimeStamp,
+                    DocName = d.Data.DocName,
+                    Pages = d.Data.Pages,
+                    TimeStamp = d.Data.TimeStamp,
                     UserName = userName,
-                    PrinterName = d.p.Name
+                    PrinterName = d.Printer.Name
                 });
             }
 
@@ -387,42 +339,30 @@ namespace ThePrinterSpyControl.ViewModels
             TotalStat.ReportPeriod = AppConfig.ReportDate.ToString();
         }
 
-        private void BuildDataByComputerId(int id)
+        private async void BuildDataByComputerId(int id)
         {
             PrintDatas.Clear();
 
-            var query =
-                from d in Context.PrintDatas
-                join p in Context.Printers on d.PrinterId equals p.Id
-                join u in Context.Users on d.UserId equals u.Id
-                where d.ComputerId == id
-                      && (
-                          (
-                              d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) > -1
-                              && d.TimeStamp.CompareTo(AppConfig.ReportDate.End) < 1
-                              && AppConfig.ReportDate.IsEnabled
-                          )
-                          || (!AppConfig.ReportDate.IsEnabled)
-                      )
-                select new { d, p, u };
+            var data = await _base.GetDataByComputerId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
+                AppConfig.ReportDate.IsEnabled);
+            if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;
-            if (!query.Any()) return;
 
             int totalPages = 0; int totalDocs = 0;
-            foreach (var d in query)
+            foreach (var d in data)
             {
-                totalPages += d.d.Pages;
+                totalPages += d.Data.Pages;
                 totalDocs++;
-                string userName = (d.u.FullName?.Length > 0) ? d.u.FullName : d.u.AccountName;
+                string userName = (d.User.FullName?.Length > 0) ? d.User.FullName : d.User.AccountName;
                 PrintDatas.Add(new PrintDataGrid
                 {
-                    DocName = d.d.DocName,
-                    Pages = d.d.Pages,
-                    TimeStamp = d.d.TimeStamp,
+                    DocName = d.Data.DocName,
+                    Pages = d.Data.Pages,
+                    TimeStamp = d.Data.TimeStamp,
                     UserName = userName,
-                    PrinterName = d.p.Name
+                    PrinterName = d.Printer.Name
                 });
             }
 
@@ -431,44 +371,30 @@ namespace ThePrinterSpyControl.ViewModels
             TotalStat.ReportPeriod = AppConfig.ReportDate.ToString();
         }
 
-        private void BuildDataByPrinterId(int id)
+        private async void BuildDataByPrinterId(int id)
         {
             PrintDatas.Clear();
 
-            var query =
-                from d in Context.PrintDatas
-                join p in Context.Printers on d.PrinterId equals p.Id
-                join u in Context.Users on d.UserId equals u.Id
-                where d.PrinterId == id
-                      && (
-                          (
-                              d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) > -1
-                              && d.TimeStamp.CompareTo(AppConfig.ReportDate.End) < 1
-                              && AppConfig.ReportDate.IsEnabled
-                          )
-                          || (!AppConfig.ReportDate.IsEnabled)
-                      )
-                select new { d, p, u };
-
+            var data = await _base.GetDataByPrinterId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
+                AppConfig.ReportDate.IsEnabled);
+            if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;
 
-            if (!query.Any()) return;
-
             int totalPages = 0; int totalDocs = 0;
-            foreach (var d in query)
+            foreach (var d in data)
             {
-                totalPages += d.d.Pages;
+                totalPages += d.Data.Pages;
                 totalDocs++;
-                string username = (d.u.FullName?.Length > 0) ? d.u.FullName : d.u.AccountName;
+                string username = (d.User.FullName?.Length > 0) ? d.User.FullName : d.User.AccountName;
                 PrintDatas.Add(new PrintDataGrid
                 {
-                    DocName = d.d.DocName,
-                    Pages = d.d.Pages,
-                    TimeStamp = d.d.TimeStamp,
+                    DocName = d.Data.DocName,
+                    Pages = d.Data.Pages,
+                    TimeStamp = d.Data.TimeStamp,
                     UserName = username,
-                    PrinterName = d.p.Name
+                    PrinterName = d.Printer.Name
                 });
             }
 
@@ -477,43 +403,30 @@ namespace ThePrinterSpyControl.ViewModels
             TotalStat.ReportPeriod = AppConfig.ReportDate.ToString();
         }
 
-        private void BuildDataByPrintersGroup(List<int> ids)
+        private async void BuildDataByPrintersGroup(List<int> ids)
         {
             PrintDatas.Clear();
 
-            var query =
-                from d in Context.PrintDatas
-                from i in ids
-                join p in Context.Printers on d.PrinterId equals p.Id
-                join u in Context.Users on d.UserId equals u.Id
-                where d.PrinterId == i
-                      && (
-                          (
-                              d.TimeStamp.CompareTo(AppConfig.ReportDate.Start) > -1
-                              && d.TimeStamp.CompareTo(AppConfig.ReportDate.End) < 1
-                              && AppConfig.ReportDate.IsEnabled
-                          )
-                          || (!AppConfig.ReportDate.IsEnabled)
-                      )
-                select new { d, p, u };
+            var data = await _base.GetDataByPrintersGroup(ids, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
+                AppConfig.ReportDate.IsEnabled);
+            if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
             TotalStat.DocsByNode = 0;
-            if (!query.Any()) return;
 
             int totalPages = 0; int totalDocs = 0;
-            foreach (var d in query)
+            foreach (var d in data)
             {
-                totalPages += d.d.Pages;
+                totalPages += d.Data.Pages;
                 totalDocs++;
-                string username = (d.u.FullName?.Length > 0) ? d.u.FullName : d.u.AccountName;
+                string username = (d.User.FullName?.Length > 0) ? d.User.FullName : d.User.AccountName;
                 PrintDatas.Add(new PrintDataGrid
                 {
-                    DocName = d.d.DocName,
-                    Pages = d.d.Pages,
-                    TimeStamp = d.d.TimeStamp,
+                    DocName = d.Data.DocName,
+                    Pages = d.Data.Pages,
+                    TimeStamp = d.Data.TimeStamp,
                     UserName = username,
-                    PrinterName = d.p.Name
+                    PrinterName = d.Printer.Name
                 });
             }
 

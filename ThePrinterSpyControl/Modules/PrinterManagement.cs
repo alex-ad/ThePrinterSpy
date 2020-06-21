@@ -10,11 +10,18 @@ namespace ThePrinterSpyControl.Modules
 {
     static class PrinterManagement
     {
-        public static void Rename(SelectedPrinter printer)
+        private static readonly DBase Base;
+
+        static PrinterManagement()
+        {
+            Base = new DBase();
+        }
+
+        public static void Rename(SelectedPrinter printer, string computerName)
         {
             if (printer == null) throw new ArgumentNullException(nameof(printer), "Given object cannot be null");
 
-            ManagementScope scope = new ManagementScope(ManagementPath.DefaultPath);
+            ManagementScope scope = new ManagementScope($@"\\{computerName}\root\cimv2");
             scope.Connect();
 
             SelectQuery selectQuery = new SelectQuery();
@@ -33,59 +40,42 @@ namespace ThePrinterSpyControl.Modules
             }
         }
 
-        public static void SetEnabled(SelectedPrinter printer)
+        public static async void SetEnabled(SelectedPrinter printer)
         {
             if (printer == null) throw new ArgumentNullException(nameof(printer), "Given object cannot be null");
 
-            using (var db = new PrintSpyEntities())
-            {
-                var p = db.Printers.FirstOrDefault(x => x.Id == printer.Id);
-                if (p == null) return;
+            var p = await Base.GetPrinterById(printer.Id);
+            if (p == null) return;
 
-                p.Enabled = printer.Enabled;
-                db.Entry(p).State = EntityState.Modified;
-                db.SaveChanges();
-                PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x => x.Id == printer.Id).Enabled = p.Enabled;
-                PrinterSpyViewModel.TotalStat.PrintersEnabled = PrinterSpyViewModel.Context.Printers.Sum(x => x.Enabled ? 1 : 0);
+            p.Enabled = printer.Enabled;
+            await Base.SetPrinterEnabled(p);
+            PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x => x.Id == printer.Id).Enabled = p.Enabled;
+            PrinterSpyViewModel.TotalStat.PrintersEnabled = await Base.GetEnabledPrintersCount();
 
-                var pu = PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x => x.Id == printer.Id);
-                var user = PrinterSpyViewModel.Users.Where(x => x.Printers.Contains(pu)).ToList()[0];
-                
-                var pTotal = from pt in PrinterSpyViewModel.Context.Printers
-                    where pt.UserId == user.Id
-                    select pt;
-                var pEnabled = from pe in pTotal
-                    where pe.Enabled
-                    select pe;
-                
-                PrinterSpyViewModel.Users.FirstOrDefault(x => x.Id == user.Id).Comment = $"[{pEnabled.Count()}/{pTotal.Count()}]";
-            }
+            var pu = PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x => x.Id == printer.Id);
+            var user = PrinterSpyViewModel.Users.Where(x => x.Printers.Contains(pu)).ToList()[0];
+
+            var pTotal = await Base.GetPrintersByUserId(user.Id);
+            var pEnabled = from pe in pTotal
+                where pe.Enabled
+                select pe;
+            
+            PrinterSpyViewModel.Users.FirstOrDefault(x => x.Id == user.Id).Comment = $"[{pEnabled.Count()}/{pTotal.Count()}]";
         }
 
-        public static void DeleteFromDb(SelectedPrinter printer)
+        public static async void DeleteFromDb(SelectedPrinter printer)
         {
             if (printer.Id < 1) throw new ArgumentException("The Printer Id cannot be less then 1");
 
-            using (var db = new PrintSpyEntities())
-            {
-                Printer p = db.Printers.FirstOrDefault(x => x.Id == printer.Id);
-                if (p == null) return;
-                var query = from d in db.PrintDatas
-                    where d.PrinterId == printer.Id
-                            select d;
-                if (query.Any())
-                {
-                    List<PrintData> data = query.ToList();
-                    db.PrintDatas.RemoveRange(data);
-                }
-                db.Printers.Remove(p);
-                db.SaveChanges();
+            var p = await Base.GetPrinterById(printer.Id);
+            if (p == null) return;
 
-                var del = PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x=>x.Id == printer.Id);
-                if (del == null) return;
-                PrinterSpyViewModel.Users.FirstOrDefault().Printers.Remove(del);
-                PrinterSpyViewModel.TotalStat.PrintersAll = PrinterSpyViewModel.Context.Printers.Count();
-            }
+            await Base.RemovePrintDataByPrinter(p);
+
+            var del = PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x=>x.Id == printer.Id);
+            if (del == null) return;
+            PrinterSpyViewModel.Users.FirstOrDefault().Printers.Remove(del);
+            PrinterSpyViewModel.TotalStat.PrintersAll = await Base.GetPrintersCount();
         }
     }
 }

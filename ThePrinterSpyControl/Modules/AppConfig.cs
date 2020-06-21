@@ -14,7 +14,7 @@ namespace ThePrinterSpyControl.Modules
 {
     public class AppConfig
     {
-        private static PrintSpyEntities _context;
+        private static PrintSpyEntities _base;
         public static PrinterNameMaskConfig PrinterNameMask { get; set; }
         public static ReportDateConfig ReportDate { get; set; }
         public static ActiveDirectoryConfig ActiveDirectory { get; set; }
@@ -30,15 +30,8 @@ namespace ThePrinterSpyControl.Modules
 
         public AppConfig()
         {
-            PrinterNameMask = new PrinterNameMaskConfig();
-            ReportDate = new ReportDateConfig();
-            Dbase = new DbaseConfig();
-        }
-
-        public AppConfig(PrintSpyEntities dbaseContext) : this()
-        {
-            _context = dbaseContext;
-            var data = _context.Configs.Find(1);
+            _base = new PrintSpyEntities();
+            var data = _base.Configs.Find(1);
             ActiveDirectory = new ActiveDirectoryConfig(new AdConfig
             {
                 Enabled = data.AdEnabled,
@@ -46,6 +39,9 @@ namespace ThePrinterSpyControl.Modules
                 Password = data.AdPassword,
                 User = data.AdUser
             });
+            PrinterNameMask = new PrinterNameMaskConfig();
+            ReportDate = new ReportDateConfig();
+            Dbase = new DbaseConfig();
         }
 
         public string GetMaskedPrinterName(string mask)
@@ -88,13 +84,13 @@ namespace ThePrinterSpyControl.Modules
 
         public void SaveToDbase()
         {
-            var data = _context.Configs.Find(1);
+            var data = _base.Configs.Find(1);
             data.AdEnabled = ActiveDirectory.IsEnabled ? (byte) 1 : (byte) 0;
             data.AdPassword = ActiveDirectory.Password;
             data.AdServer = ActiveDirectory.Server;
             data.AdUser = ActiveDirectory.User;
-            _context.Entry(data).State = EntityState.Modified;
-            _context.SaveChanges();
+            _base.Entry(data).State = EntityState.Modified;
+            _base.SaveChanges();
         }
     }
 }

@@ -44,11 +44,15 @@ namespace ThePrinterSpyControl.Views
             MainViewModel.SelectedPrinter.Id = 0;
         }
 
-        private void BtnPrinterRename_Click(object sender, RoutedEventArgs e)
+        private async void BtnPrinterRename_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(MainViewModel.SelectedPrinter.ComputerName) || string.IsNullOrEmpty(MainViewModel.SelectedPrinter.NewName) || string.Equals(MainViewModel.SelectedPrinter.NewName, MainViewModel.SelectedPrinter.OldName,StringComparison.CurrentCultureIgnoreCase)) return;
-            PrinterManagement.Rename(MainViewModel.SelectedPrinter);
-            MainViewModel.SelectedPrinter.OldName = MainViewModel.SelectedPrinter.NewName;
+            using (var db = new DBase())
+            {
+                string computerName = await db.GetComputerNameByPrinterId(MainViewModel.SelectedPrinter.Id);
+                if (string.IsNullOrEmpty(computerName) || string.IsNullOrEmpty(MainViewModel.SelectedPrinter.NewName) || string.Equals(MainViewModel.SelectedPrinter.NewName, MainViewModel.SelectedPrinter.OldName, StringComparison.CurrentCultureIgnoreCase)) return;
+                PrinterManagement.Rename(MainViewModel.SelectedPrinter, computerName);
+                MainViewModel.SelectedPrinter.OldName = MainViewModel.SelectedPrinter.NewName;
+            }
         }
 
         private void CheckPrinterEnabled_Click(object sender, RoutedEventArgs e)
