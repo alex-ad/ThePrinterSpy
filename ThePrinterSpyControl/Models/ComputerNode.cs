@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace ThePrinterSpyControl.Models
 {
-    public class UserNodeTail : INotifyPropertyChanged
+    public class ComputerNode : INotifyPropertyChanged
     {
         private string _comment;
         private List<int> _printerIds;
 
         public int Id { get; set; }
-        public string FullName { get; set; }
-        public string AccountName { get; set; }
+        public string NetbiosName { get; set; }
         public string Comment
         {
             get => _comment;

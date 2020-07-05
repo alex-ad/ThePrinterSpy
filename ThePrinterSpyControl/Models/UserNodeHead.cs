@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,11 @@ namespace ThePrinterSpyControl.Models
 {
     public class UserNodeHead : UserNodeTail
     {
-        public ObservableCollection<PrinterNodeTail> Printers { get; set; }
+        public static PrintersCollection Printers { get; set; }
 
         public UserNodeHead()
         {
-            Printers = new ObservableCollection<PrinterNodeTail>();
+            Printers = new PrintersCollection();
         }
     }
 }

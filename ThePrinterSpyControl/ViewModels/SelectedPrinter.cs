@@ -11,10 +11,11 @@ namespace ThePrinterSpyControl.ViewModels
 {
     public class SelectedPrinter : INotifyPropertyChanged
     {
-        private int _id;
-        private string _newName;
-        private string _oldName;
-        private bool _enabled;
+        private static int _id;
+        private static string _newName;
+        private static string _oldName;
+        private static bool _enabled;
+        private static bool _isNewModel;
 
         public int Id
         {
@@ -54,10 +55,20 @@ namespace ThePrinterSpyControl.ViewModels
             get => _enabled;
             set
             {
+                if (!_isNewModel) PrinterManagement.SetEnabled(this);
                 if (value == _enabled) return;
                 _enabled = value;
-                PrinterManagement.SetEnabled(this);
                 OnPropertyChanged();
+            }
+        }
+
+        public bool IsNewModel
+        {
+            get => _isNewModel;
+            set
+            {
+                if (value == _isNewModel) return;
+                _isNewModel = value;
             }
         }
 

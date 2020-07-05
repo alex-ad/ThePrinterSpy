@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
@@ -24,6 +25,9 @@ namespace ThePrinterSpyControl.Views
     public partial class MainWindow : Window
     {
         public PrinterSpyViewModel MainViewModel { get; set; } = new PrinterSpyViewModel();
+        private readonly PrintersCollection _printers = new PrintersCollection();
+
+        private readonly ComputersCollection _computers = new ComputersCollection();
 
         public MainWindow()
         {
@@ -40,18 +44,20 @@ namespace ThePrinterSpyControl.Views
 
         private void BtnPrinterDeleteFromDb_Click(object sender, RoutedEventArgs e)
         {
-            PrinterManagement.DeleteFromDb(MainViewModel.SelectedPrinter);
-            MainViewModel.SelectedPrinter.Id = 0;
+            PrinterManagement.DeleteFromDb(PrinterSpyViewModel.SelectedPrinter);
+            PrinterSpyViewModel.SelectedPrinter.Id = 0;
         }
 
         private async void BtnPrinterRename_Click(object sender, RoutedEventArgs e)
         {
+
+
             using (var db = new DBase())
             {
-                string computerName = await db.GetComputerNameByPrinterId(MainViewModel.SelectedPrinter.Id);
-                if (string.IsNullOrEmpty(computerName) || string.IsNullOrEmpty(MainViewModel.SelectedPrinter.NewName) || string.Equals(MainViewModel.SelectedPrinter.NewName, MainViewModel.SelectedPrinter.OldName, StringComparison.CurrentCultureIgnoreCase)) return;
-                PrinterManagement.Rename(MainViewModel.SelectedPrinter, computerName);
-                MainViewModel.SelectedPrinter.OldName = MainViewModel.SelectedPrinter.NewName;
+                string computerName = await db.GetComputerNameByPrinterId(PrinterSpyViewModel.SelectedPrinter.Id);
+                if (string.IsNullOrEmpty(computerName) || string.IsNullOrEmpty(PrinterSpyViewModel.SelectedPrinter.NewName) || string.Equals(PrinterSpyViewModel.SelectedPrinter.NewName, PrinterSpyViewModel.SelectedPrinter.OldName, StringComparison.CurrentCultureIgnoreCase)) return;
+                PrinterManagement.Rename(PrinterSpyViewModel.SelectedPrinter, computerName);
+                PrinterSpyViewModel.SelectedPrinter.OldName = PrinterSpyViewModel.SelectedPrinter.NewName;
             }
         }
 
@@ -59,14 +65,16 @@ namespace ThePrinterSpyControl.Views
         {
             var c = sender as CheckBox;
             if (c == null) return;
-            MainViewModel.SelectedPrinter.Enabled = c.IsChecked ?? false;
+            PrinterSpyViewModel.SelectedPrinter.IsNewModel = false;
+            PrinterSpyViewModel.SelectedPrinter.Enabled = c.IsChecked ?? false;
+            _computers.PropertyPrinterIdsChanged(PrinterSpyViewModel.SelectedPrinter.Id);
         }
 
         private void TextNewPrinterName_TextChanged(object sender, TextChangedEventArgs e)
         {
             var t = sender as TextBox;
             if (t?.Text.Length < 2) return;
-            MainViewModel.SelectedPrinter.NewName = t.Text;
+            PrinterSpyViewModel.SelectedPrinter.NewName = t.Text;
         }
 
         private void TreePrinters_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -88,31 +96,34 @@ namespace ThePrinterSpyControl.Views
 
         private void TreeComputers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            MainViewModel.SelectedPrinter.Id = 0;
-            if (e.NewValue is ComputerNodeHead)
-                MainViewModel.BuildPrintDataCollection(((ComputerNodeHead)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Computer);
+            PrinterSpyViewModel.SelectedPrinter.Id = 0;
+            if (e.NewValue is ComputerNode)
+                MainViewModel.BuildPrintDataCollection(((ComputerNode)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Computer);
             else
             {
-                MainViewModel.SelectedPrinter.Id = ((PrinterNodeTail) e.NewValue).Id;
-                MainViewModel.SelectedPrinter.OldName = ((PrinterNodeTail) e.NewValue).Name;
-                MainViewModel.SelectedPrinter.NewName = ((PrinterNodeTail) e.NewValue).Name;
-                MainViewModel.SelectedPrinter.Enabled = ((PrinterNodeTail) e.NewValue).Enabled;
-                MainViewModel.BuildPrintDataCollection(((PrinterNodeTail)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Printer);
+                var p = _printers.GetPrinter((int)e.NewValue);
+                PrinterSpyViewModel.SelectedPrinter.Id = p.Id;
+                PrinterSpyViewModel.SelectedPrinter.OldName = p.Name;
+                PrinterSpyViewModel.SelectedPrinter.NewName = p.Name;
+                PrinterSpyViewModel.SelectedPrinter.Enabled = p.Enabled;
+                MainViewModel.BuildPrintDataCollection(e.NewValue, PrinterSpyViewModel.PrintDataGroup.Printer);
             }
         }
 
         private void TreeUsers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            MainViewModel.SelectedPrinter.Id = 0;
-            if (e.NewValue is UserNodeHead)
-                MainViewModel.BuildPrintDataCollection(((UserNodeHead)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.User);
+            PrinterSpyViewModel.SelectedPrinter.Id = 0;
+            if (e.NewValue is UserNodeTail)
+                MainViewModel.BuildPrintDataCollection(((UserNodeTail)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.User);
             else
             {
-                MainViewModel.SelectedPrinter.Id = ((PrinterNodeTail)e.NewValue).Id;
-                MainViewModel.SelectedPrinter.OldName = ((PrinterNodeTail)e.NewValue).Name;
-                MainViewModel.SelectedPrinter.NewName = ((PrinterNodeTail)e.NewValue).Name;
-                MainViewModel.SelectedPrinter.Enabled = ((PrinterNodeTail)e.NewValue).Enabled;
-                MainViewModel.BuildPrintDataCollection(((PrinterNodeTail)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Printer);
+                var p = _printers.GetPrinter((int) e.NewValue);
+                PrinterSpyViewModel.SelectedPrinter.Id = p.Id;
+                PrinterSpyViewModel.SelectedPrinter.OldName = p.Name;
+                PrinterSpyViewModel.SelectedPrinter.NewName = p.Name;
+                PrinterSpyViewModel.SelectedPrinter.IsNewModel = true;
+                PrinterSpyViewModel.SelectedPrinter.Enabled = p.Enabled;
+                MainViewModel.BuildPrintDataCollection(e.NewValue, PrinterSpyViewModel.PrintDataGroup.Printer);
             }
         }
 

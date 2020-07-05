@@ -10,6 +10,7 @@
     <Window.Resources>
         <core:FullNameValueConverter x:Key="FullNameValueConverter"></core:FullNameValueConverter>
         <core:PrinterEnabledValueConverter x:Key="PrinterEnabledValueConverter"></core:PrinterEnabledValueConverter>
+        <core:PrinterFromIdValueConverter x:Key="PrinterFromIdValueConverter"></core:PrinterFromIdValueConverter>
         <core:DepartmentNameValueConverter x:Key="DepartmentNameValueConverter"></core:DepartmentNameValueConverter>
         <core:TabVisibilityValueConverter x:Key="TabVisibilityValueConverter"></core:TabVisibilityValueConverter>
     </Window.Resources>
@@ -76,9 +77,9 @@
                 <DockPanel>
                     <TabControl MinHeight="50" Margin="0,0,5,0" DockPanel.Dock="Top" VerticalAlignment="Stretch">
                         <TabItem x:Name="tabUsers" Header="Пользователи" Visibility="{Binding IsChecked, ElementName=menuTabUsers, Converter={StaticResource TabVisibilityValueConverter}}" IsVisibleChanged="tabUsers_IsVisibleChanged">
-                            <TreeView x:Name="treeUsers" Height="Auto" ItemsSource="{Binding Path=Users}" Visibility="{Binding Visibility, ElementName=tabUsers}">
+                            <TreeView x:Name="treeUsers" Height="Auto" ItemsSource="{Binding Path=UsersCollection.Users}" Visibility="{Binding Visibility, ElementName=tabUsers}">
                                 <TreeView.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Printers}">
+                                    <HierarchicalDataTemplate ItemsSource="{Binding PrinterIds}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="../Images/user.png" Width="16" Height="16" Margin="0,0,5,0"/>
                                             <StackPanel Orientation="Horizontal">
@@ -90,7 +91,9 @@
                                         </StackPanel>
                                         <HierarchicalDataTemplate.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Name}" Foreground="{Binding Enabled, Converter={StaticResource PrinterEnabledValueConverter}}"/>
+                                                <TextBlock
+                                                    Text="{Binding Converter={StaticResource PrinterFromIdValueConverter}}"
+                                                    Foreground="{Binding Converter={StaticResource PrinterEnabledValueConverter}}"/>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
                                     </HierarchicalDataTemplate>
@@ -98,9 +101,9 @@
                             </TreeView>
                         </TabItem>
                         <TabItem x:Name="tabComputers" Header="Компьютеры" Visibility="{Binding IsChecked, ElementName=menuTabComputers, Converter={StaticResource TabVisibilityValueConverter}}" IsVisibleChanged="tabComputers_IsVisibleChanged">
-                            <TreeView x:Name="treeComputers" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Path=Computers}" Visibility="{Binding Visibility, ElementName=tabComputers}">
+                            <TreeView x:Name="treeComputers" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Path=ComputersCollection.Computers}" Visibility="{Binding Visibility, ElementName=tabComputers}">
                                 <TreeView.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Printers}">
+                                    <HierarchicalDataTemplate ItemsSource="{Binding PrinterIds}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="../Images/computer.png" Width="16" Height="16" Margin="0,0,5,0"/>
                                             <TextBlock Text="{Binding NetbiosName}"/>
@@ -109,7 +112,9 @@
                                         </StackPanel>
                                         <HierarchicalDataTemplate.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Name}" Foreground="{Binding Enabled, Converter={StaticResource PrinterEnabledValueConverter}}"/>
+                                                <TextBlock
+                                                    Text="{Binding Converter={StaticResource PrinterFromIdValueConverter}}"
+                                                    Foreground="{Binding Converter={StaticResource PrinterEnabledValueConverter}}"/>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
                                     </HierarchicalDataTemplate>
@@ -167,7 +172,7 @@
                                 <ColumnDefinition Width="151*"/>
                                 <ColumnDefinition Width="49*"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="checkPrinterEnabled" Grid.Row="0" Grid.ColumnSpan="3" Content="Вкючен"  IsChecked="{Binding SelectedPrinter.Enabled}" IsEnabled="{Binding SelectedPrinter.Id}" Height="24" VerticalAlignment="Bottom"/>
+                            <CheckBox x:Name="checkPrinterEnabled" Grid.Row="0" Grid.ColumnSpan="3" Content="Включен"  IsChecked="{Binding SelectedPrinter.Enabled}" IsEnabled="{Binding SelectedPrinter.Id}" Height="24" VerticalAlignment="Bottom"/>
                             <TextBox x:Name="textNewPrinterName" Grid.Row="1" Grid.Column="0" Text="{Binding SelectedPrinter.NewName}" Padding="0" Margin="0,4,3,4" Height="24" Grid.ColumnSpan="2"/>
                             <Button x:Name="btnPrinterRename" Grid.Row="1" Grid.Column="2" Content="OK" HorizontalAlignment="Stretch" Height="24" Margin="0,4" IsEnabled="{Binding Text.Length, ElementName=textNewPrinterName}" />
                             <Button x:Name="btnPrinterDeleteFromDb" Grid.Row="2" Grid.Column="2" Content="Del" HorizontalAlignment="Stretch" Height="24" Margin="0,4" IsEnabled="{Binding SelectedPrinter.Id}"/>

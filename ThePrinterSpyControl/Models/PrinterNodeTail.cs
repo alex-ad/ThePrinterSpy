@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ThePrinterSpyControl.ViewModels;
 
 namespace ThePrinterSpyControl.Models
 {
@@ -12,6 +13,8 @@ namespace ThePrinterSpyControl.Models
     {
         private string _name;
         private bool _enabled;
+        private readonly TotalCountStat _totalStat = new TotalCountStat();
+        private readonly ListUserPrinter _userPrinter = new ListUserPrinter();
 
         public int Id { get; set; }
 
@@ -26,6 +29,12 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
+        public int UserId { get; set; }
+        
+        public int ComputerId { get; set; }
+
+        public int ServerId { get; set; }
+
         public bool Enabled
         {
             get => _enabled;
@@ -33,6 +42,7 @@ namespace ThePrinterSpyControl.Models
             {
                 if (value == _enabled) return;
                 _enabled = value;
+                //_totalStat.PrintersEnabled = _userPrinter.GetPrintersEnabledCount();
                 OnPropertyChanged();
             }
         }

@@ -54,9 +54,9 @@ namespace ThePrinterSpyControl.Modules
             _context?.Dispose();
         }
 
-    #region Users
+        #region Users
 
-    public async Task<List<User>> GetUsersList() => await _context.Users.ToListAsync().ConfigureAwait(false);
+        public async Task<List<User>> GetUsersList() => await _context.Users.ToListAsync().ConfigureAwait(false);
 
         public async Task<int> GetUsersCount() => await _context.Users.CountAsync().ConfigureAwait(false);
 
@@ -95,6 +95,16 @@ namespace ThePrinterSpyControl.Modules
         public async Task SetPrinterEnabled(Printer printer)
         {
             _context.Entry(printer).State = EntityState.Modified;
+            await SaveChanges();
+        }
+
+        public async Task SetPrinterEnabled(int id, bool enabled)
+        {
+            var p = GetPrinterById(id).Result;
+            if (p == null) return;
+
+            p.Enabled = enabled;
+            _context.Entry(p).State = EntityState.Modified;
             await SaveChanges();
         }
 
@@ -209,15 +219,6 @@ namespace ThePrinterSpyControl.Modules
                           || (!isReport)
                       )
                 select new PrintDataCollection { Data = d, Printer = p, User = u };
-
-
-
-
-            /*            var dat = _context.PrintDatas
-                            .Join(_context.Printers, o => o.Id, i => i.Id, (e,o)=>new Printer())
-                            .Join(_context.Users, o=>);*/
-
-
             
             var ret = await data.ToListAsync().ConfigureAwait(true);
 

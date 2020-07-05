@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Management;
+using System.Threading.Tasks;
 using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.ViewModels;
 
@@ -10,14 +11,16 @@ namespace ThePrinterSpyControl.Modules
 {
     static class PrinterManagement
     {
-        private static readonly DBase Base;
+        //public static ListUserPrinter UsersPrinters { get; }
+        private static PrintersCollection Printers { get; set; }
 
         static PrinterManagement()
         {
-            Base = new DBase();
+            Printers = new PrintersCollection();
+           //UsersPrinters = new ListUserPrinter();
         }
 
-        public static void Rename(SelectedPrinter printer, string computerName)
+        public static async void Rename(SelectedPrinter printer, string computerName)
         {
             if (printer == null) throw new ArgumentNullException(nameof(printer), "Given object cannot be null");
 
@@ -34,48 +37,27 @@ namespace ThePrinterSpyControl.Modules
 
             foreach (ManagementObject item in items)
             {
-                item.InvokeMethod("RenamePrinter", new object[] { printer.NewName });
-                PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x => x.Id == printer.Id).Name = printer.NewName;
+                await Task.Run(() =>
+                {
+                    item.InvokeMethod("RenamePrinter", new object[] { printer.NewName });
+                    //UsersPrinters.SetPrinterName(printer.Id, printer.NewName);
+                });
+                
                 return;
             }
         }
 
         public static async void SetEnabled(SelectedPrinter printer)
         {
-            if (printer == null) throw new ArgumentNullException(nameof(printer), "Given object cannot be null");
-
-            var p = await Base.GetPrinterById(printer.Id);
-            if (p == null) return;
-
-            p.Enabled = printer.Enabled;
-            await Base.SetPrinterEnabled(p);
-            PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x => x.Id == printer.Id).Enabled = p.Enabled;
-            PrinterSpyViewModel.TotalStat.PrintersEnabled = await Base.GetEnabledPrintersCount();
-
-            var pu = PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x => x.Id == printer.Id);
-            var user = PrinterSpyViewModel.Users.Where(x => x.Printers.Contains(pu)).ToList()[0];
-
-            var pTotal = await Base.GetPrintersByUserId(user.Id);
-            var pEnabled = from pe in pTotal
-                where pe.Enabled
-                select pe;
-            
-            PrinterSpyViewModel.Users.FirstOrDefault(x => x.Id == user.Id).Comment = $"[{pEnabled.Count()}/{pTotal.Count()}]";
+            if (printer == null || printer.Id < 1) throw new ArgumentException(nameof(printer), "The Printer is undefined");
+            await Printers.SetPrinterEnabled(printer.Id, printer.Enabled);
+            //await UsersPrinters.SetPrinterEnabled(printer.Id, printer.Enabled);
         }
 
         public static async void DeleteFromDb(SelectedPrinter printer)
         {
-            if (printer.Id < 1) throw new ArgumentException("The Printer Id cannot be less then 1");
-
-            var p = await Base.GetPrinterById(printer.Id);
-            if (p == null) return;
-
-            await Base.RemovePrintDataByPrinter(p);
-
-            var del = PrinterSpyViewModel.Users.FirstOrDefault().Printers.FirstOrDefault(x=>x.Id == printer.Id);
-            if (del == null) return;
-            PrinterSpyViewModel.Users.FirstOrDefault().Printers.Remove(del);
-            PrinterSpyViewModel.TotalStat.PrintersAll = await Base.GetPrintersCount();
+            if (printer == null || printer.Id < 1) throw new ArgumentException(nameof(printer), "The Printer is undefined");
+            //await UsersPrinters.RemovePrinter(printer.Id);
         }
     }
 }

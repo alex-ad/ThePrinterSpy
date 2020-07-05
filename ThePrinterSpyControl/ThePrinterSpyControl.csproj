@@ -93,10 +93,15 @@
     <Compile Include="Models\Computer.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ComputerNode.cs" />
+    <Compile Include="Models\ComputersCollection.cs" />
     <Compile Include="Models\Config.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PrintersCollection.cs" />
+    <Compile Include="Models\UsersCollection.cs" />
     <Compile Include="Modules\DBase.cs" />
+    <Compile Include="Modules\PrinterFromIdValueConverter.cs" />
     <Compile Include="ViewModels\DbaseConfig.cs" />
     <Compile Include="Models\PrintData.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
@@ -104,6 +109,7 @@
     <Compile Include="Models\Printer.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ListUserPrinter.cs" />
     <Compile Include="ViewModels\PrinterNameMaskConfig.cs" />
     <Compile Include="ViewModels\ReportDateConfig.cs" />
     <Compile Include="Models\Server.cs">

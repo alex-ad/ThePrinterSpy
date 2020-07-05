@@ -39,14 +39,22 @@ namespace ThePrinterSpyControl.ViewModels
             Department = 5
         }
 
-        public static ObservableCollection<UserNodeHead> Users { get; private set; }
-        public static ObservableCollection<ComputerNodeHead> Computers { get; private set; }
+        public static UsersCollection UsersCollection { get; set; }
+        public static PrintersCollection PrintersCollection { get; set; }
+        public static ComputersCollection ComputersCollection { get; set; }
+
+
+
+        //public static ObservableCollection<ComputerNodeHead> Computers { get; private set; }
         public ObservableCollection<DepartmentsNodeHead> Departments { get; }
         public  ObservableCollection<PrinterNodeHead> Printers { get; }
         public ObservableCollection<PrintDataGrid> PrintDatas { get; }
+
+
+
         public static TotalCountStat TotalStat { get; set; }
         public AppConfig AppConfig { get; set; }
-        public SelectedPrinter SelectedPrinter { get; set; }
+        public static SelectedPrinter SelectedPrinter { get; set; }
 
         private readonly DBase _base;
         private RelayCommand<string> _showOptionsWindowCommand = null;
@@ -55,8 +63,11 @@ namespace ThePrinterSpyControl.ViewModels
         public PrinterSpyViewModel()
         {
             _base = new DBase();
-            Users = new ObservableCollection<UserNodeHead>();
-            Computers = new ObservableCollection<ComputerNodeHead>();
+            PrintersCollection = new PrintersCollection();
+            UsersCollection = new UsersCollection();
+            ComputersCollection = new ComputersCollection();
+
+            //Computers = new ObservableCollection<ComputerNodeHead>();
             Departments = new ObservableCollection<DepartmentsNodeHead>();
             Printers = new ObservableCollection<PrinterNodeHead>();
             PrintDatas = new ObservableCollection<PrintDataGrid>();
@@ -65,11 +76,16 @@ namespace ThePrinterSpyControl.ViewModels
             AppConfig = new AppConfig();
             SelectedPrinter = new SelectedPrinter();
 
-            GetTotalStat();
-            BuildPrintersByUserCollection();
-            BuildPrintersByComputerCollection();
-            BuildUsersByDepartmentsCollection();
-            BuildPrinterCollection();
+            PrintersCollection.GetAll();
+            UsersCollection.GetAll();
+            ComputersCollection.GetAll();
+            
+
+            //GetTotalStat();
+            //BuildPrintersByUserCollection();
+            //BuildPrintersByComputerCollection();
+            //BuildUsersByDepartmentsCollection();
+            //BuildPrinterCollection();
         }
 
         public void BuildPrintDataCollection(object id, PrintDataGroup group)
@@ -130,15 +146,15 @@ namespace ThePrinterSpyControl.ViewModels
             await Task.Run(() => BuildDataByUserId(id));
         }*/
 
-        private async void GetTotalStat()
+        /*private  void GetTotalStat()
         {
-            TotalStat.Users = await _base.GetUsersCount();
-            TotalStat.PrintersAll = await _base.GetPrintersCount();
-            TotalStat.PrintersEnabled = await _base.GetEnabledPrintersCount();
-            TotalStat.Computers = await _base.GetComputersCount();
-        }
+            TotalStat.Users = _base.GetUsersCount().Result;
+            TotalStat.PrintersAll = _base.GetPrintersCount().Result;
+            TotalStat.PrintersEnabled = _base.GetEnabledPrintersCount().Result;
+            TotalStat.Computers = _base.GetComputersCount().Result;
+        }*/
 
-        public async void BuildPrintersByUserCollection()
+        /*public async void BuildPrintersByUserCollection()
         {
             foreach (User u in await _base.GetUsersList())
             {
@@ -151,25 +167,26 @@ namespace ThePrinterSpyControl.ViewModels
                     FullName = u.FullName,
                     AccountName = u.AccountName
                 };
-
+                
                 uNodeHead.Printers = new ObservableCollection<PrinterNodeTail>();
                 int enabled = printers.Count(p => p.Enabled);
+                uNodeHead.Comment = $"[{enabled}/{printers.Count()}]";
+
+                UsersPrinters.AddUser(uNodeHead);
+
                 foreach (var p in printers)
                 {
-                    uNodeHead.Printers.Add(new PrinterNodeTail
+                    UsersPrinters.AddPrinter(new PrinterNodeTail
                     {
                         Id = p.Id,
                         Name = p.Name,
                         Enabled = p.Enabled
-                    });
+                    }, uNodeHead);
                 }
-                uNodeHead.Comment = $"[{enabled}/{printers.Count()}]";
-                Users.Add(uNodeHead);
-                //Application.Current.Dispatcher.Invoke(new Action(() => Users.Add(uNodeHead)));
             }
-        }
+        }*/
 
-        public async void BuildPrintersByComputerCollection()
+        /*public async void BuildPrintersByComputerCollection()
         {
             foreach (Computer c in await _base.GetComputersList())
             {
@@ -195,11 +212,11 @@ namespace ThePrinterSpyControl.ViewModels
                 }
                 cNodeHead.Comment = $"[{enabled}/{printers.Count()}]";
                 Computers.Add(cNodeHead);
-               // Application.Current.Dispatcher.Invoke(new Action(() => Computers.Add(cNodeHead)));
+                Application.Current.Dispatcher.Invoke(new Action(() => Computers.Add(cNodeHead)));
             }
-        }
+        }*/
 
-        public async void BuildUsersByDepartmentsCollection()
+        /*public async void BuildUsersByDepartmentsCollection()
         {
             var users = await _base.GetUsersList();
             
@@ -234,11 +251,10 @@ namespace ThePrinterSpyControl.ViewModels
                 }
                 dNodeHead.Comment = $"{totalDeptUsers}";
                 Departments.Add(dNodeHead);
-                //Application.Current.Dispatcher.Invoke(new Action(() => Departments.Add(dNodeHead)));
             }
-        }
+        }*/
 
-        public async void BuildPrinterCollection()
+        /*public async void BuildPrinterCollection()
         {
             if (await _base.GetEnabledPrintersCount() < 1) return;
             var printerNames = await _base.GetEnabledPrintersList();
@@ -260,21 +276,13 @@ namespace ThePrinterSpyControl.ViewModels
                 }
                 printerNames.RemoveAll(x => ids.Contains(x.Id));
 
-                /*Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    Printers.Add(new PrinterNodeHead
-                    {
-                        Ids = ids,
-                        NameMasked = mask
-                    });
-                }));*/
                 Printers.Add(new PrinterNodeHead
                 {
                     Ids = ids,
                     NameMasked = mask
                 });
             }
-        }
+        }*/
 
         private async void BuildDataByUserId(int id)
         {
