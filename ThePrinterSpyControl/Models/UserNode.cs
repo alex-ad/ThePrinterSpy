@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ThePrinterSpyControl.Models
 {
-    public class ComputerNode : INotifyPropertyChanged
+    public class UserNode : INotifyPropertyChanged
     {
         private string _comment;
         private List<int> _printerIds;
 
         public int Id { get; set; }
-        public string NetBiosName { get; set; }
+        public string FullName { get; set; }
+        public string AccountName { get; set; }
+        public string Department { get; set; }
+        public string Company { get; set; }
+        public string Position { get; set; }
+        public string Sid { get; set; }
         public string Comment
         {
             get => _comment;

@@ -39,25 +39,24 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
-        public async void GetAll()
+        public void GetAll()
         {
-            var computers = await _base.GetComputersList();
+            var computers = _base.GetComputersList();
             if (!computers.Any()) return;
 
             Computers.Clear();
-            var printers = new PrintersCollection();
 
             //await Task.Run(() =>
             //{
             foreach (var c in computers)
             {
-                var pIds = printers.GetIdsByComputer(c.Id);
+                var pIds = _printers.GetIdsByComputer(c.Id);
                 var pTotal = pIds.Count();
-                var pEnabled = printers.GetEnabledCountByComputer(c.Id);
+                var pEnabled = _printers.GetEnabledCountByComputer(c.Id);
                 Computers.Add(new ComputerNode
                 {
                     Id = c.Id,
-                    NetbiosName = c.Name,
+                    NetBiosName = c.Name,
                     PrinterIds = pIds ?? null,
                     Comment = $"[{pEnabled}/{pTotal}]"
                 });
@@ -65,11 +64,35 @@ namespace ThePrinterSpyControl.Models
             //});
         }
 
+        public string GetNameByPrinterId(int id)
+        {
+            string computerName = string.Empty;
+
+            var p = _printers.GetPrinter(id);
+            if (p == null) return computerName;
+
+            var c = Computers.FirstOrDefault(x => x.Id == p.ComputerId);
+            if (c != null) computerName = c.NetBiosName;
+            return computerName;
+        }
+
         public void PropertyPrinterIdsChanged(int id)
         {
             var c = Computers.FirstOrDefault(x=>x.PrinterIds.Contains(id));
             if (c == null) return;
             c.PrinterIds = new List<int>(c.PrinterIds);
+            var pTotal = _printers.GetTotalCountByComputer(c.Id);
+            var pEnabled = _printers.GetEnabledCountByComputer(c.Id);
+            c.Comment = $"[{pEnabled}/{pTotal}]";
+        }
+
+        public void PropertyPrinterListChanged(int id)
+        {
+            var c = Computers.FirstOrDefault(x => x.PrinterIds.Contains(id));
+            if (c == null) return;
+            c.PrinterIds.Remove(id);
+            var p = new List<int>(c.PrinterIds);
+            c.PrinterIds = p;
             var pTotal = _printers.GetTotalCountByComputer(c.Id);
             var pEnabled = _printers.GetEnabledCountByComputer(c.Id);
             c.Comment = $"[{pEnabled}/{pTotal}]";

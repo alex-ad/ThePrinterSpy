@@ -12,11 +12,11 @@ namespace ThePrinterSpyControl.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }
-        public ObservableCollection<UserNodeTail> Users { get; set; }
+        public ObservableCollection<UserNode> Users { get; set; }
 
         public DepartmentsNodeHead()
         {
-            Users = new ObservableCollection<UserNodeTail>();
+            Users = new ObservableCollection<UserNode>();
         }
     }
 }

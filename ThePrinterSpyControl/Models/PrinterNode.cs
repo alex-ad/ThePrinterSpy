@@ -9,12 +9,12 @@ using ThePrinterSpyControl.ViewModels;
 
 namespace ThePrinterSpyControl.Models
 {
-    public class PrinterNodeTail : INotifyPropertyChanged
+    public class PrinterNode : INotifyPropertyChanged
     {
         private string _name;
         private bool _enabled;
-        private readonly TotalCountStat _totalStat = new TotalCountStat();
-        private readonly ListUserPrinter _userPrinter = new ListUserPrinter();
+        //private readonly TotalCountStat _totalStat = new TotalCountStat();
+        //private readonly ListUserPrinter _userPrinter = new ListUserPrinter();
 
         public int Id { get; set; }
 
@@ -23,7 +23,7 @@ namespace ThePrinterSpyControl.Models
             get => _name;
             set
             {
-                if (value == _name) return;
+                if (value.Equals(_name, StringComparison.InvariantCulture)) return;
                 _name = value;
                 OnPropertyChanged();
             }

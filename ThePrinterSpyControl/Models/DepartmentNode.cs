@@ -8,31 +8,30 @@ using System.Threading.Tasks;
 
 namespace ThePrinterSpyControl.Models
 {
-    public class UserNodeTail : INotifyPropertyChanged
+    public class DepartmentNode : INotifyPropertyChanged
     {
         private string _comment;
-        private List<int> _printerIds;
+        private List<int> _userIds;
 
         public int Id { get; set; }
-        public string FullName { get; set; }
-        public string AccountName { get; set; }
+        public string Name { get; set; }
         public string Comment
         {
             get => _comment;
             set
             {
-                if (value == _comment) return;
+                if (value.Equals(_comment, StringComparison.InvariantCulture)) return;
                 _comment = value;
                 OnPropertyChanged();
             }
         }
-        public List<int> PrinterIds
+        public List<int> UserIds
         {
-            get => _printerIds;
+            get => _userIds;
             set
             {
-                if (_printerIds != null && _printerIds.Equals(value)) return;
-                _printerIds = value;
+                if (_userIds != null && _userIds.Equals(value)) return;
+                _userIds = value;
                 OnPropertyChanged();
             }
         }

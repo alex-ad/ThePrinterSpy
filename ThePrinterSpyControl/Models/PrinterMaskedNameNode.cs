@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ThePrinterSpyControl.Models
 {
-    public class PrinterNodeHead
+    public class PrinterMaskedNameNode
     {
         public List<int> Ids { get; set; }
         public string NameMasked { get; set; }

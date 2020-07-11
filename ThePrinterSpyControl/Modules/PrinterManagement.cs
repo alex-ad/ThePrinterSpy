@@ -11,18 +11,18 @@ namespace ThePrinterSpyControl.Modules
 {
     static class PrinterManagement
     {
-        //public static ListUserPrinter UsersPrinters { get; }
         private static PrintersCollection Printers { get; set; }
 
         static PrinterManagement()
         {
             Printers = new PrintersCollection();
-           //UsersPrinters = new ListUserPrinter();
         }
 
-        public static async void Rename(SelectedPrinter printer, string computerName)
+        public static void Rename(SelectedPrinter printer, string computerName)
         {
-            if (printer == null) throw new ArgumentNullException(nameof(printer), "Given object cannot be null");
+            if (printer == null || printer.Id < 1) throw new ArgumentException("The Printer is undefined", nameof(printer));
+            if (printer.NewName.Equals(printer.OldName, StringComparison.InvariantCulture)) return;
+            if (string.IsNullOrEmpty(printer.NewName) || printer.NewName.Length < 3) return;
 
             ManagementScope scope = new ManagementScope($@"\\{computerName}\root\cimv2");
             scope.Connect();
@@ -37,27 +37,21 @@ namespace ThePrinterSpyControl.Modules
 
             foreach (ManagementObject item in items)
             {
-                await Task.Run(() =>
-                {
-                    item.InvokeMethod("RenamePrinter", new object[] { printer.NewName });
-                    //UsersPrinters.SetPrinterName(printer.Id, printer.NewName);
-                });
-                
-                return;
+                item.InvokeMethod("RenamePrinter", new object[] { printer.NewName });
+                Printers.SetPrinterName(printer.Id, printer.NewName);
             }
         }
 
-        public static async void SetEnabled(SelectedPrinter printer)
+        public static void SetEnabled(SelectedPrinter printer)
         {
-            if (printer == null || printer.Id < 1) throw new ArgumentException(nameof(printer), "The Printer is undefined");
-            await Printers.SetPrinterEnabled(printer.Id, printer.Enabled);
-            //await UsersPrinters.SetPrinterEnabled(printer.Id, printer.Enabled);
+            if (printer == null || printer.Id < 1) throw new ArgumentException("The Printer is undefined", nameof(printer));
+            Printers.SetPrinterEnabled(printer.Id, printer.Enabled);
         }
 
-        public static async void DeleteFromDb(SelectedPrinter printer)
+        public static void DeleteFromDb(SelectedPrinter printer)
         {
-            if (printer == null || printer.Id < 1) throw new ArgumentException(nameof(printer), "The Printer is undefined");
-            //await UsersPrinters.RemovePrinter(printer.Id);
+            if (printer == null || printer.Id < 1) throw new ArgumentException("The Printer is undefined", nameof(printer));
+            Printers.Remove(printer.Id);
         }
     }
 }

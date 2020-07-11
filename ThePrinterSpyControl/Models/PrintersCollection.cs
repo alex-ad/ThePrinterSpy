@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace ThePrinterSpyControl.Models
 {
     public class PrintersCollection
     {
-        public static ObservableCollection<PrinterNodeTail> Printers { get; }
+        public static ObservableCollection<PrinterNode> Printers { get; }
         private static readonly TotalCountStat TotalStat = new TotalCountStat();
         private readonly DBase _base;
 
         static PrintersCollection()
         {
-            Printers = new ObservableCollection<PrinterNodeTail>();
+            Printers = new ObservableCollection<PrinterNode>();
             Printers.CollectionChanged += Printers_CollectionChanged;
         }
 
@@ -37,9 +38,9 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
-        public async void GetAll()
+        public void GetAll()
         {
-            var printers = await _base.GetPrintersList();
+            var printers = _base.GetPrintersList();
             if (!printers.Any()) return;
 
             Printers.Clear();
@@ -48,7 +49,7 @@ namespace ThePrinterSpyControl.Models
             //{
                 foreach (var p in printers)
                 {
-                    Printers.Add(new PrinterNodeTail
+                    Printers.Add(new PrinterNode
                     {
                         Id = p.Id,
                         Name = p.Name,
@@ -68,31 +69,41 @@ namespace ThePrinterSpyControl.Models
 
         public int GetEnabledCountByUser(int id) => Printers.Count(x=>x.UserId == id && x.Enabled);
 
+        public int GetTotalCountByUser(int id) => Printers.Count(x => x.UserId == id);
+
         public int GetEnabledCountByComputer(int id) => Printers.Count(x => x.ComputerId == id && x.Enabled);
 
         public int GetTotalCountByComputer(int id) => Printers.Count(x => x.ComputerId == id);
 
-        public PrinterNodeTail GetPrinter(int id) => Printers.FirstOrDefault(x => x.Id == id);
+        public PrinterNode GetPrinter(int id) => Printers.FirstOrDefault(x => x.Id == id);
 
-        public async Task SetPrinterEnabled(int id, bool enabled)
+        public void SetPrinterEnabled(int id, bool enabled)
         {
-            await SetDbPrinterEnabled(id, enabled);
+            SetDbPrinterEnabled(id, enabled);
             Printers.FirstOrDefault(x => x.Id == id).Enabled = enabled;
-            //UpdateUserPrintersStat(user);
         }
 
-        private async Task SetDbPrinterEnabled(int id, bool enabled)
+        public void SetPrinterName(int id, string name)
         {
-            await _base.SetPrinterEnabled(id, enabled);
+            SetDbPrinterName(id, name);
+            Printers.FirstOrDefault(x => x.Id == id).Name = name;
         }
 
-        /*private void UpdateUserPrintersStat(UserNodeHead user)
+        public void Remove(int id)
         {
-            var pTotal = GetPrintersByUser(user.Id);
-            var pEnabled = from pe in pTotal
-                where pe.Enabled
-                select pe;
-            user.Comment = $"[{pEnabled.Count()}/{pTotal.Count()}]";
-        }*/
+            RemoveFromDb(id);
+            var p = Printers.FirstOrDefault(x => x.Id == id);
+            if (p == null) return;
+            Printers.Remove(p);
+        }
+
+        private void SetDbPrinterEnabled(int id, bool enabled) =>_base.SetPrinterEnabled(id, enabled);
+
+        private void SetDbPrinterName(int id, string name) => _base.SetPrinterName(id, name);
+
+        private void RemoveFromDb(int id)
+        {
+            _base.RemovePrinter(id);
+        }
     }
 }

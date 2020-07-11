@@ -98,10 +98,13 @@
     <Compile Include="Models\Config.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DepartmentNode.cs" />
+    <Compile Include="Models\DepartmentsCollection.cs" />
     <Compile Include="Models\PrintersCollection.cs" />
     <Compile Include="Models\UsersCollection.cs" />
     <Compile Include="Modules\DBase.cs" />
     <Compile Include="Modules\PrinterFromIdValueConverter.cs" />
+    <Compile Include="Modules\UserFromIdValueConverter.cs" />
     <Compile Include="ViewModels\DbaseConfig.cs" />
     <Compile Include="Models\PrintData.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
@@ -123,15 +126,13 @@
     <Compile Include="Modules\ExportToFile.cs" />
     <Compile Include="Modules\FullNameValueConverter.cs" />
     <Compile Include="Modules\PrinterEnabledValueConverter.cs" />
-    <Compile Include="Models\ComputerNodeHead.cs" />
     <Compile Include="Models\DepartmentsNodeHead.cs" />
     <Compile Include="Models\PrintDataGrid.cs" />
-    <Compile Include="Models\PrinterNodeHead.cs" />
-    <Compile Include="Models\PrinterNodeTail.cs" />
+    <Compile Include="Models\PrinterMaskedNameNode.cs" />
+    <Compile Include="Models\PrinterNode.cs" />
     <Compile Include="ViewModels\SelectedPrinter.cs" />
     <Compile Include="ViewModels\TotalCountStat.cs" />
-    <Compile Include="Models\UserNodeHead.cs" />
-    <Compile Include="Models\UserNodeTail.cs" />
+    <Compile Include="Models\UserNode.cs" />
     <Compile Include="Modules\PrinterManagement.cs" />
     <Compile Include="Modules\TabVisibilityValueConverter.cs" />
     <Compile Include="ViewModels\PrinterSpyViewModel.cs" />
