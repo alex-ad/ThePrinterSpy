@@ -7,21 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ThePrinterSpyControl.Models
+namespace ThePrinterSpyControl.DataBase
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class PrintData
+    public partial class User
     {
         public int Id { get; set; }
-        public int PrinterId { get; set; }
-        public int UserId { get; set; }
-        public int ComputerId { get; set; }
-        public int ServerId { get; set; }
-        public string DocName { get; set; }
-        public int Pages { get; set; }
-        public System.DateTime TimeStamp { get; set; }
-        public int JobId { get; set; }
+        public string AccountName { get; set; }
+        public string FullName { get; set; }
+        public string Department { get; set; }
+        public string Position { get; set; }
+        public string Company { get; set; }
+        public string Sid { get; set; }
     }
 }

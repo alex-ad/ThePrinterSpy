@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows.Documents;
+using ThePrinterSpyControl.DataBase;
+using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
-using ThePrinterSpyControl.ViewModels;
 
-namespace ThePrinterSpyControl.Models
+namespace ThePrinterSpyControl.ModelBuilders
 {
     public class PrintersCollection
     {
@@ -76,6 +73,8 @@ namespace ThePrinterSpyControl.Models
         public int GetTotalCountByComputer(int id) => Printers.Count(x => x.ComputerId == id);
 
         public PrinterNode GetPrinter(int id) => Printers.FirstOrDefault(x => x.Id == id);
+
+        public ObservableCollection<PrinterNode> GetCollection() => Printers;
 
         public void SetPrinterEnabled(int id, bool enabled)
         {

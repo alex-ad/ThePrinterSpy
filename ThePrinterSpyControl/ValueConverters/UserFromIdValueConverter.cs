@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using ThePrinterSpyControl.Models;
 
-namespace ThePrinterSpyControl.Modules
+namespace ThePrinterSpyControl.ValueConverters
 {
     class UserFromIdValueConverter : IValueConverter
     {

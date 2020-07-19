@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ThePrinterSpyControl.Models;
 
-namespace ThePrinterSpyControl.Modules
+namespace ThePrinterSpyControl.DataBase
 {
     public class DBase : IDisposable
     {
@@ -169,6 +167,7 @@ namespace ThePrinterSpyControl.Modules
                           )
                           || (!isReport)
                       )
+                      && p.Enabled
                 select new PrintDataCollection { Data = d, Printer = p, User = u };
 
             return data.ToList();

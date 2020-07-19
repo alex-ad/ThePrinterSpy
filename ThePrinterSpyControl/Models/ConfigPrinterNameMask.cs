@@ -3,14 +3,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
-namespace ThePrinterSpyControl.ViewModels
+namespace ThePrinterSpyControl.Models
 {
-    public class PrinterNameMaskConfig : INotifyPropertyChanged
+    public class ConfigPrinterNameMask : INotifyPropertyChanged
     {
-        private MaskType _type;
-        private string _mask;
-        private byte _typeIndex;
-        private bool _isEnabled;
+        private static MaskType _type;
+        private static string _mask;
+        private static byte _typeIndex;
+        private static bool _isEnabled;
 
         public enum MaskType : byte
         {
@@ -75,7 +75,7 @@ namespace ThePrinterSpyControl.ViewModels
             { MaskType.RegexpName, "Регулярное выражение" }
         };
 
-        public PrinterNameMaskConfig()
+        public ConfigPrinterNameMask()
         {
             try
             {
@@ -87,7 +87,7 @@ namespace ThePrinterSpyControl.ViewModels
             catch
             {
                 _type = MaskType.WholeName;
-                _mask = "";
+                _mask = string.Empty;
                 _typeIndex = 0;
                 _isEnabled = false;
             }

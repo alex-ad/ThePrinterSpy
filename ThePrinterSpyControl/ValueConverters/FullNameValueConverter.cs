@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ThePrinterSpyControl.Modules
+namespace ThePrinterSpyControl.ValueConverters
 {
     class FullNameValueConverter : IValueConverter
     {

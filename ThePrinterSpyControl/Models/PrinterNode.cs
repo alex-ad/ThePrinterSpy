@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using ThePrinterSpyControl.ViewModels;
 
 namespace ThePrinterSpyControl.Models
 {
@@ -14,7 +9,6 @@ namespace ThePrinterSpyControl.Models
         private string _name;
         private bool _enabled;
         //private readonly TotalCountStat _totalStat = new TotalCountStat();
-        //private readonly ListUserPrinter _userPrinter = new ListUserPrinter();
 
         public int Id { get; set; }
 

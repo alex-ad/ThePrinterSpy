@@ -9,7 +9,7 @@ using ThePrinterSpyControl.Modules;
 
 namespace ThePrinterSpyControl.Models
 {
-    public class ActiveDirectoryConfig : INotifyPropertyChanged
+    public class ConfigActiveDirectory : INotifyPropertyChanged
     {
         private bool _isEnabled;
         private string _server;
@@ -60,7 +60,7 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
-        public ActiveDirectoryConfig(AppConfig.AdConfig cfg)
+        public ConfigActiveDirectory(AppConfig.AdConfig cfg)
         {
             try
             {

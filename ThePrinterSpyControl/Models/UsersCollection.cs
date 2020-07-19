@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using ThePrinterSpyControl.DataBase;
+using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Modules;
 using ThePrinterSpyControl.ViewModels;
 

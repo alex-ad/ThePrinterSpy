@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using ThePrinterSpyControl.DataBase;
+using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
-using ThePrinterSpyControl.ViewModels;
 
-namespace ThePrinterSpyControl.Models
+namespace ThePrinterSpyControl.ModelBuilders
 {
     public class ComputersCollection
     {

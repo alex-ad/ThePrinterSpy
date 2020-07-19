@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using ThePrinterSpyControl.Commands;
+using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
 using ThePrinterSpyControl.ViewModels;
@@ -94,10 +95,10 @@ namespace ThePrinterSpyControl.Views
 
         private void TreeDepartments_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (e.NewValue is DepartmentsNodeHead)
-                MainViewModel.BuildPrintDataCollection(((DepartmentsNodeHead)e.NewValue).Name, PrinterSpyViewModel.PrintDataGroup.Department);
+            if (e.NewValue is DepartmentNode)
+                MainViewModel.BuildPrintDataCollection(((DepartmentNode)e.NewValue).Name, PrinterSpyViewModel.PrintDataGroup.Department);
             else
-                MainViewModel.BuildPrintDataCollection(((UserNode)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.User);
+                MainViewModel.BuildPrintDataCollection(e.NewValue, PrinterSpyViewModel.PrintDataGroup.User);
         }
 
         private void TreeComputers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

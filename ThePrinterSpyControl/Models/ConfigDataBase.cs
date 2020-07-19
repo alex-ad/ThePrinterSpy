@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
-namespace ThePrinterSpyControl.ViewModels
+namespace ThePrinterSpyControl.Models
 {
-    public class DbaseConfig : INotifyPropertyChanged
+    public class ConfigDataBase : INotifyPropertyChanged
     {
         private DbaseType _dbaseConnection;
         private byte _dbaseConnectionIndex;
@@ -93,7 +93,7 @@ namespace ThePrinterSpyControl.ViewModels
             { DbaseType.MySql, "My SQL" }
         };
 
-        public DbaseConfig()
+        public ConfigDataBase()
         {
             try
             {

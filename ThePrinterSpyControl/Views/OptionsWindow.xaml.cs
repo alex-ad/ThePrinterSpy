@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using ThePrinterSpyControl.Modules;
-using ThePrinterSpyControl.ViewModels;
-using Props = ThePrinterSpyControl.Properties.Settings;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace ThePrinterSpyControl.Views
@@ -68,7 +56,7 @@ namespace ThePrinterSpyControl.Views
             textAdServer.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             textAdUser.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             OptionsViewModel.SaveToLocal();
-            OptionsViewModel.SaveToDbase();
+            OptionsViewModel.SaveToBase();
             Close();
         }
     }

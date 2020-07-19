@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
+using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
-using ThePrinterSpyControl.ViewModels;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
 namespace ThePrinterSpyControl.Modules
@@ -15,10 +9,10 @@ namespace ThePrinterSpyControl.Modules
     public class AppConfig
     {
         private static PrintSpyEntities _base;
-        public static PrinterNameMaskConfig PrinterNameMask { get; set; }
-        public static ReportDateConfig ReportDate { get; set; }
-        public static ActiveDirectoryConfig ActiveDirectory { get; set; }
-        public static DbaseConfig Dbase { get; set; }
+        public static ConfigPrinterNameMask PrinterNameMask { get; set; }
+        public static ConfigReportDate ReportDate { get; set; }
+        public static ConfigActiveDirectory ActiveDirectory { get; set; }
+        public static ConfigDataBase Base { get; set; }
 
         public struct AdConfig
         {
@@ -32,42 +26,19 @@ namespace ThePrinterSpyControl.Modules
         {
             _base = new PrintSpyEntities();
             var data = _base.Configs.Find(1);
-            ActiveDirectory = new ActiveDirectoryConfig(new AdConfig
+
+            if (data == null) throw new Exception("Table `Config` in DataBase `PrinterSpy` is missing");
+
+            ActiveDirectory = new ConfigActiveDirectory(new AdConfig
             {
                 Enabled = data.AdEnabled,
                 Server = data.AdServer,
                 Password = data.AdPassword,
                 User = data.AdUser
             });
-            PrinterNameMask = new PrinterNameMaskConfig();
-            ReportDate = new ReportDateConfig();
-            Dbase = new DbaseConfig();
-        }
-
-        public string GetMaskedPrinterName(string mask)
-        {
-            try
-            {
-                if (PrinterNameMask.Type == PrinterNameMaskConfig.MaskType.BeginName)
-                    return mask.Substring(0, Convert.ToInt32(PrinterNameMask.Mask));
-                if (PrinterNameMask.Type == PrinterNameMaskConfig.MaskType.EndName)
-                    return mask.Remove(0, mask.Length - Convert.ToInt32(PrinterNameMask.Mask));
-                if (PrinterNameMask.Type == PrinterNameMaskConfig.MaskType.WholeName)
-                    return mask;
-                if (PrinterNameMask.Type == PrinterNameMaskConfig.MaskType.ContainsName)
-                {
-                    int start = mask.IndexOf(PrinterNameMask.Mask, StringComparison.InvariantCultureIgnoreCase);
-                    if (start < 0) return mask;
-                    return mask.Substring(start, PrinterNameMask.Mask.Length);
-                }
-                Regex regex = new Regex(PrinterNameMask.Mask);
-                MatchCollection matches = regex.Matches(mask);
-                return (matches.Count < 1) ? mask : matches[0].Value;
-            }
-            catch
-            {
-                return mask;
-            }
+            PrinterNameMask = new ConfigPrinterNameMask();
+            ReportDate = new ConfigReportDate();
+            Base = new ConfigDataBase();
         }
 
         public void SaveToLocal()
@@ -82,9 +53,12 @@ namespace ThePrinterSpyControl.Modules
             Props.Default.Save();
         }
 
-        public void SaveToDbase()
+        public void SaveToBase()
         {
             var data = _base.Configs.Find(1);
+
+            if (data == null) throw new Exception("Table `Config` in DataBase `PrinterSpy` is missing");
+
             data.AdEnabled = ActiveDirectory.IsEnabled ? (byte) 1 : (byte) 0;
             data.AdPassword = ActiveDirectory.Password;
             data.AdServer = ActiveDirectory.Server;

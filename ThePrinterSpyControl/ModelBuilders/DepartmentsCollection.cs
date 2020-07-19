@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ThePrinterSpyControl.Modules;
-using ThePrinterSpyControl.ViewModels;
+using ThePrinterSpyControl.Models;
 
-namespace ThePrinterSpyControl.Models
+namespace ThePrinterSpyControl.ModelBuilders
 {
     public class DepartmentsCollection
     {
         public static ObservableCollection<DepartmentNode> Departments { get; }
         private static readonly TotalCountStat TotalStat = new TotalCountStat();
-        private readonly DBase _base;
         private readonly UsersCollection _users;
 
         static DepartmentsCollection()
@@ -25,7 +19,6 @@ namespace ThePrinterSpyControl.Models
 
         public DepartmentsCollection()
         {
-            _base = new DBase();
             _users = new UsersCollection();
         }
 
@@ -50,10 +43,9 @@ namespace ThePrinterSpyControl.Models
 
                 var node = new DepartmentNode
                 {
-                    Id = id,
                     Name = d,
                     UserIds = u,
-                    Comment = $"{u.Count}"
+                    Comment = $"[{u.Count}]"
                 };
 
                 Departments.Add(node);

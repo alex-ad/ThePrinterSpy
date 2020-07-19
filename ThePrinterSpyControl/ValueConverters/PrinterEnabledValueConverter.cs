@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Models;
 
-namespace ThePrinterSpyControl.Modules
+namespace ThePrinterSpyControl.ValueConverters
 {
-    class PrinterFromIdValueConverter : IValueConverter
+    class PrinterEnabledValueConverter : IValueConverter
     {
         private readonly PrintersCollection _printers = new PrintersCollection();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value), "Printer Id cannot be Null");
             var p = _printers.GetPrinter((int)value);
-            return p.Name;
+            return (p.Enabled) ? "Black" : "Gray";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

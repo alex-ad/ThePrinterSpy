@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ThePrinterSpyControl.Models
+namespace ThePrinterSpyControl.DataBase
 {
     using System;
     using System.Data.Entity;

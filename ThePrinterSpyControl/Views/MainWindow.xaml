@@ -4,16 +4,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:core="clr-namespace:ThePrinterSpyControl.Modules"
+        xmlns:modules="clr-namespace:ThePrinterSpyControl.Modules"
+        xmlns:valueConverters="clr-namespace:ThePrinterSpyControl.ValueConverters"
         mc:Ignorable="d"
         Title="The Printer Spy - Control Panel (Версия 1.0.0.0)" Height="768" Width="1024" MinWidth="600" MinHeight="480" WindowStartupLocation="CenterScreen" Closing="Window_Closing" Loaded="Window_Loaded">
     <Window.Resources>
-        <core:FullNameValueConverter x:Key="FullNameValueConverter"></core:FullNameValueConverter>
-        <core:PrinterEnabledValueConverter x:Key="PrinterEnabledValueConverter"></core:PrinterEnabledValueConverter>
-        <core:PrinterFromIdValueConverter x:Key="PrinterFromIdValueConverter"></core:PrinterFromIdValueConverter>
-        <core:UserFromIdValueConverter x:Key="UserFromIdValueConverter"></core:UserFromIdValueConverter>
-        <core:DepartmentNameValueConverter x:Key="DepartmentNameValueConverter"></core:DepartmentNameValueConverter>
-        <core:TabVisibilityValueConverter x:Key="TabVisibilityValueConverter"></core:TabVisibilityValueConverter>
+        <valueConverters:FullNameValueConverter x:Key="FullNameValueConverter"></valueConverters:FullNameValueConverter>
+        <valueConverters:PrinterEnabledValueConverter x:Key="PrinterEnabledValueConverter"></valueConverters:PrinterEnabledValueConverter>
+        <valueConverters:PrinterFromIdValueConverter x:Key="PrinterFromIdValueConverter"></valueConverters:PrinterFromIdValueConverter>
+        <valueConverters:UserFromIdValueConverter x:Key="UserFromIdValueConverter"></valueConverters:UserFromIdValueConverter>
+        <valueConverters:DepartmentNameValueConverter x:Key="DepartmentNameValueConverter"></valueConverters:DepartmentNameValueConverter>
+        <valueConverters:TabVisibilityValueConverter x:Key="TabVisibilityValueConverter"></valueConverters:TabVisibilityValueConverter>
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="SaveAs" Executed="SaveAsCmdExecuted" CanExecute="SaveAsCmdCanExecute"/>
@@ -76,9 +77,9 @@
             <GridSplitter x:Name="GridSplitter" Width="5" Grid.Column="0" Background="LightGray" BorderThickness="1" BorderBrush="SkyBlue" Margin="0,1"/>
             <StackPanel x:Name="stackTabs" Grid.Column="0" Grid.Row="0">
                 <DockPanel>
-                    <TabControl MinHeight="50" Margin="0,0,5,0" DockPanel.Dock="Top" VerticalAlignment="Stretch">
+                    <TabControl MinHeight="50" Margin="0,0,5,0" DockPanel.Dock="Top">
                         <TabItem x:Name="tabUsers" Header="Пользователи" Visibility="{Binding IsChecked, ElementName=menuTabUsers, Converter={StaticResource TabVisibilityValueConverter}}" IsVisibleChanged="tabUsers_IsVisibleChanged">
-                            <TreeView x:Name="treeUsers" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" ItemsSource="{Binding Path=UsersCollection.Users}" Visibility="{Binding Visibility, ElementName=tabUsers}">
+                            <TreeView x:Name="treeUsers" Height="600" ItemsSource="{Binding Path=UsersCollection.Users}" Visibility="{Binding Visibility, ElementName=tabUsers}" ScrollViewer.CanContentScroll="True">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding PrinterIds}">
                                         <StackPanel Orientation="Horizontal">
@@ -123,19 +124,19 @@
                             </TreeView>
                         </TabItem>
                         <TabItem x:Name="tabDepartments" Header="Подразделения" Visibility="{Binding IsChecked, ElementName=menuTabDepartments, Converter={StaticResource TabVisibilityValueConverter}}" IsVisibleChanged="tabDepartments_IsVisibleChanged">
-                            <TreeView x:Name="treeDepartments" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Path=DepartmentsCollection.Departments}" Visibility="{Binding Visibility, ElementName=tabDepartments}">
+                            <TreeView x:Name="treeDepartments" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" ItemsSource="{Binding Path=DepartmentsCollection.Departments}" Visibility="{Binding Visibility, ElementName=tabDepartments}">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Path=UserIds}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="../Images/bag.png" Width="16" Height="16" Margin="0,0,5,0"/>
                                             <TextBlock Text="{Binding Name, Converter={StaticResource DepartmentNameValueConverter}}"/>
-                                            <TextBlock Text=" [" Foreground="Green"/>
-                                            <TextBlock Text="{Binding Comment}" Foreground="Green"/>
-                                            <TextBlock Text="]" Foreground="Green"/>
+                                            <TextBlock Text=" "/>
+                                            <TextBlock Text="{Binding Comment}" Foreground="Green" />
                                         </StackPanel>
                                         <HierarchicalDataTemplate.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Converter={StaticResource UserFromIdValueConverter}}"/>
+                                                <TextBlock
+                                                    Text="{Binding Converter={StaticResource UserFromIdValueConverter}}"/>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
                                     </HierarchicalDataTemplate>
@@ -143,12 +144,15 @@
                             </TreeView>
                         </TabItem>
                         <TabItem x:Name="tabPrinters" Header="Принтеры" Visibility="{Binding IsChecked, ElementName=menuTabPrinters, Converter={StaticResource TabVisibilityValueConverter}}" IsVisibleChanged="tabPrinters_IsVisibleChanged">
-                            <ListView x:Name="treePrinters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Path=Printers}" SelectionMode="Single" Visibility="{Binding Visibility, ElementName=tabPrinters}">
+                            <ListView x:Name="treePrinters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" ItemsSource="{Binding Path=PrinterNamesCollection.PrinterNames}" SelectionMode="Single" Visibility="{Binding Visibility, ElementName=tabPrinters}">
                                 <ListView.ItemTemplate>
                                     <HierarchicalDataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="../Images/printer.png" Width="16" Height="16" Margin="0,0,5,0"/>
                                             <TextBlock Text="{Binding NameMasked}"/>
+                                            <TextBlock Text=" [" Foreground="Green"/>
+                                            <TextBlock Text="{Binding Ids.Count}" Foreground="Green"/>
+                                            <TextBlock Text="]" Foreground="Green"/>
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                 </ListView.ItemTemplate>
@@ -210,7 +214,7 @@
                         <DataGridTextColumn Header="Принтер" Binding="{Binding PrinterName}"/>
                         <DataGridTextColumn Header="Страниц" Binding="{Binding Pages}" />
                         <DataGridTextColumn Header="Пользователь" Binding="{Binding UserName}"/>
-                        <DataGridTextColumn Header="Дата и время" Binding="{Binding TimeStamp}"/>
+                        <DataGridTextColumn Header="Дата и время" Binding="{Binding TimeStamp, StringFormat={}{0:dd.MM.yyyy - HH:mm:ss}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

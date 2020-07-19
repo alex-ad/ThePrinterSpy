@@ -51,10 +51,10 @@
                     <Label Grid.Column="2" Grid.Row="1" Content="База данных" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="0" Grid.Row="2" Content="Пользователь" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="2" Grid.Row="2" Content="Пароль" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
-                    <ComboBox x:Name="comboDbaseConnectionType" Grid.Column="1" Grid.Row="0" Margin="3 0 3 0" Height="24" ItemsSource="{Binding Dbase.DbaseConnectionList}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedIndex="{Binding Dbase.DbaseConnectionIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
-                    <TextBox x:Name="textDbaseServer" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding Dbase.Server, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="textDbaseName" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding Dbase.Base, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="textDbaseUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" Text="{Binding Dbase.User, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <ComboBox x:Name="comboDbaseConnectionType" Grid.Column="1" Grid.Row="0" Margin="3 0 3 0" Height="24" ItemsSource="{Binding Base.DbaseConnectionList}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedIndex="{Binding Base.DbaseConnectionIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <TextBox x:Name="textDbaseServer" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding Base.Server, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <TextBox x:Name="textDbaseName" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding Base.Base, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <TextBox x:Name="textDbaseUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" Text="{Binding Base.User, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
                     <PasswordBox x:Name="pswDbasePassword" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" Height="24" Password="" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
                 </Grid>
             </StackPanel>

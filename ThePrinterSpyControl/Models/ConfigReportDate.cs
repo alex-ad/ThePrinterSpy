@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
-namespace ThePrinterSpyControl.ViewModels
+namespace ThePrinterSpyControl.Models
 {
-    public class ReportDateConfig : INotifyPropertyChanged
+    public class ConfigReportDate : INotifyPropertyChanged
     {
         private DateTime _start;
         private DateTime _end;
@@ -106,7 +106,7 @@ namespace ThePrinterSpyControl.ViewModels
             { PeriodType.Last180Days, "Последние 180 дней" }
         };
 
-        public ReportDateConfig()
+        public ConfigReportDate()
         {
             try
             {

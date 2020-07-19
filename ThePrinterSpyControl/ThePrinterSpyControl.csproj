@@ -89,54 +89,53 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandT.cs" />
-    <Compile Include="Models\ActiveDirectoryConfig.cs" />
-    <Compile Include="Models\Computer.cs">
+    <Compile Include="Models\ConfigActiveDirectory.cs" />
+    <Compile Include="DataBase\Computer.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ComputerNode.cs" />
-    <Compile Include="Models\ComputersCollection.cs" />
-    <Compile Include="Models\Config.cs">
+    <Compile Include="ModelBuilders\ComputersCollection.cs" />
+    <Compile Include="DataBase\Config.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DepartmentNode.cs" />
-    <Compile Include="Models\DepartmentsCollection.cs" />
-    <Compile Include="Models\PrintersCollection.cs" />
+    <Compile Include="ModelBuilders\DepartmentsCollection.cs" />
+    <Compile Include="ModelBuilders\PrinterMaskedNameCollection.cs" />
+    <Compile Include="ModelBuilders\PrintersCollection.cs" />
     <Compile Include="Models\UsersCollection.cs" />
-    <Compile Include="Modules\DBase.cs" />
-    <Compile Include="Modules\PrinterFromIdValueConverter.cs" />
-    <Compile Include="Modules\UserFromIdValueConverter.cs" />
-    <Compile Include="ViewModels\DbaseConfig.cs" />
-    <Compile Include="Models\PrintData.cs">
+    <Compile Include="DataBase\DBase.cs" />
+    <Compile Include="ValueConverters\PrinterFromIdValueConverter.cs" />
+    <Compile Include="ValueConverters\UserFromIdValueConverter.cs" />
+    <Compile Include="Models\ConfigDataBase.cs" />
+    <Compile Include="DataBase\PrintData.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Printer.cs">
+    <Compile Include="DataBase\Printer.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ListUserPrinter.cs" />
-    <Compile Include="ViewModels\PrinterNameMaskConfig.cs" />
-    <Compile Include="ViewModels\ReportDateConfig.cs" />
-    <Compile Include="Models\Server.cs">
+    <Compile Include="Models\ConfigPrinterNameMask.cs" />
+    <Compile Include="Models\ConfigReportDate.cs" />
+    <Compile Include="DataBase\Server.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\User.cs">
+    <Compile Include="DataBase\User.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Modules\AppConfig.cs" />
-    <Compile Include="Modules\DepartmentNameValueConverter.cs" />
+    <Compile Include="ValueConverters\DepartmentNameValueConverter.cs" />
     <Compile Include="Modules\ExportToFile.cs" />
-    <Compile Include="Modules\FullNameValueConverter.cs" />
-    <Compile Include="Modules\PrinterEnabledValueConverter.cs" />
-    <Compile Include="Models\DepartmentsNodeHead.cs" />
+    <Compile Include="ValueConverters\FullNameValueConverter.cs" />
+    <Compile Include="ValueConverters\PrinterEnabledValueConverter.cs" />
     <Compile Include="Models\PrintDataGrid.cs" />
     <Compile Include="Models\PrinterMaskedNameNode.cs" />
     <Compile Include="Models\PrinterNode.cs" />
-    <Compile Include="ViewModels\SelectedPrinter.cs" />
-    <Compile Include="ViewModels\TotalCountStat.cs" />
+    <Compile Include="Models\SelectedPrinter.cs" />
+    <Compile Include="Models\TotalCountStat.cs" />
     <Compile Include="Models\UserNode.cs" />
     <Compile Include="Modules\PrinterManagement.cs" />
-    <Compile Include="Modules\TabVisibilityValueConverter.cs" />
+    <Compile Include="ValueConverters\TabVisibilityValueConverter.cs" />
     <Compile Include="ViewModels\PrinterSpyViewModel.cs" />
-    <Compile Include="Models\PrintSpyDb.cs">
+    <Compile Include="DataBase\PrintSpyDb.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
@@ -162,12 +161,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\PrintSpyDb.Context.cs">
+    <Compile Include="DataBase\PrintSpyDb.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PrintSpyDb.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PrintSpyDb.Designer.cs">
+    <Compile Include="DataBase\PrintSpyDb.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PrintSpyDb.edmx</DependentUpon>
@@ -190,11 +189,11 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <EntityDeploy Include="Models\PrintSpyDb.edmx">
+    <EntityDeploy Include="DataBase\PrintSpyDb.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PrintSpyDb.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Models\PrintSpyDb.edmx.diagram">
+    <None Include="DataBase\PrintSpyDb.edmx.diagram">
       <DependentUpon>PrintSpyDb.edmx</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
@@ -239,13 +238,13 @@
     <Resource Include="Images\user.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Models\PrintSpyDb.Context.tt">
+    <Content Include="DataBase\PrintSpyDb.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PrintSpyDb.edmx</DependentUpon>
       <LastGenOutput>PrintSpyDb.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\PrintSpyDb.edmx.sql" />
-    <Content Include="Models\PrintSpyDb.tt">
+    <Content Include="DataBase\PrintSpyDb.edmx.sql" />
+    <Content Include="DataBase\PrintSpyDb.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PrintSpyDb.edmx</DependentUpon>
       <LastGenOutput>PrintSpyDb.cs</LastGenOutput>
@@ -280,7 +279,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Validators\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

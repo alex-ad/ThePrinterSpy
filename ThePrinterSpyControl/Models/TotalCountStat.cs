@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ThePrinterSpyControl.ViewModels
+namespace ThePrinterSpyControl.Models
 {
     public class TotalCountStat : INotifyPropertyChanged
     {
