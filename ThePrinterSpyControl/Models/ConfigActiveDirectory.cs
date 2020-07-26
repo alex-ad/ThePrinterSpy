@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -9,7 +10,7 @@ using ThePrinterSpyControl.Modules;
 
 namespace ThePrinterSpyControl.Models
 {
-    public class ConfigActiveDirectory : INotifyPropertyChanged
+    public partial class ConfigActiveDirectory : INotifyPropertyChanged
     {
         private bool _isEnabled;
         private string _server;
@@ -27,6 +28,8 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
+        [MinLength(5, ErrorMessage = "Минимальное количество символов - 5")]
+        [RegularExpression("^\\w{2,}\\.\\w{2,}.*$", ErrorMessage = "Неверный формат имени. Должно быть: 'XX.YY[Z]'")]
         public string Server
         {
             get => _server;
@@ -37,7 +40,7 @@ namespace ThePrinterSpyControl.Models
                 OnPropertyChanged();
             }
         }
-
+        [MinLength(2, ErrorMessage = "Минимальное количество символов - 2")]
         public string User
         {
             get => _user;
@@ -48,7 +51,7 @@ namespace ThePrinterSpyControl.Models
                 OnPropertyChanged();
             }
         }
-
+        [MinLength(1, ErrorMessage = "Минимальное количество символов - 1")]
         public string Password
         {
             get => _password;

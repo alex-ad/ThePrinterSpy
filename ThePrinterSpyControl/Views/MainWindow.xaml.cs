@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Management;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Principal;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
-using ThePrinterSpyControl.Commands;
 using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
@@ -25,7 +17,7 @@ namespace ThePrinterSpyControl.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public PrinterSpyViewModel MainViewModel { get; set; } = new PrinterSpyViewModel();
+        public PrinterSpyViewModel MainViewModel { get; } = new PrinterSpyViewModel();
         
         private readonly PrintersCollection _printers = new PrintersCollection();
         private readonly ComputersCollection _computers = new ComputersCollection();
@@ -35,13 +27,31 @@ namespace ThePrinterSpyControl.Views
         {
             InitializeComponent();
             treeUsers.SelectedItemChanged += TreeUsers_SelectedItemChanged;
+            treeUsers.GotFocus += TreeUsers_GotFocus;
             treeComputers.SelectedItemChanged += TreeComputers_SelectedItemChanged;
+            treeComputers.GotFocus += TreeComputers_GotFocus;
             treeDepartments.SelectedItemChanged += TreeDepartments_SelectedItemChanged;
             treePrinters.SelectionChanged += TreePrinters_SelectionChanged;
             textNewPrinterName.TextChanged += TextNewPrinterName_TextChanged;
             checkPrinterEnabled.Click += CheckPrinterEnabled_Click;
             btnPrinterRename.Click += BtnPrinterRename_Click;
             btnPrinterDeleteFromDb.Click += BtnPrinterDeleteFromDb_Click;
+            TabControl.SelectionChanged += TabControl_SelectionChanged;
+        }
+
+        private void TreeComputers_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SelectActivePrinter(sender);
+        }
+
+        private void TreeUsers_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SelectActivePrinter(sender);
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PrinterSpyViewModel.SelectedPrinter.Reset();
         }
 
         private void BtnPrinterDeleteFromDb_Click(object sender, RoutedEventArgs e)
@@ -80,14 +90,14 @@ namespace ThePrinterSpyControl.Views
         private void TextNewPrinterName_TextChanged(object sender, TextChangedEventArgs e)
         {
             var t = sender as TextBox;
-            if (t?.Text.Length < 2) return;
+            if (t == null || t.Text.Length < 2) return;
             PrinterSpyViewModel.SelectedPrinter.NewName = t.Text;
         }
 
         private void TreePrinters_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             IList list = e.AddedItems;
-            if (list?.Count < 1) return;
+            if (list == null || list.Count < 1) return;
             PrinterMaskedNameNode element = list[0] as PrinterMaskedNameNode;
             if (element == null) return;
             MainViewModel.BuildPrintDataCollection(element.Ids, PrinterSpyViewModel.PrintDataGroup.PrintersGroup);
@@ -105,7 +115,7 @@ namespace ThePrinterSpyControl.Views
         {
             if (e.NewValue is ComputerNode)
             {
-                PrinterSpyViewModel.SelectedPrinter.Id = 0;
+                PrinterSpyViewModel.SelectedPrinter.Reset();
                 MainViewModel.BuildPrintDataCollection(((ComputerNode)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.Computer);
             }
             else
@@ -124,7 +134,7 @@ namespace ThePrinterSpyControl.Views
         {
             if (e.NewValue is UserNode)
             {
-                PrinterSpyViewModel.SelectedPrinter.Id = 0;
+                PrinterSpyViewModel.SelectedPrinter.Reset();
                 MainViewModel.BuildPrintDataCollection(((UserNode)e.NewValue).Id, PrinterSpyViewModel.PrintDataGroup.User);
             }
             else
@@ -198,6 +208,21 @@ namespace ThePrinterSpyControl.Views
         private void tabPrinters_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             //if ((bool)e.NewValue) MainViewModel.BuildPrinterCollection();
+        }
+
+        private void SelectActivePrinter(object printer)
+        {
+            var elem = printer as TreeView;
+            if (elem?.SelectedItem == null) return;
+            if (elem.SelectedItem is int)
+            {
+                var p = _printers.GetPrinter((int)elem.SelectedItem);
+                PrinterSpyViewModel.SelectedPrinter.Id = p.Id;
+                PrinterSpyViewModel.SelectedPrinter.OldName = p.Name;
+                PrinterSpyViewModel.SelectedPrinter.NewName = p.Name;
+                PrinterSpyViewModel.SelectedPrinter.IsNewModel = true;
+                PrinterSpyViewModel.SelectedPrinter.Enabled = p.Enabled;
+            }
         }
     }
 }

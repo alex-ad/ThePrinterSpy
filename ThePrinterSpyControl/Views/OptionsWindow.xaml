@@ -7,6 +7,18 @@
         DataContext="{Binding OptionsViewModel, RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
         Title="Настройки" Height="546.172" Width="696.223" WindowStyle="ToolWindow" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" WindowStartupLocation="CenterOwner" Closed="wndOptions_Closed">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="Background" Value="Pink" />
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
     <DockPanel>
         <GroupBox Header="Период отчета" DockPanel.Dock="Top" Height="Auto" Margin="5">
             <StackPanel>
@@ -77,8 +89,8 @@
                     <Label Grid.Column="0" Grid.Row="1" Content="Домен" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="0" Grid.Row="2" Content="Пользователь" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="2" Grid.Row="2" Content="Пароль" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="textAdServer" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding ActiveDirectory.Server, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="textAdUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" Text="{Binding ActiveDirectory.User, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <TextBox x:Name="textAdServer" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding ActiveDirectory.Server, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <TextBox x:Name="textAdUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" Text="{Binding ActiveDirectory.User, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
                     <PasswordBox x:Name="pswAdPassword" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
                 </Grid>
             </StackPanel>
@@ -100,7 +112,7 @@
                     <Label Grid.Column="0" Grid.Row="1" Content="Тип маски" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="2" Grid.Row="1" Content="Маска" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <ComboBox x:Name="comboPrinterNameMaskType" Grid.Column="1" Grid.Row="1" Margin="3 0 3 0" Height="24" ItemsSource="{Binding PrinterNameMask.TypeList}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedIndex="{Binding PrinterNameMask.TypeIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
-                    <TextBox x:Name="textPrinterNameMaskValue" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding PrinterNameMask.Mask, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <TextBox x:Name="textPrinterNameMaskValue" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding PrinterNameMask.Mask, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
                 </Grid>
             </StackPanel>
         </GroupBox>

@@ -60,11 +60,16 @@ namespace ThePrinterSpyControl.Models
         public bool IsNewModel
         {
             get => _isNewModel;
-            set
-            {
-                if (value == _isNewModel) return;
-                _isNewModel = value;
-            }
+            set => _isNewModel = value;
+        }
+
+        public void Reset()
+        {
+            Id = 0;
+            IsNewModel = true;
+            Enabled = false;
+            NewName = string.Empty;
+            OldName = string.Empty;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using ThePrinterSpyControl.Modules;
+using ThePrinterSpyControl.Validators;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace ThePrinterSpyControl.Views
@@ -55,6 +56,9 @@ namespace ThePrinterSpyControl.Views
             checkAdEnabled.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
             textAdServer.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             textAdUser.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            
+            if (ConfigValidator.AnyError) return;
+
             OptionsViewModel.SaveToLocal();
             OptionsViewModel.SaveToBase();
             Close();

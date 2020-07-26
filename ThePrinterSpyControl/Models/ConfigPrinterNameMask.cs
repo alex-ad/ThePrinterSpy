@@ -5,7 +5,7 @@ using Props = ThePrinterSpyControl.Properties.Settings;
 
 namespace ThePrinterSpyControl.Models
 {
-    public class ConfigPrinterNameMask : INotifyPropertyChanged
+    public partial class ConfigPrinterNameMask : INotifyPropertyChanged
     {
         private static MaskType _type;
         private static string _mask;

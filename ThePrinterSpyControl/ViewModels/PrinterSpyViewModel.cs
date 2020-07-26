@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using ThePrinterSpyControl.Commands;
 using ThePrinterSpyControl.DataBase;

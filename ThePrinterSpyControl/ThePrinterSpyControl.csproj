@@ -98,13 +98,17 @@
     <Compile Include="DataBase\Config.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConfigActiveDirectoryPartial.cs" />
+    <Compile Include="Models\ConfigPrinterNameMaskPartial.cs" />
     <Compile Include="Models\DepartmentNode.cs" />
     <Compile Include="ModelBuilders\DepartmentsCollection.cs" />
     <Compile Include="ModelBuilders\PrinterMaskedNameCollection.cs" />
     <Compile Include="ModelBuilders\PrintersCollection.cs" />
     <Compile Include="Models\UsersCollection.cs" />
     <Compile Include="DataBase\DBase.cs" />
+    <Compile Include="Validators\ConfigValidator.cs" />
     <Compile Include="ValueConverters\PrinterFromIdValueConverter.cs" />
+    <Compile Include="ValueConverters\SelectedPrinterVisibilityValueConverter.cs" />
     <Compile Include="ValueConverters\UserFromIdValueConverter.cs" />
     <Compile Include="Models\ConfigDataBase.cs" />
     <Compile Include="DataBase\PrintData.cs">
@@ -279,9 +283,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Validators\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
