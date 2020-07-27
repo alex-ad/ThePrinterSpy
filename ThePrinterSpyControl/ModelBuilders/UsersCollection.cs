@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using ThePrinterSpyControl.DataBase;
-using ThePrinterSpyControl.ModelBuilders;
-using ThePrinterSpyControl.Modules;
-using ThePrinterSpyControl.ViewModels;
+using ThePrinterSpyControl.Models;
 
-namespace ThePrinterSpyControl.Models
+namespace ThePrinterSpyControl.ModelBuilders
 {
     public class UsersCollection
     {
@@ -40,20 +40,24 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
+        /*public async Task GetAll()
+        {
+            var users = _base.GetUsersList().Result;
+            if (!users.Any()) return;
+            await BuildAll(users);
+        }*/
+
         public void GetAll()
         {
-            var users = _base.GetUsersList();
+            var users = _base.GetUsersList().Result;
             if (!users.Any()) return;
 
             Users.Clear();
-
-            //await Task.Run(() =>
-            //{
-                foreach (var u in users)
-                {
-                    var pIds = _printers.GetIdsByUser(u.Id);
-                    var pTotal = pIds.Count();
-                    var pEnabled = _printers.GetEnabledCountByUser(u.Id);
+            foreach (var u in users)
+            {
+                var pIds = _printers.GetIdsByUser(u.Id);
+                var pTotal = pIds.Count();
+                var pEnabled = _printers.GetEnabledCountByUser(u.Id);
                     Users.Add(new UserNode
                     {
                         Id = u.Id,
@@ -66,8 +70,7 @@ namespace ThePrinterSpyControl.Models
                         Sid = u.Sid,
                         Comment = $"[{pEnabled}/{pTotal}]"
                     });
-                }
-            //});
+            }
         }
 
         public List<UserNode> GetUsersByDepartment(string name) => Users.Where(x => x.Department == name).ToList();
@@ -100,5 +103,34 @@ namespace ThePrinterSpyControl.Models
             var pEnabled = _printers.GetEnabledCountByUser(u.Id);
             u.Comment = $"[{pEnabled}/{pTotal}]";
         }
+
+        /*private async Task BuildAll(List<User> users)
+        {
+            Users.Clear();
+            await Task.Run(() =>
+            {
+                foreach (var u in users)
+                {
+                    var pIds = _printers.GetIdsByUser(u.Id);
+                    var pTotal = pIds.Count();
+                    var pEnabled = _printers.GetEnabledCountByUser(u.Id);
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Users.Add(new UserNode
+                        {
+                            Id = u.Id,
+                            FullName = u.FullName,
+                            AccountName = u.AccountName,
+                            PrinterIds = pIds ?? null,
+                            Company = u.Company,
+                            Department = u.Department,
+                            Position = u.Position,
+                            Sid = u.Sid,
+                            Comment = $"[{pEnabled}/{pTotal}]"
+                        });
+                    });
+                }
+            });
+        }*/
     }
 }

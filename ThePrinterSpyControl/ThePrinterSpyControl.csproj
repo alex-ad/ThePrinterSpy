@@ -104,7 +104,7 @@
     <Compile Include="ModelBuilders\DepartmentsCollection.cs" />
     <Compile Include="ModelBuilders\PrinterMaskedNameCollection.cs" />
     <Compile Include="ModelBuilders\PrintersCollection.cs" />
-    <Compile Include="Models\UsersCollection.cs" />
+    <Compile Include="ModelBuilders\UsersCollection.cs" />
     <Compile Include="DataBase\DBase.cs" />
     <Compile Include="Validators\ConfigValidator.cs" />
     <Compile Include="ValueConverters\PrinterFromIdValueConverter.cs" />

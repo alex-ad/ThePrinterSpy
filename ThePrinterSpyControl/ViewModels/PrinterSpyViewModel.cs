@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using ThePrinterSpyControl.Commands;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.ModelBuilders;
@@ -56,11 +57,7 @@ namespace ThePrinterSpyControl.ViewModels
             AppConfig = new AppConfig();
             SelectedPrinter = new SelectedPrinter();
 
-            PrintersCollection.GetAll();
-            UsersCollection.GetAll();
-            ComputersCollection.GetAll();
-            DepartmentsCollection.GetAll();
-            PrinterNamesCollection.GetAll();
+            GetAll();
         }
 
         public void BuildPrintDataCollection(object id, PrintDataGroup group)
@@ -81,7 +78,7 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas.Clear();
 
             var data = _base.GetDataByUserId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
-                AppConfig.ReportDate.IsEnabled);
+                AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
@@ -112,7 +109,7 @@ namespace ThePrinterSpyControl.ViewModels
         {
             PrintDatas.Clear();
             var data = _base.GetDataByDepartmentName(name, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
-                AppConfig.ReportDate.IsEnabled);
+                AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
@@ -144,7 +141,7 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas.Clear();
 
             var data = _base.GetDataByComputerId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
-                AppConfig.ReportDate.IsEnabled);
+                AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
@@ -176,7 +173,7 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas.Clear();
 
             var data = _base.GetDataByPrinterId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
-                AppConfig.ReportDate.IsEnabled);
+                AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
@@ -208,7 +205,7 @@ namespace ThePrinterSpyControl.ViewModels
             PrintDatas.Clear();
 
             var data = _base.GetDataByPrintersGroup(ids, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
-                AppConfig.ReportDate.IsEnabled);
+                AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
 
             TotalStat.PagesByNode = 0;
@@ -243,6 +240,15 @@ namespace ThePrinterSpyControl.ViewModels
         private void ShowOptionsWindows(string obj)
         {
             OptionsWindow.Instance.Show();
+        }
+
+        private void GetAll()
+        {
+            PrintersCollection.GetAll();
+            UsersCollection.GetAll();
+            ComputersCollection.GetAll();
+            DepartmentsCollection.GetAll();
+            PrinterNamesCollection.GetAll();
         }
     }
 }

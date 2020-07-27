@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
-using ThePrinterSpyControl.Modules;
 
 namespace ThePrinterSpyControl.ModelBuilders
 {
@@ -38,8 +38,9 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public void GetAll()
         {
-            var computers = _base.GetComputersList();
+            var computers = _base.GetComputersList().Result;
             if (!computers.Any()) return;
+            //await BuildAll(computers);
 
             Computers.Clear();
 
@@ -94,5 +95,29 @@ namespace ThePrinterSpyControl.ModelBuilders
             var pEnabled = _printers.GetEnabledCountByComputer(c.Id);
             c.Comment = $"[{pEnabled}/{pTotal}]";
         }
+
+        /*private async Task BuildAll(List<Computer> computers)
+        {
+            Computers.Clear();
+            await Task.Run(() =>
+            {
+                foreach (var c in computers)
+                {
+                    var pIds = _printers.GetIdsByComputer(c.Id);
+                    var pTotal = pIds.Count();
+                    var pEnabled = _printers.GetEnabledCountByComputer(c.Id);
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Computers.Add(new ComputerNode
+                        {
+                            Id = c.Id,
+                            NetBiosName = c.Name,
+                            PrinterIds = pIds ?? null,
+                            Comment = $"[{pEnabled}/{pTotal}]"
+                        });
+                    });
+                }
+            });
+        }*/
     }
 }

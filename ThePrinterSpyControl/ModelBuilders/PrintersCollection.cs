@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
@@ -37,25 +38,26 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public void GetAll()
         {
-            var printers = _base.GetPrintersList();
+            var printers = _base.GetPrintersList().Result;
             if (!printers.Any()) return;
+            //await BuildAll(printers);
 
             Printers.Clear();
 
             //await Task.Run(() =>
             //{
-                foreach (var p in printers)
+            foreach (var p in printers)
+            {
+                Printers.Add(new PrinterNode
                 {
-                    Printers.Add(new PrinterNode
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        UserId = p.UserId,
-                        ComputerId = p.ComputerId,
-                        ServerId = p.ServerId,
-                        Enabled = p.Enabled,
-                    });
-                }
+                    Id = p.Id,
+                    Name = p.Name,
+                    UserId = p.UserId,
+                    ComputerId = p.ComputerId,
+                    ServerId = p.ServerId,
+                    Enabled = p.Enabled,
+                });
+            }
             //});
         }
 
@@ -104,5 +106,28 @@ namespace ThePrinterSpyControl.ModelBuilders
         {
             _base.RemovePrinter(id);
         }
+
+        /*private async Task BuildAll(List<Printer> printers)
+        {
+            Printers.Clear();
+            await Task.Run(() =>
+            {
+                foreach (var p in printers)
+                {
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Printers.Add(new PrinterNode
+                        {
+                            Id = p.Id,
+                            Name = p.Name,
+                            UserId = p.UserId,
+                            ComputerId = p.ComputerId,
+                            ServerId = p.ServerId,
+                            Enabled = p.Enabled,
+                        });
+                    });
+                }
+            });
+        }*/
     }
 }

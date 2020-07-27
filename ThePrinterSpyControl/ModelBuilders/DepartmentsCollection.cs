@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Documents;
 using ThePrinterSpyControl.Models;
 
 namespace ThePrinterSpyControl.ModelBuilders
@@ -34,7 +37,7 @@ namespace ThePrinterSpyControl.ModelBuilders
         public void GetAll()
         {
             var departments = _users.GetCollection().Select(x => x.Department).Distinct().ToList();
-            int id = 0;
+            //await BuildAll(departments);
 
             foreach (string d in departments)
             {
@@ -51,5 +54,29 @@ namespace ThePrinterSpyControl.ModelBuilders
                 Departments.Add(node);
             }
         }
+
+        /*private async Task BuildAll(List<string> departments)
+        {
+            await Task.Run(() =>
+            {
+                foreach (string d in departments)
+                {
+                    var u = _users.GetUserIdsByDepartment(d);
+                    if (u == null || !u.Any()) continue;
+
+                    var node = new DepartmentNode
+                    {
+                        Name = d,
+                        UserIds = u,
+                        Comment = $"[{u.Count}]"
+                    };
+
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Departments.Add(node);
+                    });
+                }
+            });
+        }*/
     }
 }

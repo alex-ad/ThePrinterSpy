@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using ThePrinterSpyControl.Models;
 
 namespace ThePrinterSpyControl.DataBase
@@ -27,7 +29,7 @@ namespace ThePrinterSpyControl.DataBase
         {
             try
             {
-                _context.SaveChanges();
+                _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -54,41 +56,39 @@ namespace ThePrinterSpyControl.DataBase
 
         #region Users
 
-        public List<User> GetUsersList() => _context.Users.ToList();
-
-        public int GetUsersCount() => _context.Users.Count();
+        public async Task<List<User>> GetUsersList() => await _context.Users.ToListAsync().ConfigureAwait(false);
 
         #endregion
 
         #region Printers
 
-        public List<Printer> GetPrintersList() => _context.Printers.ToList();
+        public async Task<List<Printer>> GetPrintersList() => await _context.Printers.ToListAsync().ConfigureAwait(false);
 
-        public List<Printer> GetEnabledPrintersList() => _context.Printers.Where(x => x.Enabled).ToList();
+        public async Task<List<Printer>> GetEnabledPrintersList() => await _context.Printers.Where(x => x.Enabled).ToListAsync().ConfigureAwait(false);
 
-        public List<Printer> GetPrintersByUser(User user) =>
-            _context.Printers.Where(x => x.UserId == user.Id).ToList();
+        public async Task<List<Printer>> GetPrintersByUser(User user) =>
+            await _context.Printers.Where(x => x.UserId == user.Id).ToListAsync().ConfigureAwait(false);
 
-        public List<Printer> GetPrintersByUserId(int id) =>
-            _context.Printers.Where(x => x.UserId == id).ToList();
+        public async Task<List<Printer>> GetPrintersByUserId(int id) =>
+            await _context.Printers.Where(x => x.UserId == id).ToListAsync().ConfigureAwait(false);
 
-        public Printer GetPrinterById(int id) => _context.Printers.FirstOrDefault(x=>x.Id == id);
+        public async Task<Printer> GetPrinterById(int id) => await _context.Printers.FirstOrDefaultAsync(x=>x.Id == id).ConfigureAwait(false);
 
-        public List<Printer> GetPrintersByComputer(Computer computer) =>
-            _context.Printers.Where(x => x.ComputerId == computer.Id).ToList();
+        public async Task<List<Printer>> GetPrintersByComputer(Computer computer) =>
+            await _context.Printers.Where(x => x.ComputerId == computer.Id).ToListAsync().ConfigureAwait(false);
 
-        public int GetPrintersCount() => _context.Printers.Count();
+        public async Task<int> GetPrintersCount() => await _context.Printers.CountAsync().ConfigureAwait(false);
 
-        public int GetEnabledPrintersCount() => _context.Printers.Count(x => x.Enabled);
+        public async Task<int> GetEnabledPrintersCount() => await _context.Printers.CountAsync(x => x.Enabled).ConfigureAwait(false);
 
-        public int GetPrintersByUserCount(User user) =>
-            _context.Printers.Count(x => x.UserId == user.Id);
+        public async Task<int> GetPrintersByUserCount(User user) =>
+            await _context.Printers.CountAsync(x => x.UserId == user.Id).ConfigureAwait(false);
 
-        public int GetPrintersByComputerCount(Computer computer) =>
-            _context.Printers.Count(x => x.ComputerId == computer.Id);
+        public async Task<int> GetPrintersByComputerCount(Computer computer) =>
+            await _context.Printers.CountAsync(x => x.ComputerId == computer.Id).ConfigureAwait(false);
 
-        public int GetEnabledPrintersByUserCount(User user) =>
-            _context.Printers.Count(x => x.UserId == user.Id && x.Enabled);
+        public async Task<int> GetEnabledPrintersByUserCount(User user) =>
+            await _context.Printers.CountAsync(x => x.UserId == user.Id && x.Enabled).ConfigureAwait(false);
 
         public void SetPrinterEnabled(Printer printer)
         {
@@ -98,7 +98,7 @@ namespace ThePrinterSpyControl.DataBase
 
         public void SetPrinterName(int id, string name)
         {
-            var p = GetPrinterById(id);
+            var p = GetPrinterById(id).Result;
             if (p == null) return;
 
             p.Name = name;
@@ -108,7 +108,7 @@ namespace ThePrinterSpyControl.DataBase
 
         public void SetPrinterEnabled(int id, bool enabled)
         {
-            var p = GetPrinterById(id);
+            var p = GetPrinterById(id).Result;
             if (p == null) return;
 
             p.Enabled = enabled;
@@ -129,18 +129,18 @@ namespace ThePrinterSpyControl.DataBase
 
         #region Computers
 
-        public List<Computer> GetComputersList() => _context.Computers.ToList();
+        public async Task<List<Computer>> GetComputersList() => await _context.Computers.ToListAsync().ConfigureAwait(false);
 
-        public int GetComputersCount() => _context.Computers.Count();
+        public async Task<int> GetComputersCount() => await _context.Computers.CountAsync().ConfigureAwait(false);
 
-        public string GetComputerNameByPrinterId(int id)
+        public async Task<string> GetComputerNameByPrinterId(int id)
         {
             string computerName = string.Empty;
 
-            var p = _context.Printers.FirstOrDefault(x => x.Id == id);
+            var p = await _context.Printers.FirstOrDefaultAsync(x => x.Id == id);
             if (p == null) return computerName;
 
-            var c = _context.Computers.FirstOrDefault(x => x.Id == p.ComputerId);
+            var c = await _context.Computers.FirstOrDefaultAsync(x => x.Id == p.ComputerId);
             if (c != null) computerName = c.Name;
             return computerName;
         }
@@ -149,10 +149,10 @@ namespace ThePrinterSpyControl.DataBase
 
         #region PrintData
 
-        public List<PrintData> GetDataByPrinter(Printer printer) =>
-            _context.PrintDatas.Where(x => x.PrinterId == printer.Id).ToList();
+        public async Task<List<PrintData>> GetDataByPrinter(Printer printer) =>
+            await _context.PrintDatas.Where(x => x.PrinterId == printer.Id).ToListAsync().ConfigureAwait(false);
 
-        public List<PrintDataCollection> GetDataByUserId(int id, DateTime start, DateTime end, bool isReport)
+        public async Task<List<PrintDataCollection>> GetDataByUserId(int id, DateTime start, DateTime end, bool isReport)
         {
             var data =
                 from d in _context.PrintDatas
@@ -170,10 +170,10 @@ namespace ThePrinterSpyControl.DataBase
                       && p.Enabled
                 select new PrintDataCollection { Data = d, Printer = p, User = u };
 
-            return data.ToList();
+            return await data.ToListAsync().ConfigureAwait(false);
         }
 
-        public List<PrintDataCollection> GetDataByDepartmentName(string name, DateTime start, DateTime end, bool isReport)
+        public async Task<List<PrintDataCollection>> GetDataByDepartmentName(string name, DateTime start, DateTime end, bool isReport)
         {
             var data =
                 from d in _context.PrintDatas
@@ -192,10 +192,10 @@ namespace ThePrinterSpyControl.DataBase
                       )
                 select new PrintDataCollection { Data = d, Printer = p, User = u };
 
-            return data.ToList();
+            return await data.ToListAsync().ConfigureAwait(false);
         }
 
-        public List<PrintDataCollection> GetDataByComputerId(int id, DateTime start, DateTime end, bool isReport)
+        public async Task<List<PrintDataCollection>> GetDataByComputerId(int id, DateTime start, DateTime end, bool isReport)
         {
             var data =
                 from d in _context.PrintDatas
@@ -212,10 +212,10 @@ namespace ThePrinterSpyControl.DataBase
                       )
                 select new PrintDataCollection { Data = d, Printer = p, User = u };
 
-            return data.ToList();
+            return await data.ToListAsync().ConfigureAwait(false);
         }
 
-        public List<PrintDataCollection> GetDataByPrinterId(int id, DateTime start, DateTime end, bool isReport)
+        public async Task<List<PrintDataCollection>> GetDataByPrinterId(int id, DateTime start, DateTime end, bool isReport)
         {
             var data =
                 from d in _context.PrintDatas
@@ -231,13 +231,11 @@ namespace ThePrinterSpyControl.DataBase
                           || (!isReport)
                       )
                 select new PrintDataCollection { Data = d, Printer = p, User = u };
-            
-            var ret = data.ToList();
 
-            return ret;
+            return await data.ToListAsync().ConfigureAwait(false);
         }
 
-        public List<PrintDataCollection> GetDataByPrintersGroup(List<int> ids, DateTime start, DateTime end, bool isReport)
+        public async Task<List<PrintDataCollection>> GetDataByPrintersGroup(List<int> ids, DateTime start, DateTime end, bool isReport)
         {
             var data =
                 from d in _context.PrintDatas
@@ -255,7 +253,7 @@ namespace ThePrinterSpyControl.DataBase
                       )
                 select new PrintDataCollection { Data = d, Printer = p, User = u };
 
-            return data.ToList();
+            return await data.ToListAsync().ConfigureAwait(false);
         }
 
         public void RemovePrintDataByPrinter(int id)

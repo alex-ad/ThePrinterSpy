@@ -8,7 +8,6 @@ namespace ThePrinterSpyControl.Models
     {
         private string _name;
         private bool _enabled;
-        //private readonly TotalCountStat _totalStat = new TotalCountStat();
 
         public int Id { get; set; }
 
