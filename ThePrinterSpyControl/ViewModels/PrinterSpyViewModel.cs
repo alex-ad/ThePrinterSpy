@@ -246,7 +246,18 @@ namespace ThePrinterSpyControl.ViewModels
         {
             PrintersCollection.GetAll();
             UsersCollection.GetAll();
+
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             ComputersCollection.GetAll();
+
+            sw.Stop();
+            Debug.WriteLine("1: "+sw.ElapsedMilliseconds);
+
+
+
             DepartmentsCollection.GetAll();
             PrinterNamesCollection.GetAll();
         }

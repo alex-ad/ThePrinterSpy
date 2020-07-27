@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Windows.Markup;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
 
@@ -11,13 +13,16 @@ namespace ThePrinterSpyControl.ModelBuilders
     public class ComputersCollection
     {
         public static ObservableCollection<ComputerNode> Computers { get; }
-        private static readonly TotalCountStat TotalStat = new TotalCountStat();
+        private static readonly TotalCountStat TotalStat;
+        private static readonly ComputerNode Node;
         private readonly DBase _base;
         private readonly PrintersCollection _printers;
 
         static ComputersCollection()
         {
             Computers = new ObservableCollection<ComputerNode>();
+            TotalStat = new TotalCountStat();
+            Node = new ComputerNode();
             Computers.CollectionChanged += Computers_CollectionChanged;
         }
 
@@ -40,26 +45,23 @@ namespace ThePrinterSpyControl.ModelBuilders
         {
             var computers = _base.GetComputersList().Result;
             if (!computers.Any()) return;
-            //await BuildAll(computers);
+            //BuildAll(computers);
 
             Computers.Clear();
 
-            //await Task.Run(() =>
-            //{
             foreach (var c in computers)
             {
                 var pIds = _printers.GetIdsByComputer(c.Id);
                 var pTotal = pIds.Count();
                 var pEnabled = _printers.GetEnabledCountByComputer(c.Id);
-                Computers.Add(new ComputerNode
-                {
-                    Id = c.Id,
-                    NetBiosName = c.Name,
-                    PrinterIds = pIds ?? null,
-                    Comment = $"[{pEnabled}/{pTotal}]"
-                });
+
+                Node.Id = c.Id;
+                Node.NetBiosName = c.Name;
+                Node.PrinterIds = pIds ?? null;
+                Node.Comment = $"[{pEnabled}/{pTotal}]";
+
+                Computers.Add(Node);
             }
-            //});
         }
 
         public string GetNameByPrinterId(int id)
@@ -96,18 +98,18 @@ namespace ThePrinterSpyControl.ModelBuilders
             c.Comment = $"[{pEnabled}/{pTotal}]";
         }
 
-        /*private async Task BuildAll(List<Computer> computers)
+        /*private void BuildAll(List<Computer> computers)
         {
             Computers.Clear();
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
                 foreach (var c in computers)
                 {
                     var pIds = _printers.GetIdsByComputer(c.Id);
                     var pTotal = pIds.Count();
                     var pEnabled = _printers.GetEnabledCountByComputer(c.Id);
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
+                    //System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    //{
                         Computers.Add(new ComputerNode
                         {
                             Id = c.Id,
@@ -115,9 +117,9 @@ namespace ThePrinterSpyControl.ModelBuilders
                             PrinterIds = pIds ?? null,
                             Comment = $"[{pEnabled}/{pTotal}]"
                         });
-                    });
+                    //});
                 }
-            });
+            //});
         }*/
     }
 }
