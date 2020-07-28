@@ -19,6 +19,7 @@
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="SaveAs" Executed="SaveAsCmdExecuted" CanExecute="SaveAsCmdCanExecute"/>
+        <CommandBinding Command="Refresh" Executed="RefreshCmdExecuted" CanExecute="RefreshCmdCanExecute"/>
     </Window.CommandBindings>
     <DockPanel>
         <Menu Height="26" VerticalAlignment="Top" DockPanel.Dock="Top" Padding="0">
@@ -41,7 +42,7 @@
             <MenuItem Header="_Помощь" Height="26" Padding="7,0,7,0"/>
         </Menu>
         <ToolBar Height="32" DockPanel.Dock="Top" VerticalAlignment="Top">
-            <Button Content="Обновить" Height="27" VerticalAlignment="Top" Padding="7,0,7,0"/>
+            <Button x:Name="btnRefresh" Content="Обновить" Height="27" VerticalAlignment="Top" Padding="7,0,7,0" Command="Refresh"/>
             <Button Content="Период отчета..."
                     Height="27"
                     VerticalAlignment="Top"

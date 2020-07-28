@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 using ThePrinterSpyControl.Models;
 
 namespace ThePrinterSpyControl.ModelBuilders
@@ -11,12 +8,13 @@ namespace ThePrinterSpyControl.ModelBuilders
     public class DepartmentsCollection
     {
         public static ObservableCollection<DepartmentNode> Departments { get; }
-        private static readonly TotalCountStat TotalStat = new TotalCountStat();
+        private static readonly TotalCountStat TotalStat;
         private readonly UsersCollection _users;
 
         static DepartmentsCollection()
         {
             Departments = new ObservableCollection<DepartmentNode>();
+            TotalStat = new TotalCountStat();
             Departments.CollectionChanged += Departments_CollectionChanged;
         }
 
@@ -25,7 +23,7 @@ namespace ThePrinterSpyControl.ModelBuilders
             _users = new UsersCollection();
         }
 
-        private static void Departments_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private static void Departments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Remove ||
                 e.Action == NotifyCollectionChangedAction.Reset)
@@ -37,46 +35,22 @@ namespace ThePrinterSpyControl.ModelBuilders
         public void GetAll()
         {
             var departments = _users.GetCollection().Select(x => x.Department).Distinct().ToList();
-            //await BuildAll(departments);
+            if (!departments.Any()) return;
+
+            Departments.Clear();
 
             foreach (string d in departments)
             {
                 var u = _users.GetUserIdsByDepartment(d);
                 if (u == null || !u.Any()) continue;
 
-                var node = new DepartmentNode
+                Departments.Add(new DepartmentNode
                 {
                     Name = d,
                     UserIds = u,
                     Comment = $"[{u.Count}]"
-                };
-
-                Departments.Add(node);
+                });
             }
         }
-
-        /*private async Task BuildAll(List<string> departments)
-        {
-            await Task.Run(() =>
-            {
-                foreach (string d in departments)
-                {
-                    var u = _users.GetUserIdsByDepartment(d);
-                    if (u == null || !u.Any()) continue;
-
-                    var node = new DepartmentNode
-                    {
-                        Name = d,
-                        UserIds = u,
-                        Comment = $"[{u.Count}]"
-                    };
-
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        Departments.Add(node);
-                    });
-                }
-            });
-        }*/
     }
 }

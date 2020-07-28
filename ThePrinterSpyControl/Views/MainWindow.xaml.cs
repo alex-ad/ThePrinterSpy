@@ -164,6 +164,16 @@ namespace ThePrinterSpyControl.Views
             e.CanExecute = MainViewModel.PrintDatas.Count > 0;
         }
 
+        private void RefreshCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            MainViewModel.GetAll();
+        }
+
+        private void RefreshCmdCanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Props.Default.WinY = (int)Application.Current.MainWindow.Top;

@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using ThePrinterSpyControl.Models;
 
 namespace ThePrinterSpyControl.DataBase
 {
@@ -116,9 +114,9 @@ namespace ThePrinterSpyControl.DataBase
             SaveChanges();
         }
 
-        public void RemovePrinter(int id)
+        public async Task RemovePrinter(int id)
         {
-            var p = _context.Printers.FirstOrDefault(x => x.Id == id);
+            var p = await _context.Printers.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
             if (p == null) return;
             _context.Printers.Remove(p);
             RemovePrintDataByPrinter(p.Id);

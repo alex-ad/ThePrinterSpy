@@ -28,6 +28,9 @@ namespace ThePrinterSpyControl.ModelBuilders
         public void GetAll()
         {
             var printers = _printers.GetCollection().Where(x=>x.Enabled).ToList();
+            if (!printers.Any()) return;
+
+            PrinterNames.Clear();
 
             while (printers.Any())
             {
@@ -46,6 +49,7 @@ namespace ThePrinterSpyControl.ModelBuilders
                 printers.RemoveAll(x => ids.Contains(x.Id));
 
                 if (string.IsNullOrEmpty(mask)) continue;
+
                 PrinterNames.Add(new PrinterMaskedNameNode
                 {
                     Ids = ids,

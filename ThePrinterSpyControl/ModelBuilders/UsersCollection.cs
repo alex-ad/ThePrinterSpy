@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
 
@@ -14,13 +10,14 @@ namespace ThePrinterSpyControl.ModelBuilders
     public class UsersCollection
     {
         public static ObservableCollection<UserNode> Users { get; }
-        private static readonly TotalCountStat TotalStat = new TotalCountStat();
+        private static readonly TotalCountStat TotalStat;
         private readonly DBase _base;
         private readonly PrintersCollection _printers;
 
         static UsersCollection()
         {
             Users = new ObservableCollection<UserNode>();
+            TotalStat = new TotalCountStat();
             Users.CollectionChanged += Users_CollectionChanged;
         }
 
@@ -28,7 +25,6 @@ namespace ThePrinterSpyControl.ModelBuilders
         {
             _base = new DBase();
             _printers = new PrintersCollection();
-
         }
 
         private static void Users_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -40,36 +36,31 @@ namespace ThePrinterSpyControl.ModelBuilders
             }
         }
 
-        /*public async Task GetAll()
-        {
-            var users = _base.GetUsersList().Result;
-            if (!users.Any()) return;
-            await BuildAll(users);
-        }*/
-
         public void GetAll()
         {
             var users = _base.GetUsersList().Result;
             if (!users.Any()) return;
 
             Users.Clear();
+
             foreach (var u in users)
             {
                 var pIds = _printers.GetIdsByUser(u.Id);
                 var pTotal = pIds.Count();
                 var pEnabled = _printers.GetEnabledCountByUser(u.Id);
-                    Users.Add(new UserNode
-                    {
-                        Id = u.Id,
-                        FullName = u.FullName,
-                        AccountName = u.AccountName,
-                        PrinterIds = pIds ?? null,
-                        Company = u.Company,
-                        Department = u.Department,
-                        Position = u.Position,
-                        Sid = u.Sid,
-                        Comment = $"[{pEnabled}/{pTotal}]"
-                    });
+
+                Users.Add(new UserNode
+                {
+                    Id = u.Id,
+                    FullName = u.FullName,
+                    AccountName = u.AccountName,
+                    PrinterIds = pIds,
+                    Company = u.Company,
+                    Department = u.Department,
+                    Position = u.Position,
+                    Sid = u.Sid,
+                    Comment = $"[{pEnabled}/{pTotal}]"
+            });
             }
         }
 
@@ -103,34 +94,5 @@ namespace ThePrinterSpyControl.ModelBuilders
             var pEnabled = _printers.GetEnabledCountByUser(u.Id);
             u.Comment = $"[{pEnabled}/{pTotal}]";
         }
-
-        /*private async Task BuildAll(List<User> users)
-        {
-            Users.Clear();
-            await Task.Run(() =>
-            {
-                foreach (var u in users)
-                {
-                    var pIds = _printers.GetIdsByUser(u.Id);
-                    var pTotal = pIds.Count();
-                    var pEnabled = _printers.GetEnabledCountByUser(u.Id);
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        Users.Add(new UserNode
-                        {
-                            Id = u.Id,
-                            FullName = u.FullName,
-                            AccountName = u.AccountName,
-                            PrinterIds = pIds ?? null,
-                            Company = u.Company,
-                            Department = u.Department,
-                            Position = u.Position,
-                            Sid = u.Sid,
-                            Comment = $"[{pEnabled}/{pTotal}]"
-                        });
-                    });
-                }
-            });
-        }*/
     }
 }

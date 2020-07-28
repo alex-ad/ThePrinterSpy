@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using ThePrinterSpyControl.Commands;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.ModelBuilders;
@@ -185,6 +183,7 @@ namespace ThePrinterSpyControl.ViewModels
                 totalPages += d.Data.Pages;
                 totalDocs++;
                 string username = (d.User.FullName?.Length > 0) ? d.User.FullName : d.User.AccountName;
+
                 PrintDatas.Add(new PrintDataGrid
                 {
                     DocName = d.Data.DocName,
@@ -242,22 +241,11 @@ namespace ThePrinterSpyControl.ViewModels
             OptionsWindow.Instance.Show();
         }
 
-        private void GetAll()
+        public void GetAll()
         {
             PrintersCollection.GetAll();
             UsersCollection.GetAll();
-
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
             ComputersCollection.GetAll();
-
-            sw.Stop();
-            Debug.WriteLine("1: "+sw.ElapsedMilliseconds);
-
-
-
             DepartmentsCollection.GetAll();
             PrinterNamesCollection.GetAll();
         }
