@@ -13,14 +13,14 @@ namespace ThePrinterSpyService.Models
         public string Company { get; set; }
         public string Sid { get; set; }
 
-        public static User Add(string name)
+        public static User Add(string name, string sid)
         {
             if (IsExists(name))
                 return Get(name);
 
             ActiveDirectory ad = new ActiveDirectory();
             if (SpyOnSpool.PrintSpyContext.Configs.Find(1)?.AdEnabled == 1)
-                ad.TryGetUser(name);
+                ad.TryGetUser(sid);
             User user = SpyOnSpool.PrintSpyContext.Users.Add(new User
             {
                 AccountName = name,
@@ -28,13 +28,13 @@ namespace ThePrinterSpyService.Models
                 Department = ad.Department,
                 Position = ad.Position,
                 Company = ad.Company,
-                Sid = ad.Sid
+                Sid = sid
             });
             SpyOnSpool.PrintSpyContext.SaveChanges();
             return user;
         }
 
-        public static User Get(string name) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.AccountName == name);
-        public static bool IsExists(string name) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.AccountName == name) != null;
+        public static User Get(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid);
+        public static bool IsExists(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid) != null;
     }
 }

@@ -23,8 +23,12 @@ namespace ThePrinterSpyService.Core
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
             ManagementObjectCollection collection = searcher.Get();
             string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
-            
-            _currentUser = User.Add(username);
+
+            searcher = new ManagementObjectSearcher("SELECT SID FROM Win32_UserAccount");
+            collection = searcher.Get();
+            string sid = (string)collection.Cast<ManagementBaseObject>().First()["SID"];
+
+            _currentUser = User.Add(username, sid);
             _printersMonitor = new Dictionary<int, PrinterChangeNotification>();
             _pagesPrinted = new Dictionary<int, int>();
         }

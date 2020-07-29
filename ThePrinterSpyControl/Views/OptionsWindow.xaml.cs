@@ -63,5 +63,10 @@ namespace ThePrinterSpyControl.Views
             OptionsViewModel.SaveToBase();
             Close();
         }
+
+        private void btnAdSync_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

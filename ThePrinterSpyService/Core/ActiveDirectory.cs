@@ -28,14 +28,14 @@ namespace ThePrinterSpyService.Core
             _password = ad?.AdPassword;
         }
 
-        public bool TryGetUser(string name)
+        public bool TryGetUser(string sid)
         {
             TryGetPrincipalContext(out PrincipalContext oPrincipalContext);
             if (oPrincipalContext == null) return false;
 
             try
             {
-                UserPrincipal user = UserPrincipal.FindByIdentity(oPrincipalContext, IdentityType.SamAccountName, name);
+                UserPrincipal user = UserPrincipal.FindByIdentity(oPrincipalContext, IdentityType.Sid, sid);
                 if (user == null) return false;
                 DirectoryEntry userExt = user.GetUnderlyingObject() as DirectoryEntry;
                 Position = Convert.ToString(userExt?.Properties["title"].Value);

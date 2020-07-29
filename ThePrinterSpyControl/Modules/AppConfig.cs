@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
 using Props = ThePrinterSpyControl.Properties.Settings;
@@ -25,19 +26,9 @@ namespace ThePrinterSpyControl.Modules
         public AppConfig()
         {
             _base = new PrintSpyEntities();
-            Config data;
-            try
-            {
-                data = _base.Configs.Find(1);
-            }
-            catch
-            {
-                data = new Config();
-                //throw new Exception("Table `Config` in DataBase `PrinterSpy` is missing");
-            }
+            if (_base == null || !_base.Configs.Any()) return;
 
-            //if (data == null) throw new Exception("Table `Config` in DataBase `PrinterSpy` is missing");
-            if (data == null) data = new Config();
+            Config data = _base.Configs.Any() ? _base.Configs.First() : new Config();
 
             ActiveDirectory = new ConfigActiveDirectory(new AdConfig
             {

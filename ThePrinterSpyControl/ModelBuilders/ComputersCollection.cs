@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -38,8 +39,17 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public void GetAll()
         {
-            var computers = _base.GetComputersList().Result;
-            if (!computers.Any()) return;
+            List<Computer> computers;
+            try
+            {
+                computers = _base.GetComputersList().Result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DB: table 'Computers' is missing or empty", ex.InnerException);
+            }
+
+            if (computers == null || !computers.Any()) return;
 
             Computers.Clear();
 

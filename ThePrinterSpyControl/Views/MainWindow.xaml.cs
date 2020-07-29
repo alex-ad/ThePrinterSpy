@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Data.Entity.Core;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -100,6 +98,7 @@ namespace ThePrinterSpyControl.Views
         {
             var elem = e.Source as ListView;
             if (elem?.SelectedItem == null) return;
+
             MainViewModel.BuildPrintDataCollection(((PrinterMaskedNameNode)elem.SelectedItem).Ids, PrinterSpyViewModel.PrintDataGroup.PrintersGroup);
         }
 
@@ -131,19 +130,26 @@ namespace ThePrinterSpyControl.Views
             }
             else
             {
-                var p = _printers.GetPrinter((int)e.NewValue);
-                PrinterSpyViewModel.SelectedPrinter.Id = p.Id;
-                PrinterSpyViewModel.SelectedPrinter.OldName = p.Name;
-                PrinterSpyViewModel.SelectedPrinter.NewName = p.Name;
-                PrinterSpyViewModel.SelectedPrinter.IsNewModel = true;
-                PrinterSpyViewModel.SelectedPrinter.Enabled = p.Enabled;
+                SelectActivePrinter((int)e.NewValue);
                 MainViewModel.BuildPrintDataCollection(e.NewValue, PrinterSpyViewModel.PrintDataGroup.Printer);
             }
         }
 
         private void TreeComputers_GotFocus(object sender, RoutedEventArgs e)
         {
-            SelectActivePrinter(sender);
+            var elem = e.Source as TreeView;
+            if (elem?.SelectedItem == null) return;
+
+            if (elem.SelectedItem is ComputerNode)
+            {
+                PrinterSpyViewModel.SelectedPrinter.Reset();
+                MainViewModel.BuildPrintDataCollection(((ComputerNode)elem.SelectedItem).Id, PrinterSpyViewModel.PrintDataGroup.Computer);
+            }
+            else
+            {
+                SelectActivePrinter((int)elem.SelectedItem);
+                MainViewModel.BuildPrintDataCollection(elem.SelectedItem, PrinterSpyViewModel.PrintDataGroup.Printer);
+            }
         }
 
         private void TreeUsers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -155,19 +161,26 @@ namespace ThePrinterSpyControl.Views
             }
             else
             {
-                var p = _printers.GetPrinter((int) e.NewValue);
-                PrinterSpyViewModel.SelectedPrinter.Id = p.Id;
-                PrinterSpyViewModel.SelectedPrinter.OldName = p.Name;
-                PrinterSpyViewModel.SelectedPrinter.NewName = p.Name;
-                PrinterSpyViewModel.SelectedPrinter.IsNewModel = true;
-                PrinterSpyViewModel.SelectedPrinter.Enabled = p.Enabled;
+                SelectActivePrinter((int)e.NewValue);
                 MainViewModel.BuildPrintDataCollection(e.NewValue, PrinterSpyViewModel.PrintDataGroup.Printer);
             }
         }
 
         private void TreeUsers_GotFocus(object sender, RoutedEventArgs e)
         {
-            SelectActivePrinter(sender);
+            var elem = e.Source as TreeView;
+            if (elem?.SelectedItem == null) return;
+
+            if (elem.SelectedItem is UserNode)
+            {
+                PrinterSpyViewModel.SelectedPrinter.Reset();
+                MainViewModel.BuildPrintDataCollection(((UserNode)elem.SelectedItem).Id, PrinterSpyViewModel.PrintDataGroup.User);
+            }
+            else
+            {
+                SelectActivePrinter((int)elem.SelectedItem);
+                MainViewModel.BuildPrintDataCollection(elem.SelectedItem, PrinterSpyViewModel.PrintDataGroup.Printer);
+            }
         }
 
         private void SaveAsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
@@ -241,19 +254,15 @@ namespace ThePrinterSpyControl.Views
             //if ((bool)e.NewValue) MainViewModel.BuildPrinterCollection();
         }
 
-        private void SelectActivePrinter(object printer)
+        private void SelectActivePrinter(int printerId)
         {
-            var elem = printer as TreeView;
-            if (elem?.SelectedItem == null) return;
-            if (elem.SelectedItem is int)
-            {
-                var p = _printers.GetPrinter((int)elem.SelectedItem);
-                PrinterSpyViewModel.SelectedPrinter.Id = p.Id;
-                PrinterSpyViewModel.SelectedPrinter.OldName = p.Name;
-                PrinterSpyViewModel.SelectedPrinter.NewName = p.Name;
-                PrinterSpyViewModel.SelectedPrinter.IsNewModel = true;
-                PrinterSpyViewModel.SelectedPrinter.Enabled = p.Enabled;
-            }
+            var p = _printers.GetPrinter(printerId);
+            if (p == null) return;
+            PrinterSpyViewModel.SelectedPrinter.Id = p.Id;
+            PrinterSpyViewModel.SelectedPrinter.OldName = p.Name;
+            PrinterSpyViewModel.SelectedPrinter.NewName = p.Name;
+            PrinterSpyViewModel.SelectedPrinter.IsNewModel = true;
+            PrinterSpyViewModel.SelectedPrinter.Enabled = p.Enabled;
         }
     }
 }

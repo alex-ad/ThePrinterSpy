@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
 
 namespace ThePrinterSpyControl.ModelBuilders
@@ -34,7 +37,16 @@ namespace ThePrinterSpyControl.ModelBuilders
         
         public void GetAll()
         {
-            var departments = _users.GetCollection().Select(x => x.Department).Distinct().ToList();
+            List<string> departments;
+            try
+            {
+                departments = _users.GetCollection().Select(x => x.Department).Distinct().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DB: table 'Users' is missing or empty", ex.InnerException);
+            }
+
             if (!departments.Any()) return;
 
             Departments.Clear();

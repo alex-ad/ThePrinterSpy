@@ -42,8 +42,17 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public void GetAll()
         {
-            var printers = _base.GetPrintersList().Result;
-            if (!printers.Any()) return;
+            List<Printer> printers;
+            try
+            {
+                printers = _base.GetPrintersList().Result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DB: table 'Printers' is missing or empty", ex.InnerException);
+            }
+
+            if (printers == null || !printers.Any()) return;
 
             Printers.Clear();
 

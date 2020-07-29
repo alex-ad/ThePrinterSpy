@@ -27,7 +27,16 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public void GetAll()
         {
-            var printers = _printers.GetCollection().Where(x=>x.Enabled).ToList();
+            List<PrinterNode> printers;
+            try
+            {
+                printers = _printers.GetCollection().Where(x => x.Enabled).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DB: table 'Printers' is missing or empty", ex.InnerException);
+            }
+
             if (!printers.Any()) return;
 
             PrinterNames.Clear();
