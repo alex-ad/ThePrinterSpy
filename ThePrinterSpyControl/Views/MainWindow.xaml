@@ -81,11 +81,12 @@
         </StatusBar>
         <Grid x:Name="gridMain" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="AliceBlue" Height="Auto">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" MinWidth="200"/>
-                <ColumnDefinition Width="3*" MinWidth="600"/>
+                <ColumnDefinition Width="135*" MinWidth="200"/>
+                <ColumnDefinition Width="119*"/>
+                <ColumnDefinition Width="762*" MinWidth="600"/>
             </Grid.ColumnDefinitions>
-            <GridSplitter x:Name="GridSplitter" Width="5" Grid.Column="0" Background="LightGray" BorderThickness="1" BorderBrush="SkyBlue" Margin="0,1"/>
-            <DockPanel Grid.Column="0">
+            <GridSplitter x:Name="GridSplitter" Width="5" Grid.Column="1" Background="LightGray" BorderThickness="1" BorderBrush="SkyBlue" Margin="0,1"/>
+            <DockPanel Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid DockPanel.Dock="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -253,7 +254,7 @@
                     </Grid>
                 </Grid>
             </DockPanel>
-            <DockPanel Grid.Column="1" Grid.Row="0">
+            <DockPanel Grid.Column="2" Grid.Row="0">
                 <Expander Header="Сводная информация" IsExpanded="True" DockPanel.Dock="Top">
                     <Grid HorizontalAlignment="Left">
                         <Grid.RowDefinitions>

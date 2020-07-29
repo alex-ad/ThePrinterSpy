@@ -25,9 +25,19 @@ namespace ThePrinterSpyControl.Modules
         public AppConfig()
         {
             _base = new PrintSpyEntities();
-            var data = _base.Configs.Find(1);
+            Config data;
+            try
+            {
+                data = _base.Configs.Find(1);
+            }
+            catch
+            {
+                data = new Config();
+                //throw new Exception("Table `Config` in DataBase `PrinterSpy` is missing");
+            }
 
-            if (data == null) throw new Exception("Table `Config` in DataBase `PrinterSpy` is missing");
+            //if (data == null) throw new Exception("Table `Config` in DataBase `PrinterSpy` is missing");
+            if (data == null) data = new Config();
 
             ActiveDirectory = new ConfigActiveDirectory(new AdConfig
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Data.Entity.Core;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,22 +32,14 @@ namespace ThePrinterSpyControl.Views
             treeComputers.SelectedItemChanged += TreeComputers_SelectedItemChanged;
             treeComputers.GotFocus += TreeComputers_GotFocus;
             treeDepartments.SelectedItemChanged += TreeDepartments_SelectedItemChanged;
+            treeDepartments.GotFocus += TreeDepartments_GotFocus;
             treePrinters.SelectionChanged += TreePrinters_SelectionChanged;
+            treePrinters.GotFocus += TreePrinters_GotFocus;
             textNewPrinterName.TextChanged += TextNewPrinterName_TextChanged;
             checkPrinterEnabled.Click += CheckPrinterEnabled_Click;
             btnPrinterRename.Click += BtnPrinterRename_Click;
             btnPrinterDeleteFromDb.Click += BtnPrinterDeleteFromDb_Click;
             TabControl.SelectionChanged += TabControl_SelectionChanged;
-        }
-
-        private void TreeComputers_GotFocus(object sender, RoutedEventArgs e)
-        {
-            SelectActivePrinter(sender);
-        }
-
-        private void TreeUsers_GotFocus(object sender, RoutedEventArgs e)
-        {
-            SelectActivePrinter(sender);
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -103,12 +96,30 @@ namespace ThePrinterSpyControl.Views
             MainViewModel.BuildPrintDataCollection(element.Ids, PrinterSpyViewModel.PrintDataGroup.PrintersGroup);
         }
 
+        private void TreePrinters_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var elem = e.Source as ListView;
+            if (elem?.SelectedItem == null) return;
+            MainViewModel.BuildPrintDataCollection(((PrinterMaskedNameNode)elem.SelectedItem).Ids, PrinterSpyViewModel.PrintDataGroup.PrintersGroup);
+        }
+
         private void TreeDepartments_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (e.NewValue is DepartmentNode)
                 MainViewModel.BuildPrintDataCollection(((DepartmentNode)e.NewValue).Name, PrinterSpyViewModel.PrintDataGroup.Department);
             else
                 MainViewModel.BuildPrintDataCollection(e.NewValue, PrinterSpyViewModel.PrintDataGroup.User);
+        }
+
+        private void TreeDepartments_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var elem = e.Source as TreeView;
+            if (elem?.SelectedItem == null) return;
+
+            if (elem.SelectedItem is DepartmentNode)
+                MainViewModel.BuildPrintDataCollection(((DepartmentNode)elem.SelectedItem).Name, PrinterSpyViewModel.PrintDataGroup.Department);
+            else
+                MainViewModel.BuildPrintDataCollection(elem.SelectedItem, PrinterSpyViewModel.PrintDataGroup.User);
         }
 
         private void TreeComputers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -130,6 +141,11 @@ namespace ThePrinterSpyControl.Views
             }
         }
 
+        private void TreeComputers_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SelectActivePrinter(sender);
+        }
+
         private void TreeUsers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (e.NewValue is UserNode)
@@ -147,6 +163,11 @@ namespace ThePrinterSpyControl.Views
                 PrinterSpyViewModel.SelectedPrinter.Enabled = p.Enabled;
                 MainViewModel.BuildPrintDataCollection(e.NewValue, PrinterSpyViewModel.PrintDataGroup.Printer);
             }
+        }
+
+        private void TreeUsers_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SelectActivePrinter(sender);
         }
 
         private void SaveAsCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
