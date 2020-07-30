@@ -65,6 +65,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -89,6 +90,7 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandT.cs" />
+    <Compile Include="Models\AdIdentity.cs" />
     <Compile Include="Models\ConfigActiveDirectory.cs" />
     <Compile Include="DataBase\Computer.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
@@ -106,6 +108,7 @@
     <Compile Include="ModelBuilders\PrintersCollection.cs" />
     <Compile Include="ModelBuilders\UsersCollection.cs" />
     <Compile Include="DataBase\DBase.cs" />
+    <Compile Include="Modules\ActiveDirectory.cs" />
     <Compile Include="Validators\ConfigValidator.cs" />
     <Compile Include="ValueConverters\PrinterFromIdValueConverter.cs" />
     <Compile Include="ValueConverters\SelectedPrinterVisibilityValueConverter.cs" />
