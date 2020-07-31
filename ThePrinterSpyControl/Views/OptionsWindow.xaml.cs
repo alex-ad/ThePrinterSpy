@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using ThePrinterSpyControl.ModelBuilders;
+using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
 using ThePrinterSpyControl.Validators;
 using TextBox = System.Windows.Controls.TextBox;
@@ -13,6 +16,8 @@ namespace ThePrinterSpyControl.Views
     public partial class OptionsWindow : Window
     {
         private static OptionsWindow _obj;
+        private readonly UsersCollection _users = new UsersCollection();
+
         public static OptionsWindow Instance
         {
             get
@@ -64,9 +69,26 @@ namespace ThePrinterSpyControl.Views
             Close();
         }
 
-        private void btnAdSync_Click(object sender, RoutedEventArgs e)
+        private async void btnAdSync_Click(object sender, RoutedEventArgs e)
         {
+            btnAdSync.IsEnabled = false;
+            await SyncUsersWithAd();
+            btnAdSync.IsEnabled = true;
+        }
 
+        private async Task SyncUsersWithAd()
+        {
+            await Task.Run(() =>
+            {
+                ActiveDirectory ad = new ActiveDirectory(new AdIdentity(textAdServer.Text, textAdUser.Text, pswAdPassword.Text));
+                foreach (var u in ad)
+                {
+                    if (string.IsNullOrEmpty(u.Sid.ToString()) || string.IsNullOrEmpty(u.SamAccountName) || string.IsNullOrEmpty(u.DisplayName)) continue;
+                    var user = _users.GetUser(u.Sid.ToString());
+                    if (user == null) continue;
+                    _users.UpdateUser(user);
+                }
+            });
         }
     }
 }

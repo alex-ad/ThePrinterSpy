@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
+using ThePrinterSpyControl.Models;
 
 namespace ThePrinterSpyControl.DataBase
 {
@@ -55,6 +56,17 @@ namespace ThePrinterSpyControl.DataBase
         #region Users
 
         public async Task<List<User>> GetUsersList() => await _context.Users.ToListAsync().ConfigureAwait(false);
+
+        public void UpdateUser(UserNode user)
+        {
+            var u = _context.Users.FirstOrDefault(x => x.Sid == user.Sid);
+            if (u == null) return;
+            u.Department = user.Department;
+            u.AccountName = user.AccountName;
+            u.FullName = user.FullName;
+            _context.Entry(u).State = EntityState.Modified;
+            SaveChanges();
+        }
 
         #endregion
 

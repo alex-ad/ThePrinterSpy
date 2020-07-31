@@ -108,6 +108,7 @@
     <Compile Include="ModelBuilders\PrintersCollection.cs" />
     <Compile Include="ModelBuilders\UsersCollection.cs" />
     <Compile Include="DataBase\DBase.cs" />
+    <Compile Include="Models\LastError.cs" />
     <Compile Include="Modules\ActiveDirectory.cs" />
     <Compile Include="Validators\ConfigValidator.cs" />
     <Compile Include="ValueConverters\PrinterFromIdValueConverter.cs" />

@@ -93,6 +93,18 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public UserNode GetUser(int id) => Users.FirstOrDefault(x => x.Id == id);
 
+        public UserNode GetUser(string sid) => Users.FirstOrDefault(x => x.Sid == sid);
+
+        public void UpdateUser(UserNode user)
+        {
+            var u = Users.FirstOrDefault(x=>x == user);
+            if (u == null) return;
+            u.FullName = user.FullName;
+            u.AccountName = user.AccountName;
+            u.Department = user.Department;
+            _base.UpdateUser(user);
+        }
+
         public void PropertyPrinterListChanged(int id)
         {
             var u = Users.FirstOrDefault(x => x.PrinterIds.Contains(id));

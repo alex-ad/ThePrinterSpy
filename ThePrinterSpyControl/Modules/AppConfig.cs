@@ -25,6 +25,10 @@ namespace ThePrinterSpyControl.Modules
 
         public AppConfig()
         {
+            PrinterNameMask = new ConfigPrinterNameMask();
+            ReportDate = new ConfigReportDate();
+            Base = new ConfigDataBase();
+
             _base = new PrintSpyEntities();
             if (_base == null || !_base.Configs.Any()) return;
 
@@ -37,9 +41,6 @@ namespace ThePrinterSpyControl.Modules
                 Password = data.AdPassword,
                 User = data.AdUser
             });
-            PrinterNameMask = new ConfigPrinterNameMask();
-            ReportDate = new ConfigReportDate();
-            Base = new ConfigDataBase();
         }
 
         public void SaveToLocal()
@@ -56,16 +57,30 @@ namespace ThePrinterSpyControl.Modules
 
         public void SaveToBase()
         {
-            var data = _base.Configs.Find(1);
+            if (_base.Configs.Any())
+            Config data = _base.Configs.First();
 
-            if (data == null) throw new Exception("Table `Config` in DataBase `PrinterSpy` is missing");
-
-            data.AdEnabled = ActiveDirectory.IsEnabled ? (byte) 1 : (byte) 0;
-            data.AdPassword = ActiveDirectory.Password;
-            data.AdServer = ActiveDirectory.Server;
-            data.AdUser = ActiveDirectory.User;
-            _base.Entry(data).State = EntityState.Modified;
-            _base.SaveChanges();
+            if (data == null)
+            {
+                _base.Configs.Add(new Config
+                {
+                    AdDn = null,
+                    AdEnabled = ActiveDirectory.IsEnabled ? (byte) 1 : (byte) 0,
+                    AdPassword = ActiveDirectory.Password,
+                    AdServer = ActiveDirectory.Server,
+                    AdUser = ActiveDirectory.User
+                });
+                _base.SaveChanges();
+            }
+            else
+            {
+                data.AdEnabled = ActiveDirectory.IsEnabled ? (byte)1 : (byte)0;
+                data.AdPassword = ActiveDirectory.Password;
+                data.AdServer = ActiveDirectory.Server;
+                data.AdUser = ActiveDirectory.User;
+                _base.Entry(data).State = EntityState.Modified;
+                _base.SaveChanges();
+            }
         }
     }
 }
