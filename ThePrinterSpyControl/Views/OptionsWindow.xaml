@@ -33,13 +33,44 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="checkReportPeriodEnabled" Content="Включить" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="3 0 3 0" Padding="0" VerticalAlignment="Bottom" Height="24" IsChecked="{Binding ReportDate.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <CheckBox x:Name="checkReportPeriodEnabled"
+                              Content="Включить"
+                              Grid.Column="0"
+                              Grid.Row="0"
+                              HorizontalAlignment="Left"
+                              Margin="3 0 3 0"
+                              Padding="0"
+                              VerticalAlignment="Bottom"
+                              Height="24"
+                              IsChecked="{Binding ReportDate.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
                     <Label Grid.Column="0" Grid.Row="1" Content="Тип периода" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="0" Grid.Row="2" Content="Начало" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="2" Grid.Row="2" Content="Конец" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
-                    <ComboBox x:Name="comboReportPeriodType" Grid.Column="1" Grid.Row="1" Margin="3 0 3 0" Height="24" ItemsSource="{Binding ReportDate.TypeList}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedIndex="{Binding ReportDate.PeriodIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
-                    <DatePicker x:Name="dateReportPeriodStart" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="3 0 3 0" VerticalAlignment="Center" Height="24" Text="{Binding ReportDate.Start, StringFormat={}{0:dd.MM.yyyy}, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
-                    <DatePicker x:Name="dateReportPeriodEnd" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" Margin="3 0 3 0" VerticalAlignment="Center" Height="24" Text="{Binding ReportDate.End, StringFormat={}{0:dd.MM.yyyy}, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <ComboBox x:Name="comboReportPeriodType"
+                              Grid.Column="1"
+                              Grid.Row="1"
+                              Margin="3 0 3 0"
+                              Height="24"
+                              ItemsSource="{Binding ReportDate.TypeList}"
+                              SelectedValuePath="Key"
+                              DisplayMemberPath="Value"
+                              SelectedIndex="{Binding ReportDate.PeriodIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <DatePicker x:Name="dateReportPeriodStart"
+                                Grid.Column="1"
+                                Grid.Row="2"
+                                HorizontalAlignment="Left"
+                                Margin="3 0 3 0"
+                                VerticalAlignment="Center"
+                                Height="24"
+                                Text="{Binding ReportDate.Start, StringFormat={}{0:dd.MM.yyyy}, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <DatePicker x:Name="dateReportPeriodEnd"
+                                Grid.Column="3"
+                                Grid.Row="2"
+                                HorizontalAlignment="Left"
+                                Margin="3 0 3 0"
+                                VerticalAlignment="Center"
+                                Height="24"
+                                Text="{Binding ReportDate.End, StringFormat={}{0:dd.MM.yyyy}, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
                 </Grid>
             </StackPanel>
         </GroupBox>
@@ -62,11 +93,53 @@
                     <Label Grid.Column="2" Grid.Row="1" Content="База данных" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="0" Grid.Row="2" Content="Пользователь" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="2" Grid.Row="2" Content="Пароль" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
-                    <ComboBox x:Name="comboDbaseConnectionType" Grid.Column="1" Grid.Row="0" Margin="3 0 3 0" Height="24" ItemsSource="{Binding Base.DbaseConnectionList}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedIndex="{Binding Base.DbaseConnectionIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
-                    <TextBox x:Name="textDbaseServer" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding Base.Server, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="textDbaseName" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding Base.Base, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="textDbaseUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" Text="{Binding Base.User, Mode=TwoWay, UpdateSourceTrigger=Explicit}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
-                    <PasswordBox x:Name="pswDbasePassword" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" Height="24" Password="" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <ComboBox x:Name="comboDbaseConnectionType"
+                              Grid.Column="1"
+                              Grid.Row="0"
+                              Margin="3 0 3 0"
+                              Height="24"
+                              ItemsSource="{Binding Base.DbaseConnectionList}"
+                              SelectedValuePath="Key"
+                              DisplayMemberPath="Value"
+                              SelectedIndex="{Binding Base.DbaseConnectionIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <TextBox x:Name="textDbaseServer"
+                             Grid.Column="1"
+                             Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             Height="24"
+                             Text="{Binding Base.Server, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                             VerticalAlignment="Center"
+                             Width="240"
+                             Margin="3 0 3 0"
+                             Padding="0"/>
+                    <TextBox x:Name="textDbaseName"
+                             Grid.Column="3"
+                             Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             Height="24"
+                             Text="{Binding Base.Base, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                             VerticalAlignment="Center"
+                             Width="240" Margin="3 0 3 0"
+                             Padding="0"/>
+                    <TextBox x:Name="textDbaseUser"
+                             Grid.Column="1"
+                             Grid.Row="2"
+                             HorizontalAlignment="Left"
+                             Height="24"
+                             Text="{Binding Base.User, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                             VerticalAlignment="Center"
+                             Width="240"
+                             Margin="3 0 3 0"
+                             Padding="0"/>
+                    <PasswordBox x:Name="pswDbasePassword"
+                                 Grid.Column="3"
+                                 Grid.Row="2"
+                                 HorizontalAlignment="Left"
+                                 Height="24"
+                                 VerticalAlignment="Center"
+                                 Width="240"
+                                 Margin="3 0 3 0"
+                                 Padding="0"/>
                 </Grid>
             </StackPanel>
         </GroupBox>
@@ -84,14 +157,56 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="checkAdEnabled" Content="Включить" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="3 0 3 0" Padding="0" VerticalAlignment="Bottom" Height="24" IsChecked="{Binding ActiveDirectory.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
-                    <Button x:Name="btnAdSync" Grid.Row="0" Grid.Column="1" Margin="3 3 7 3" Content="Синхронизировать всех пользователей" IsEnabled="{Binding IsChecked, ElementName=checkAdEnabled}" Click="btnAdSync_Click"/>
+                    <CheckBox x:Name="checkAdEnabled"
+                              Content="Включить"
+                              Grid.Column="0"
+                              Grid.Row="0"
+                              HorizontalAlignment="Left"
+                              Margin="3 0 3 0"
+                              Padding="0"
+                              VerticalAlignment="Bottom"
+                              Height="24"
+                              IsChecked="{Binding ActiveDirectory.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <Button x:Name="btnAdSync"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="3 3 7 3"
+                            Content="Синхронизировать всех пользователей"
+                            IsEnabled="{Binding IsChecked, ElementName=checkAdEnabled}"
+                            Click="btnAdSync_Click"/>
                     <Label Grid.Column="0" Grid.Row="1" Content="Домен" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="0" Grid.Row="2" Content="Пользователь" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="2" Grid.Row="2" Content="Пароль" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="textAdServer" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding ActiveDirectory.Server, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="textAdUser" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="24" Text="{Binding ActiveDirectory.User, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
-                    <TextBox x:Name="pswAdPassword" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <TextBox x:Name="textAdServer"
+                             Grid.Column="1"
+                             Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             Height="24"
+                             Text="{Binding ActiveDirectory.Server, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}"
+                             VerticalAlignment="Center"
+                             Width="240"
+                             Margin="3 0 3 0"
+                             Padding="0"/>
+                    <TextBox x:Name="textAdUser"
+                             Grid.Column="1"
+                             Grid.Row="2"
+                             HorizontalAlignment="Left"
+                             Height="24"
+                             Text="{Binding ActiveDirectory.User, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}"
+                             VerticalAlignment="Center"
+                             Width="240"
+                             Margin="3 0 3 0"
+                             Padding="0"/>
+                    <TextBox x:Name="pswAdPassword"
+                             Grid.Column="3"
+                             Grid.Row="2"
+                             HorizontalAlignment="Left"
+                             Height="24"
+                             Text="{Binding ActiveDirectory.Password, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}"
+                             VerticalAlignment="Center"
+                             Width="240"
+                             Margin="3 0 3 0"
+                             Padding="0"/>
                 </Grid>
             </StackPanel>
         </GroupBox>
@@ -108,11 +223,34 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="checkPrinterNameMaskEnabled" Content="Включить" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="3 0 3 0" Padding="0" VerticalAlignment="Bottom" Height="24" IsChecked="{Binding PrinterNameMask.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <CheckBox x:Name="checkPrinterNameMaskEnabled"
+                              Content="Включить"
+                              Grid.Column="0"
+                              Grid.Row="0"
+                              HorizontalAlignment="Left"
+                              Margin="3 0 3 0"
+                              Padding="0"
+                              VerticalAlignment="Bottom"
+                              Height="24"
+                              IsChecked="{Binding PrinterNameMask.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
                     <Label Grid.Column="0" Grid.Row="1" Content="Тип маски" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
                     <Label Grid.Column="2" Grid.Row="1" Content="Маска" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3 0 3 0" Padding="0"/>
-                    <ComboBox x:Name="comboPrinterNameMaskType" Grid.Column="1" Grid.Row="1" Margin="3 0 3 0" Height="24" ItemsSource="{Binding PrinterNameMask.TypeList}" SelectedValuePath="Key" DisplayMemberPath="Value" SelectedIndex="{Binding PrinterNameMask.TypeIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
-                    <TextBox x:Name="textPrinterNameMaskValue" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Height="24" Text="{Binding PrinterNameMask.Mask, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}" VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
+                    <ComboBox x:Name="comboPrinterNameMaskType"
+                              Grid.Column="1"
+                              Grid.Row="1"
+                              Margin="3 0 3 0"
+                              Height="24"
+                              ItemsSource="{Binding PrinterNameMask.TypeList}"
+                              SelectedValuePath="Key"
+                              DisplayMemberPath="Value"
+                              SelectedIndex="{Binding PrinterNameMask.TypeIndex, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                    <TextBox x:Name="textPrinterNameMaskValue"
+                             Grid.Column="3"
+                             Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             Height="24"
+                             Text="{Binding PrinterNameMask.Mask, Mode=TwoWay, UpdateSourceTrigger=Explicit, ValidatesOnDataErrors=True}"
+                             VerticalAlignment="Center" Width="240" Margin="3 0 3 0" Padding="0"/>
                 </Grid>
             </StackPanel>
         </GroupBox>

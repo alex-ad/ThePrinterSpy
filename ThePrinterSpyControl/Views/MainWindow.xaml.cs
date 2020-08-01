@@ -104,6 +104,7 @@ namespace ThePrinterSpyControl.Views
 
         private void TreeDepartments_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (e.NewValue == null) return;
             if (e.NewValue is DepartmentNode)
                 MainViewModel.BuildPrintDataCollection(((DepartmentNode)e.NewValue).Name, PrinterSpyViewModel.PrintDataGroup.Department);
             else
@@ -123,6 +124,7 @@ namespace ThePrinterSpyControl.Views
 
         private void TreeComputers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (e.NewValue == null) return;
             if (e.NewValue is ComputerNode)
             {
                 PrinterSpyViewModel.SelectedPrinter.Reset();
@@ -154,6 +156,7 @@ namespace ThePrinterSpyControl.Views
 
         private void TreeUsers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (e.NewValue == null) return;
             if (e.NewValue is UserNode)
             {
                 PrinterSpyViewModel.SelectedPrinter.Reset();
@@ -200,6 +203,7 @@ namespace ThePrinterSpyControl.Views
 
         private void RefreshCmdExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
+            PrinterSpyViewModel.SelectedPrinter.Reset();
             MainViewModel.GetAll();
         }
 

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.DirectoryServices;
 using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
@@ -17,6 +19,7 @@ namespace ThePrinterSpyControl.Views
     {
         private static OptionsWindow _obj;
         private readonly UsersCollection _users = new UsersCollection();
+        private readonly DepartmentsCollection _departments = new DepartmentsCollection();
 
         public static OptionsWindow Instance
         {
@@ -57,11 +60,11 @@ namespace ThePrinterSpyControl.Views
             textDbaseServer.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             textDbaseName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             textDbaseUser.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            //passPassword.GetBindingExpression(PasswordBox.Tex)
             checkAdEnabled.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
             textAdServer.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             textAdUser.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            
+            pswAdPassword.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+
             if (ConfigValidator.AnyError) return;
 
             OptionsViewModel.SaveToLocal();
@@ -71,6 +74,12 @@ namespace ThePrinterSpyControl.Views
 
         private async void btnAdSync_Click(object sender, RoutedEventArgs e)
         {
+            textAdServer.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            textAdUser.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            pswAdPassword.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+
+            if (ConfigValidator.AnyError) return;
+
             btnAdSync.IsEnabled = false;
             await SyncUsersWithAd();
             btnAdSync.IsEnabled = true;
@@ -80,15 +89,18 @@ namespace ThePrinterSpyControl.Views
         {
             await Task.Run(() =>
             {
-                ActiveDirectory ad = new ActiveDirectory(new AdIdentity(textAdServer.Text, textAdUser.Text, pswAdPassword.Text));
+                ActiveDirectory ad = new ActiveDirectory(new AdIdentity(AppConfig.ActiveDirectory.Server, AppConfig.ActiveDirectory.User, AppConfig.ActiveDirectory.Password));
                 foreach (var u in ad)
                 {
                     if (string.IsNullOrEmpty(u.Sid.ToString()) || string.IsNullOrEmpty(u.SamAccountName) || string.IsNullOrEmpty(u.DisplayName)) continue;
                     var user = _users.GetUser(u.Sid.ToString());
+                    var de = u.GetUnderlyingObject() as DirectoryEntry;
                     if (user == null) continue;
-                    _users.UpdateUser(user);
+                    u.Description = Convert.ToString(de?.Properties["department"].Value);
+                    _users.UpdateUser(u);
                 }
             });
+            _departments.GetAll();
         }
     }
 }

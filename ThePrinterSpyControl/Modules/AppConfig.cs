@@ -57,30 +57,13 @@ namespace ThePrinterSpyControl.Modules
 
         public void SaveToBase()
         {
-            if (_base.Configs.Any())
             Config data = _base.Configs.First();
-
-            if (data == null)
-            {
-                _base.Configs.Add(new Config
-                {
-                    AdDn = null,
-                    AdEnabled = ActiveDirectory.IsEnabled ? (byte) 1 : (byte) 0,
-                    AdPassword = ActiveDirectory.Password,
-                    AdServer = ActiveDirectory.Server,
-                    AdUser = ActiveDirectory.User
-                });
-                _base.SaveChanges();
-            }
-            else
-            {
-                data.AdEnabled = ActiveDirectory.IsEnabled ? (byte)1 : (byte)0;
-                data.AdPassword = ActiveDirectory.Password;
-                data.AdServer = ActiveDirectory.Server;
-                data.AdUser = ActiveDirectory.User;
-                _base.Entry(data).State = EntityState.Modified;
-                _base.SaveChanges();
-            }
+            data.AdEnabled = ActiveDirectory.IsEnabled ? (byte)1 : (byte)0;
+            data.AdPassword = ActiveDirectory.Password;
+            data.AdServer = ActiveDirectory.Server;
+            data.AdUser = ActiveDirectory.User;
+            _base.Entry(data).State = EntityState.Modified;
+            _base.SaveChanges();
         }
     }
 }

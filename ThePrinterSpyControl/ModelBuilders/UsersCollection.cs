@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
@@ -95,14 +96,14 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public UserNode GetUser(string sid) => Users.FirstOrDefault(x => x.Sid == sid);
 
-        public void UpdateUser(UserNode user)
+        public void UpdateUser(Principal user)
         {
-            var u = Users.FirstOrDefault(x=>x == user);
+            var u = Users.FirstOrDefault(x=>x.Sid == user.Sid.ToString());
             if (u == null) return;
-            u.FullName = user.FullName;
-            u.AccountName = user.AccountName;
-            u.Department = user.Department;
-            _base.UpdateUser(user);
+            u.FullName = user.DisplayName;
+            u.AccountName = user.SamAccountName;
+            u.Department = user.Description;
+            _base.UpdateUser(u);
         }
 
         public void PropertyPrinterListChanged(int id)

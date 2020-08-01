@@ -11,13 +11,46 @@ namespace ThePrinterSpyControl.Models
 {
     public class UserNode : INotifyPropertyChanged
     {
+        private string _fullName;
+        private string _accountName;
         private string _comment;
+        private string _department;
         private List<int> _printerIds;
 
         public int Id { get; set; }
-        public string FullName { get; set; }
-        public string AccountName { get; set; }
-        public string Department { get; set; }
+
+        public string FullName
+        {
+            get => _fullName;
+            set
+            {
+                if (value == null || value.Equals(_fullName, StringComparison.InvariantCulture)) return;
+                _fullName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string AccountName
+        {
+            get => _accountName;
+            set
+            {
+                if (value == null || value.Equals(_accountName, StringComparison.InvariantCulture)) return;
+                _accountName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Department
+        {
+            get => _department;
+            set
+            {
+                if (value == null || value.Equals(_department, StringComparison.InvariantCulture)) return;
+                _department = value;
+                OnPropertyChanged();
+            }
+        }
         public string Company { get; set; }
         public string Position { get; set; }
         public string Sid { get; set; }
@@ -26,7 +59,7 @@ namespace ThePrinterSpyControl.Models
             get => _comment;
             set
             {
-                if (value.Equals(_comment, StringComparison.InvariantCulture)) return;
+                if (_comment == null || value.Equals(_comment, StringComparison.InvariantCulture)) return;
                 _comment = value;
                 OnPropertyChanged();
             }
