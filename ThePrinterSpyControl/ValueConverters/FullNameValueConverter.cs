@@ -8,7 +8,7 @@ namespace ThePrinterSpyControl.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((value == null) || (value?.ToString().Length < 1)) return "";
+            if ((value == null) || (value.ToString().Length < 1)) return "";
             return (string)value + " : ";
         }
 

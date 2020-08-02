@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Data;
 using ThePrinterSpyControl.ModelBuilders;
-using ThePrinterSpyControl.Models;
 
 namespace ThePrinterSpyControl.ValueConverters
 {
@@ -12,6 +11,7 @@ namespace ThePrinterSpyControl.ValueConverters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null) return "Black";
             var p = _printers.GetPrinter((int)value);
             return (p.Enabled) ? "Black" : "Gray";
         }

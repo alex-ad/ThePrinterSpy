@@ -16,7 +16,7 @@ namespace ThePrinterSpyControl.Models
             get => _name;
             set
             {
-                if (value.Equals(_name, StringComparison.InvariantCulture)) return;
+                if (string.Compare(_name, value, StringComparison.OrdinalIgnoreCase) == 0) return;
                 _name = value;
                 OnPropertyChanged();
             }
@@ -35,7 +35,6 @@ namespace ThePrinterSpyControl.Models
             {
                 if (value == _enabled) return;
                 _enabled = value;
-                //_totalStat.PrintersEnabled = _userPrinter.GetPrintersEnabledCount();
                 OnPropertyChanged();
             }
         }

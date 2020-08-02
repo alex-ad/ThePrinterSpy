@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Data;
 using ThePrinterSpyControl.ModelBuilders;
-using ThePrinterSpyControl.Models;
 
 namespace ThePrinterSpyControl.ValueConverters
 {

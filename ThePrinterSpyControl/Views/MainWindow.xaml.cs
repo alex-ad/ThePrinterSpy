@@ -191,8 +191,8 @@ namespace ThePrinterSpyControl.Views
             var saveDlg = new SaveFileDialog{ Filter = "Excel|*.xlsx"};
             if (true == saveDlg.ShowDialog())
             {
-                ExportToFile ExportTo = new ExportToFile();
-                ExportTo.Excel(saveDlg.FileName, MainViewModel.PrintDatas);
+                var exportTo = new ExportToFile();
+                exportTo.Excel(saveDlg.FileName, MainViewModel.PrintDatas);
             }
         }
 

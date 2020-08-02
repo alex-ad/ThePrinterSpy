@@ -98,7 +98,7 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public void UpdateUser(Principal user)
         {
-            var u = Users.FirstOrDefault(x=>x.Sid == user.Sid.ToString());
+            var u = GetUser(user.Sid.ToString());
             if (u == null) return;
             u.FullName = user.DisplayName;
             u.AccountName = user.SamAccountName;

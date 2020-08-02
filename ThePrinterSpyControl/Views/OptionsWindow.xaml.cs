@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -93,9 +92,7 @@ namespace ThePrinterSpyControl.Views
                 foreach (var u in ad)
                 {
                     if (string.IsNullOrEmpty(u.Sid.ToString()) || string.IsNullOrEmpty(u.SamAccountName) || string.IsNullOrEmpty(u.DisplayName)) continue;
-                    var user = _users.GetUser(u.Sid.ToString());
                     var de = u.GetUnderlyingObject() as DirectoryEntry;
-                    if (user == null) continue;
                     u.Description = Convert.ToString(de?.Properties["department"].Value);
                     _users.UpdateUser(u);
                 }

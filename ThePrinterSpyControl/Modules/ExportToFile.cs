@@ -10,7 +10,7 @@ namespace ThePrinterSpyControl.Modules
     {
         public void Excel(string filename, ObservableCollection<PrintDataGrid> reportGrid)
         {
-            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
+            var excelApp = new Microsoft.Office.Interop.Excel.Application();
             excelApp.Application.Workbooks.Add(Type.Missing);
             excelApp.Cells[1, 1] = "Документ";
             excelApp.Cells[1, 2] = "Принтер";

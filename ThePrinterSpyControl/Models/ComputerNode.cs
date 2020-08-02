@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ThePrinterSpyControl.Models
 {
@@ -20,7 +17,7 @@ namespace ThePrinterSpyControl.Models
             get => _comment;
             set
             {
-                if (value.Equals(_comment, StringComparison.InvariantCulture)) return;
+                if (string.Compare(_comment, value, StringComparison.OrdinalIgnoreCase) == 0) return;
                 _comment = value;
                 OnPropertyChanged();
             }

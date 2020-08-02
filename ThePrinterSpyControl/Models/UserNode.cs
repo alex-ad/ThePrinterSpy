@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ThePrinterSpyControl.Models
 {
@@ -24,7 +20,7 @@ namespace ThePrinterSpyControl.Models
             get => _fullName;
             set
             {
-                if (value == null || value.Equals(_fullName, StringComparison.InvariantCulture)) return;
+                if (value == null || string.Compare(_fullName, value, StringComparison.OrdinalIgnoreCase) == 0) return;
                 _fullName = value;
                 OnPropertyChanged();
             }
@@ -35,7 +31,8 @@ namespace ThePrinterSpyControl.Models
             get => _accountName;
             set
             {
-                if (value == null || value.Equals(_accountName, StringComparison.InvariantCulture)) return;
+                if (value == null ||
+                    string.Compare(_accountName, value, StringComparison.OrdinalIgnoreCase) == 0) return;
                 _accountName = value;
                 OnPropertyChanged();
             }
@@ -46,7 +43,8 @@ namespace ThePrinterSpyControl.Models
             get => _department;
             set
             {
-                if (value == null || value.Equals(_department, StringComparison.InvariantCulture)) return;
+                if (value == null ||
+                    string.Compare(_department, value, StringComparison.OrdinalIgnoreCase) == 0) return;
                 _department = value;
                 OnPropertyChanged();
             }
@@ -59,7 +57,8 @@ namespace ThePrinterSpyControl.Models
             get => _comment;
             set
             {
-                if (_comment == null || value.Equals(_comment, StringComparison.InvariantCulture)) return;
+                if (_comment == null ||
+                    string.Compare(_comment, value, StringComparison.OrdinalIgnoreCase) == 0) return;
                 _comment = value;
                 OnPropertyChanged();
             }

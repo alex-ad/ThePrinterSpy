@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Management;
-using System.Threading.Tasks;
 using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Models;
-using ThePrinterSpyControl.ViewModels;
 
 namespace ThePrinterSpyControl.Modules
 {
