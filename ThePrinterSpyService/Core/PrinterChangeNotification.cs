@@ -110,6 +110,12 @@ namespace ThePrinterSpyService.Core
             Start();
         }
 
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public PrinterChangeNotification()
+        {
+            Start();
+        }
+
         ~PrinterChangeNotification()
         {
             Stop();
@@ -117,7 +123,8 @@ namespace ThePrinterSpyService.Core
 
         private void Start()
         {
-            NativeMethods.OpenPrinterW(_printerName, out _printerHandle, IntPtr.Zero);
+           // NativeMethods.OpenPrinterW(_printerName, out _printerHandle, IntPtr.Zero);
+            NativeMethods.OpenPrinterW(@"\\LOT", out _printerHandle, IntPtr.Zero);
             _changeHandle = NativeMethods.FindFirstPrinterChangeNotification(_printerHandle, (int)(PRINTER_CHANGES.PRINTER_CHANGE_JOB + PRINTER_CHANGES.PRINTER_CHANGE_PRINTER), 0, _notifyOptions);
             _resetEvent.Handle = _changeHandle;
             ThreadPool.RegisterWaitForSingleObject(_resetEvent, PrinterNotifyWaitCallback, _resetEvent, -1, true);
@@ -135,16 +142,26 @@ namespace ThePrinterSpyService.Core
         private void PrinterNotifyWaitCallback(object state, bool timeOut)
         {
             if (_printerHandle == IntPtr.Zero) return;
-            _notifyOptions.Count = 1;
+            _notifyOptions.Count = 1;// ???????????????   2
             IntPtr pNotifyInfo = IntPtr.Zero;
             bool bResult = NativeMethods.FindNextPrinterChangeNotification(_changeHandle, out int pdwChange, _notifyOptions, out pNotifyInfo);
-            if ((bResult == false) || (((int)pNotifyInfo) == 0)) return;
+            //if ((bResult == false) || (((int)pNotifyInfo) == 0)) return;
+            if (bResult == false) return;
 
             bool relatedChange =
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_ADD_JOB) == PRINTER_CHANGES.PRINTER_CHANGE_ADD_JOB) ||
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_SET_JOB) == PRINTER_CHANGES.PRINTER_CHANGE_SET_JOB) ||
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_DELETE_JOB) == PRINTER_CHANGES.PRINTER_CHANGE_DELETE_JOB) ||
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_WRITE_JOB) == PRINTER_CHANGES.PRINTER_CHANGE_WRITE_JOB) ||
+
+
+
+                ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_ADD_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_ADD_PRINTER) ||
+                ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_DELETE_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_DELETE_PRINTER) ||
+
+
+
+
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_SET_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_SET_PRINTER);
             if (!relatedChange) return;
 
@@ -161,13 +178,13 @@ namespace ThePrinterSpyService.Core
 
             for (int i = 0; i < data.Count(); i++)
             {
-                if ((data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_STATUS) &&
-                        ((data[i].Type == (ushort)PRINTERNOTIFICATIONTYPES.JOB_NOTIFY_TYPE)))
+                if ((data[i].Type == (ushort)PRINTERNOTIFICATIONTYPES.JOB_NOTIFY_TYPE) &&
+                        ((data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_STATUS)))
                 {
                     PrinterJobNotification(data[i]);
                 }
-                else if ((data[i].Field == (ushort)PRINTERPRINTERNOTIFICATIONTYPES.PRINTER_NOTIFY_FIELD_PRINTER_NAME) &&
-                         ((data[i].Type == (ushort)PRINTERNOTIFICATIONTYPES.PRINTER_NOTIFY_TYPE)))
+                else if ((data[i].Type == (ushort)PRINTERNOTIFICATIONTYPES.PRINTER_NOTIFY_TYPE) &&
+                         ((data[i].Field == (ushort)PRINTERPRINTERNOTIFICATIONTYPES.PRINTER_NOTIFY_FIELD_PRINTER_NAME)))
                 {
                     PrinterNameNotification(data[i]);
                 }

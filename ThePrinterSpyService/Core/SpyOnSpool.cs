@@ -15,7 +15,8 @@ namespace ThePrinterSpyService.Core
 
         private readonly Computer _currentComputer;
         private readonly User _currentUser;
-        private readonly Dictionary<int, PrinterChangeNotification> _printersMonitor;
+        //private readonly Dictionary<int, PrinterChangeNotification> _printersMonitor;
+        private PrinterChangeNotification _printersMonitor;
         private readonly Dictionary<int, int> _pagesPrinted;
 
         public SpyOnSpool()
@@ -39,7 +40,8 @@ namespace ThePrinterSpyService.Core
             string sid = (string)collection.Cast<ManagementBaseObject>().First()["SID"];
 
             _currentUser = User.Add(username, sid);
-            _printersMonitor = new Dictionary<int, PrinterChangeNotification>();
+            //_printersMonitor = new Dictionary<int, PrinterChangeNotification>();
+            _printersMonitor = new PrinterChangeNotification();
             _pagesPrinted = new Dictionary<int, int>();
         }
 
@@ -50,13 +52,15 @@ namespace ThePrinterSpyService.Core
                 try
                 {
                     List<Printer> localPrinters = Printer.GetLocalPrinters(_currentComputer.Id, _currentUser.Id);
-                    foreach (Printer p in localPrinters)
+                    /*foreach (Printer p in localPrinters)
                     {
                         if (!p.Enabled) continue;
                         _printersMonitor.Add(p.Id, new PrinterChangeNotification(p.Name, p.Id));
                         _printersMonitor[p.Id].OnPrinterJobChange += OnPrinterJobChange;
                         _printersMonitor[p.Id].OnPrinterNameChange += OnPrinterNameChange;
-                    }
+                    }*/
+                    _printersMonitor.OnPrinterJobChange += OnPrinterJobChange;
+                    _printersMonitor.OnPrinterNameChange += OnPrinterNameChange;
                 }
                 catch (Exception ex)
                 {
@@ -113,10 +117,10 @@ namespace ThePrinterSpyService.Core
 
         private void OnPrinterNameChange(object sender, PrinterNameChangeEventArgs e)
         {
-            _printersMonitor[e.PrinterId].OnPrinterJobChange -= OnPrinterJobChange;
+            /*_printersMonitor[e.PrinterId].OnPrinterJobChange -= OnPrinterJobChange;
             _printersMonitor[e.PrinterId] = null;
             _printersMonitor[e.PrinterId] = new PrinterChangeNotification(e.PrinterName, e.PrinterId);
-            _printersMonitor[e.PrinterId].OnPrinterJobChange += OnPrinterJobChange;
+            _printersMonitor[e.PrinterId].OnPrinterJobChange += OnPrinterJobChange;*/
             Printer.Rename(e.PrinterId, e.PrinterName);
         }
     }
