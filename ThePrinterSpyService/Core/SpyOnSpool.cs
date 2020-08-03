@@ -26,7 +26,7 @@ namespace ThePrinterSpyService.Core
 
             searcher = new ManagementObjectSearcher("SELECT SID FROM Win32_UserAccount");
             collection = searcher.Get();
-            string sid = (string)collection.Cast<ManagementBaseObject>().First()["SID"];
+            string sid = (string)collection.Cast<ManagementBaseObject>().Last()["SID"];
 
             _currentUser = User.Add(username, sid);
             _printersMonitor = new Dictionary<int, PrinterChangeNotification>();

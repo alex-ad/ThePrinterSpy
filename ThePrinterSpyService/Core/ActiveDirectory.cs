@@ -16,14 +16,14 @@ namespace ThePrinterSpyService.Core
         private readonly string _accountName;
         private readonly string _password;
         private readonly string _domain;
-        private readonly string _dn;
+        //private readonly string _dn;
 
         public ActiveDirectory()
         {
             var ad = SpyOnSpool.PrintSpyContext.Configs.Find(1);
 
             _domain = ad?.AdServer;
-            _dn = ad?.AdDn;
+            //_dn = ad?.AdDn;
             _accountName = ad?.AdUser;
             _password = ad?.AdPassword;
         }
@@ -57,7 +57,7 @@ namespace ThePrinterSpyService.Core
         {
             try
             {
-                principalContext = new PrincipalContext(ContextType.Domain, _domain, _dn, _accountName, _password);
+                principalContext = new PrincipalContext(ContextType.Domain, _domain, _accountName, _password);
             }
             catch (Exception ex)
             {

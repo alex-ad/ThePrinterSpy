@@ -19,12 +19,12 @@ namespace ThePrinterSpyService.Core
     {
         public static void AddException(Exception exception)
         {
-            File.AppendAllText(@"Log\error.txt", FormatMsg(new ErrorMessage(exception.Message, exception.StackTrace)));
+            File.AppendAllText(@"\Log\error.txt", FormatMsg(new ErrorMessage(exception.Message, exception.StackTrace)));
         }
         
         public static void AddTextLine(string message)
         {
-            File.AppendAllText(@"Log\error.txt", message);
+            File.AppendAllText(@"\Log\error.txt", message);
         }
 
         private static string FormatMsg(ErrorMessage errorMessage)

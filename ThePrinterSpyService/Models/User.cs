@@ -15,8 +15,8 @@ namespace ThePrinterSpyService.Models
 
         public static User Add(string name, string sid)
         {
-            if (IsExists(name))
-                return Get(name);
+            if (IsExists(sid))
+                return Get(sid);
 
             ActiveDirectory ad = new ActiveDirectory();
             if (SpyOnSpool.PrintSpyContext.Configs.Find(1)?.AdEnabled == 1)
