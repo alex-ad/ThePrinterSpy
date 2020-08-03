@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Threading;
 
 namespace ThePrinterSpyService.Core
@@ -47,7 +45,7 @@ namespace ThePrinterSpyService.Core
         public string JobName { get; }
         public JOBSTATUS JobStatus { get; }
         public JobInfo JobInfo { get; }
-        public PrinterJobChangeEventArgs(int printerId, int jobId, string jobName, JOBSTATUS jobStatus, JobInfo jobInfo) : base()
+        public PrinterJobChangeEventArgs(int printerId, int jobId, string jobName, JOBSTATUS jobStatus, JobInfo jobInfo)
         {
             PrinterId = printerId;
             JobId = jobId;
@@ -62,7 +60,7 @@ namespace ThePrinterSpyService.Core
         public int PrinterId { get; }
         public string PrinterName { get; }
 
-        public PrinterNameChangeEventArgs( int printerId, string printerName) : base()
+        public PrinterNameChangeEventArgs( int printerId, string printerName)
         {
             PrinterId = printerId;
             PrinterName = printerName;
@@ -94,10 +92,6 @@ namespace ThePrinterSpyService.Core
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool GetJobW([In] IntPtr hPrinter, [In] Int32 jobId, [In] Int32 level, [Out] byte[] pJob, [In] Int32 cbBuf, ref Int32 lpbSizeNeeded);
 
-            [DllImport("winspool.drv", EntryPoint = "EnumJobsW")]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool EnumJobsW([In] IntPtr hPrinter, uint firstJob, uint noJobs, uint level, IntPtr pJob, uint cbBuf, [Out] out uint pcbNeeded, [Out] out uint pcReturned);
-
             [DllImport("winspool.drv", EntryPoint = "FindFirstPrinterChangeNotification", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr FindFirstPrinterChangeNotification([In] IntPtr hPrinter, [In] Int32 fwFlags, [In] Int32 fwOptions, [In, MarshalAs(UnmanagedType.LPStruct)] PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions);
 
@@ -126,7 +120,7 @@ namespace ThePrinterSpyService.Core
             NativeMethods.OpenPrinterW(_printerName, out _printerHandle, IntPtr.Zero);
             _changeHandle = NativeMethods.FindFirstPrinterChangeNotification(_printerHandle, (int)(PRINTER_CHANGES.PRINTER_CHANGE_JOB + PRINTER_CHANGES.PRINTER_CHANGE_PRINTER), 0, _notifyOptions);
             _resetEvent.Handle = _changeHandle;
-            ThreadPool.RegisterWaitForSingleObject(_resetEvent, new WaitOrTimerCallback(PrinterNotifyWaitCallback), _resetEvent, -1, true);
+            ThreadPool.RegisterWaitForSingleObject(_resetEvent, PrinterNotifyWaitCallback, _resetEvent, -1, true);
         }
 
         private void Stop()
@@ -142,9 +136,8 @@ namespace ThePrinterSpyService.Core
         {
             if (_printerHandle == IntPtr.Zero) return;
             _notifyOptions.Count = 1;
-            int pdwChange = 0;
             IntPtr pNotifyInfo = IntPtr.Zero;
-            bool bResult = NativeMethods.FindNextPrinterChangeNotification(_changeHandle, out pdwChange, _notifyOptions, out pNotifyInfo);
+            bool bResult = NativeMethods.FindNextPrinterChangeNotification(_changeHandle, out int pdwChange, _notifyOptions, out pNotifyInfo);
             if ((bResult == false) || (((int)pNotifyInfo) == 0)) return;
 
             bool relatedChange =
@@ -224,7 +217,6 @@ namespace ThePrinterSpyService.Core
             catch
             {
                 _jobDocNames.TryGetValue(jobId, out jobDocName);
-                if (jobDocName == null) jobDocName = "";
                 return;
             }
             OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(_printerId, jobId, jobDocName, jStatus, jobInfo));

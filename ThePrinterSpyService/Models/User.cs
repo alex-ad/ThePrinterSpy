@@ -24,10 +24,10 @@ namespace ThePrinterSpyService.Models
             User user = SpyOnSpool.PrintSpyContext.Users.Add(new User
             {
                 AccountName = name,
-                FullName = ad.FullName,
-                Department = ad.Department,
-                Position = ad.Position,
-                Company = ad.Company,
+                FullName = ad.FullName ?? string.Empty,
+                Department = ad.Department ?? string.Empty,
+                Position = ad.Position ?? string.Empty,
+                Company = ad.Company ?? string.Empty,
                 Sid = sid
             });
             SpyOnSpool.PrintSpyContext.SaveChanges();

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
+using ThePrinterSpyService.Exceptions;
 using ThePrinterSpyService.Models;
 
 namespace ThePrinterSpyService.Core
@@ -21,12 +22,21 @@ namespace ThePrinterSpyService.Core
         {
             _currentComputer = Computer.Add(Environment.MachineName);
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
+            if (searcher == null)
+            {
+                var ex = new ThePrinterSpyException("WMI is unavailable", "ManagementObjectSearcher");
+                Log.AddTextLine("ManagementObjectSearcher: WMI is unavailable");
+                throw new ThePrinterSpyException("WMI is unavailable", "ManagementObjectSearcher");
+            }
+            
             ManagementObjectCollection collection = searcher.Get();
             string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
+            var slash = username.LastIndexOf('\\');
+            if (slash > 0) username = username.Substring(slash+1);
 
-            searcher = new ManagementObjectSearcher("SELECT SID FROM Win32_UserAccount");
+            searcher = new ManagementObjectSearcher($"SELECT SID FROM Win32_UserAccount WHERE name='{username}'");
             collection = searcher.Get();
-            string sid = (string)collection.Cast<ManagementBaseObject>().Last()["SID"];
+            string sid = (string)collection.Cast<ManagementBaseObject>().First()["SID"];
 
             _currentUser = User.Add(username, sid);
             _printersMonitor = new Dictionary<int, PrinterChangeNotification>();

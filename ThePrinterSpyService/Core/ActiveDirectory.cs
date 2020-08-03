@@ -1,6 +1,7 @@
 ﻿using System;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using System.Linq;
 
 namespace ThePrinterSpyService.Core
 {
@@ -20,7 +21,7 @@ namespace ThePrinterSpyService.Core
 
         public ActiveDirectory()
         {
-            var ad = SpyOnSpool.PrintSpyContext.Configs.Find(1);
+            var ad = SpyOnSpool.PrintSpyContext.Configs.First();
 
             _domain = ad?.AdServer;
             //_dn = ad?.AdDn;

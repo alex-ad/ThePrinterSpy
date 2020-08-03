@@ -57,7 +57,7 @@ namespace ThePrinterSpyService.Models
                         UserId = userId,
                         ComputerId = computerId,
                         ServerId = server.Id,
-                        Enabled = true
+                        Enabled = !IsFilter(p["Name"].ToString())
                     };
                     prnList.Add(Add(prn));
                 }
@@ -76,6 +76,14 @@ namespace ThePrinterSpyService.Models
             printer.Name = name;
             SpyOnSpool.PrintSpyContext.Entry(printer).State = EntityState.Modified;
             SpyOnSpool.PrintSpyContext.SaveChanges();
+        }
+
+        private static bool IsFilter(string printerName)
+        {
+            string[] filter = { "FAX", "XPS", "PDF", "ONENOTE", "2IMAGE", "VIRTUAL" };
+            foreach (var s in filter)
+                if (printerName.ToUpperInvariant().Contains(s)) return true;
+            return false;
         }
     }
 }
