@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using ThePrinterSpyService.Models;
 
 namespace ThePrinterSpyService.Core
 {
@@ -45,9 +45,9 @@ namespace ThePrinterSpyService.Core
         public string JobName { get; }
         public JOBSTATUS JobStatus { get; }
         public JobInfo JobInfo { get; }
-        public PrinterJobChangeEventArgs(/*int printerId, */int jobId, string jobName, JOBSTATUS jobStatus, JobInfo jobInfo)
+        public PrinterJobChangeEventArgs(int printerId, int jobId, string jobName, JOBSTATUS jobStatus, JobInfo jobInfo)
         {
-            //PrinterId = printerId;
+            PrinterId = printerId;
             JobId = jobId;
             JobName = jobName;
             JobStatus = jobStatus;
@@ -57,25 +57,23 @@ namespace ThePrinterSpyService.Core
 
     public class PrinterNameChangeEventArgs : EventArgs
     {
-        public int PrinterId { get; }
         public string PrinterName { get; }
 
-        public PrinterNameChangeEventArgs( /*int printerId, */string printerName)
+        public PrinterNameChangeEventArgs(string printerName)
         {
-            //PrinterId = printerId;
             PrinterName = printerName;
         }
     }
 
     public delegate void PrinterJobChanged(object sender, PrinterJobChangeEventArgs e);
     public delegate void PrinterNameChanged(object sender, PrinterNameChangeEventArgs e);
-    public delegate void PrinterAdded(object sender, PrinterNameChangeEventArgs e);
-    public delegate void PrinterDeleted(object sender, PrinterNameChangeEventArgs e);
+    public delegate void PrinterAddedDeleted(object sender, PrinterNameChangeEventArgs e);
 
     class PrinterChangeNotification
     {
-        //private readonly string _printerName;
-        //private readonly int _printerId;
+        private readonly int _userId;
+        private readonly int _computerId;
+        private readonly string _computerName;
         private IntPtr _printerHandle = IntPtr.Zero;
         private IntPtr _changeHandle = IntPtr.Zero;
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
@@ -104,19 +102,13 @@ namespace ThePrinterSpyService.Core
 
         public event PrinterJobChanged OnPrinterJobChange;
         public event PrinterNameChanged OnPrinterNameChange;
-        public event PrinterAdded OnPrinterAdded;
-        public event PrinterDeleted OnPrinterDeleted;
+        public event PrinterAddedDeleted OnPrinterAddedDeleted;
 
-        /*public PrinterChangeNotification(string pName, int pId)
+        public PrinterChangeNotification(int userId, int computerId, string computerName)
         {
-            _printerName = pName;
-            _printerId = pId;
-            Start();
-        }*/
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        public PrinterChangeNotification()
-        {
+            _userId = userId;
+            _computerId = computerId;
+            _computerName = computerName;
             Start();
         }
 
@@ -127,14 +119,18 @@ namespace ThePrinterSpyService.Core
 
         private void Start()
         {
-           // NativeMethods.OpenPrinterW(_printerName, out _printerHandle, IntPtr.Zero);
-            NativeMethods.OpenPrinterW(@"\\LOT", out _printerHandle, IntPtr.Zero);
+            if (!NativeMethods.OpenPrinterW($@"\\{_computerName}", out _printerHandle, IntPtr.Zero)) return;
             _changeHandle = NativeMethods.FindFirstPrinterChangeNotification(_printerHandle, (int)(PRINTER_CHANGES.PRINTER_CHANGE_JOB + PRINTER_CHANGES.PRINTER_CHANGE_PRINTER), 0, _notifyOptions);
+            if (_changeHandle == IntPtr.Zero)
+            {
+                Stop();
+                return;
+            }
             _resetEvent.Handle = _changeHandle;
             ThreadPool.RegisterWaitForSingleObject(_resetEvent, PrinterNotifyWaitCallback, _resetEvent, -1, true);
         }
 
-        private void Stop()
+        public void Stop()
         {
             if (_printerHandle != IntPtr.Zero)
             {
@@ -146,11 +142,10 @@ namespace ThePrinterSpyService.Core
         private void PrinterNotifyWaitCallback(object state, bool timeOut)
         {
             if (_printerHandle == IntPtr.Zero) return;
-            _notifyOptions.Count = 1;// ???????????????   2
+            _notifyOptions.Count = 1;
             IntPtr pNotifyInfo = IntPtr.Zero;
             bool bResult = NativeMethods.FindNextPrinterChangeNotification(_changeHandle, out int pdwChange, _notifyOptions, out pNotifyInfo);
-            //if ((bResult == false) || (((int)pNotifyInfo) == 0)) return;
-            if (bResult == false) return;
+            if (bResult == false/* || (int)pNotifyInfo == 0*/) return;
 
             bool relatedChange =
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_ADD_JOB) == PRINTER_CHANGES.PRINTER_CHANGE_ADD_JOB) ||
@@ -169,7 +164,7 @@ namespace ThePrinterSpyService.Core
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_SET_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_SET_PRINTER);
             if (!relatedChange) return;
 
-            PRINTER_NOTIFY_INFO info = (PRINTER_NOTIFY_INFO)Marshal.PtrToStructure(pNotifyInfo, typeof(PRINTER_NOTIFY_INFO));
+            PRINTER_NOTIFY_INFO info = (PRINTER_NOTIFY_INFO)Marshal.PtrToStructure(pNotifyInfo, typeof(PRINTER_NOTIFY_INFO));//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! при удалении принтера - вылет
             int pData = (int)pNotifyInfo + Marshal.SizeOf(typeof(PRINTER_NOTIFY_INFO));
             PRINTER_NOTIFY_INFO_DATA[] data = new PRINTER_NOTIFY_INFO_DATA[info.Count];
             for (uint i = 0; i < info.Count; i++)
@@ -188,10 +183,9 @@ namespace ThePrinterSpyService.Core
                 else if ((data[i].Type == (ushort)PRINTERNOTIFICATIONTYPES.PRINTER_NOTIFY_TYPE) &&
                          ((data[i].Field == (ushort)PRINTERPRINTERNOTIFICATIONTYPES.PRINTER_NOTIFY_FIELD_PRINTER_NAME)))
                 {
-                    if ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_ADD_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_ADD_PRINTER)
-                        PrinterAddNotification(data[i]);
-                    else if ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_DELETE_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_DELETE_PRINTER)
-                        PrinterDeleteNotification(data[i]);
+                    if ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_ADD_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_ADD_PRINTER
+                        || (pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_DELETE_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_DELETE_PRINTER)
+                        PrinterAddDeleteNotification(data[i]);
                     else
                         PrinterNameNotification(data[i]);
                 }
@@ -243,22 +237,20 @@ namespace ThePrinterSpyService.Core
                 _jobDocNames.TryGetValue(jobId, out jobDocName);
                 return;
             }
-            OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(/*_printerId,*/ jobId, jobDocName, jStatus, jobInfo));
+
+            var p = Printer.GetPrinterByName(_computerId, _userId, jobInfo.pPrinterName);
+            if (p == null) return;
+            OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(p.Id, jobId, jobDocName, jStatus, jobInfo));
         }
 
         private void PrinterNameNotification(PRINTER_NOTIFY_INFO_DATA data)
         {
-            OnPrinterNameChange?.Invoke(this, new PrinterNameChangeEventArgs(/*_printerId, */Marshal.PtrToStringUni(data.NotifyData.Data.pBuf)));
+            OnPrinterNameChange?.Invoke(this, new PrinterNameChangeEventArgs(Marshal.PtrToStringUni(data.NotifyData.Data.pBuf)));
         }
 
-        private void PrinterAddNotification(PRINTER_NOTIFY_INFO_DATA data)
+        private void PrinterAddDeleteNotification(PRINTER_NOTIFY_INFO_DATA data)
         {
-            OnPrinterAdded?.Invoke(this, new PrinterNameChangeEventArgs(/*_printerId, */Marshal.PtrToStringUni(data.NotifyData.Data.pBuf)));
-        }
-
-        private void PrinterDeleteNotification(PRINTER_NOTIFY_INFO_DATA data)
-        {
-            OnPrinterDeleted?.Invoke(this, new PrinterNameChangeEventArgs(/*_printerId, */Marshal.PtrToStringUni(data.NotifyData.Data.pBuf)));
+            OnPrinterAddedDeleted?.Invoke(this, new PrinterNameChangeEventArgs(Marshal.PtrToStringUni(data.NotifyData.Data.pBuf)));
         }
     }
 }

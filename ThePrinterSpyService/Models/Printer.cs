@@ -25,7 +25,7 @@ namespace ThePrinterSpyService.Models
         public int ServerId { get; set; }
         public bool Enabled { get; set; }
 
-        public static Printer Add(PrinterStruct printer)
+        private static Printer Add(PrinterStruct printer)
         {
             Printer p = Get(printer);
             if (p != null) return p;
@@ -41,7 +41,22 @@ namespace ThePrinterSpyService.Models
             return p;
         }
 
-        public static List<Printer> GetLocalPrinters(int computerId, int userId)
+        private static Printer AddLocal(PrinterStruct printer)
+        {
+            Printer p = Get(printer);
+            if (p != null) return p;
+            p = new Printer
+            {
+                Name = printer.Name,
+                UserId = printer.UserId,
+                ComputerId = printer.ComputerId,
+                ServerId = printer.ServerId,
+                Enabled = printer.Enabled
+            };
+            return p;
+        }
+
+        public static List<Printer> BuildLocalPrintersList(int computerId, int userId)
         {
             List<Printer> prnList = new List<Printer>();
             ManagementScope scope = new ManagementScope(ManagementPath.DefaultPath);
@@ -67,13 +82,41 @@ namespace ThePrinterSpyService.Models
             return prnList;
         }
 
-        public static Printer Get(PrinterStruct printer) => SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(p => ((p.ComputerId == printer.ComputerId) && (p.ServerId == printer.ServerId) && (p.Name == printer.Name) ));
-
-        public static void Rename(int id, string name)
+        public static List<Printer> GetLocalList(int computerId, int userId)
         {
-            var printer = SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(p => p.Id == id);
+            List<Printer> prnList = new List<Printer>();
+            ManagementScope scope = new ManagementScope(ManagementPath.DefaultPath);
+            scope.Connect();
+            ManagementClass m = new ManagementClass("Win32_Printer");
+            using (ManagementObjectCollection o = m.GetInstances())
+                foreach (ManagementObject p in o)
+                {
+                    Server server = Server.Add(Environment.MachineName);
+                    PrinterStruct prn = new PrinterStruct
+                    {
+                        Name = p["Name"].ToString(),
+                        UserId = userId,
+                        ComputerId = computerId,
+                        ServerId = server.Id,
+                        Enabled = !IsFilter(p["Name"].ToString())
+                    };
+                    prnList.Add(AddLocal(prn));
+                }
+
+            return prnList;
+        }
+
+        public static Printer GetPrinterByName(int computerId, int userId, string printerName) => SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(p => ((p.ComputerId == computerId) && (p.UserId == userId) && (p.Name == printerName)));
+
+        private static Printer Get(PrinterStruct printer) => SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(p => ((p.ComputerId == printer.ComputerId) && (p.ServerId == printer.ServerId) && (p.Name == printer.Name) ));
+
+        public static void Rename(int computerId, int userId, string printerName, ref List<Printer> printersList)
+        {
+            var printer = GetRenamedPrinter(printersList, GetLocalList(computerId, userId), printerName);
             if (printer == null) return;
-            printer.Name = name;
+
+            printersList.Find(x => x.Id == printer.Id).Name = printerName;
+            printer.Name = printerName;
             SpyOnSpool.PrintSpyContext.Entry(printer).State = EntityState.Modified;
             SpyOnSpool.PrintSpyContext.SaveChanges();
         }
@@ -84,6 +127,18 @@ namespace ThePrinterSpyService.Models
             foreach (var s in filter)
                 if (printerName.ToUpperInvariant().Contains(s)) return true;
             return false;
+        }
+
+        private static Printer GetRenamedPrinter(List<Printer> oldList, List<Printer> newList, string newName)
+        {
+            try
+            {
+                return oldList.Except(newList).Single(x => x.Name != newName);
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
         }
     }
 }
