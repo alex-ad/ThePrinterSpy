@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
@@ -40,7 +41,6 @@ namespace ThePrinterSpyService.Core
             _currentUser = User.Add(username, sid);
             _pagesPrinted = new Dictionary<int, int>();
             _localPrinters = new List<Printer>();
-            //_printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
         }
 
         public async Task RunAsync()
@@ -50,8 +50,6 @@ namespace ThePrinterSpyService.Core
                 try
                 {
                     _printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
-                    //RefreshMonitoring();
-                    //_printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
                     _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
                     _printersMonitor.OnPrinterJobChange += OnPrinterJobChange;
                     _printersMonitor.OnPrinterNameChange += OnPrinterNameChange;
@@ -59,6 +57,7 @@ namespace ThePrinterSpyService.Core
                 }
                 catch (Exception ex)
                 {
+                    Debug.WriteLine("error: "+ex.Message);
                     ProceedError(ex);
                 }
             });
@@ -117,19 +116,7 @@ namespace ThePrinterSpyService.Core
 
         private void _printersMonitor_OnPrinterAddedDeleted(object sender, PrinterNameChangeEventArgs e)
         {
-            //RefreshMonitoring();
             _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
         }
-
-       /* private void RefreshMonitoring()
-        {
-            _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
-            _printersMonitor?.Stop();
-            _printersMonitor = null;
-            _printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
-            _printersMonitor.OnPrinterJobChange += OnPrinterJobChange;
-            _printersMonitor.OnPrinterNameChange += OnPrinterNameChange;
-            _printersMonitor.OnPrinterAddedDeleted += _printersMonitor_OnPrinterAddedDeleted;
-        }*/
     }
 }

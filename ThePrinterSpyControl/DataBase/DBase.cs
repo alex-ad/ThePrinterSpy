@@ -106,7 +106,7 @@ namespace ThePrinterSpyControl.DataBase
             SaveChanges();
         }
 
-        public void SetPrinterName(int id, string name)
+        /*public void SetPrinterName(int id, string name)
         {
             var p = GetPrinterById(id).Result;
             if (p == null) return;
@@ -114,7 +114,7 @@ namespace ThePrinterSpyControl.DataBase
             p.Name = name;
             _context.Entry(p).State = EntityState.Modified;
             SaveChanges();
-        }
+        }*/
 
         public void SetPrinterEnabled(int id, bool enabled)
         {

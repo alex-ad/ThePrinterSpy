@@ -17,14 +17,12 @@ namespace ThePrinterSpyService.Core
         private readonly string _accountName;
         private readonly string _password;
         private readonly string _domain;
-        //private readonly string _dn;
 
         public ActiveDirectory()
         {
             var ad = SpyOnSpool.PrintSpyContext.Configs.First();
 
             _domain = ad?.AdServer;
-            //_dn = ad?.AdDn;
             _accountName = ad?.AdUser;
             _password = ad?.AdPassword;
         }
