@@ -40,7 +40,7 @@ namespace ThePrinterSpyService.Core
             _currentUser = User.Add(username, sid);
             _pagesPrinted = new Dictionary<int, int>();
             _localPrinters = new List<Printer>();
-            _printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
+            //_printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
         }
 
         public async Task RunAsync()
@@ -49,6 +49,7 @@ namespace ThePrinterSpyService.Core
             {
                 try
                 {
+                    _printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
                     //RefreshMonitoring();
                     //_printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
                     _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
@@ -120,7 +121,7 @@ namespace ThePrinterSpyService.Core
             _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
         }
 
-        private void RefreshMonitoring()
+       /* private void RefreshMonitoring()
         {
             _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
             _printersMonitor?.Stop();
@@ -129,6 +130,6 @@ namespace ThePrinterSpyService.Core
             _printersMonitor.OnPrinterJobChange += OnPrinterJobChange;
             _printersMonitor.OnPrinterNameChange += OnPrinterNameChange;
             _printersMonitor.OnPrinterAddedDeleted += _printersMonitor_OnPrinterAddedDeleted;
-        }
+        }*/
     }
 }

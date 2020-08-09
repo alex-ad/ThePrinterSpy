@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -81,23 +82,38 @@ namespace ThePrinterSpyService.Core
         private readonly Dictionary<int, string> _jobDocNames = new Dictionary<int, string>();
         private static class NativeMethods
         {
-            [DllImport("winspool.drv", EntryPoint = "OpenPrinterW", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winspool.drv", EntryPoint = "OpenPrinterW", SetLastError = true, CharSet = CharSet.Unicode,
+                CallingConvention = CallingConvention.StdCall)]
             [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool OpenPrinterW([In][MarshalAs(UnmanagedType.LPWStr)] string pPrinterName, [Out] out IntPtr phPrinter, [In] IntPtr pDefault);
+            public static extern bool OpenPrinterW([In] [MarshalAs(UnmanagedType.LPWStr)] string pPrinterName,
+                [Out] out IntPtr phPrinter, [In] IntPtr pDefault);
 
             [DllImport("winspool.drv", EntryPoint = "ClosePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern bool ClosePrinterW(Int32 hPrinter);
 
-            [DllImport("winspool.drv", EntryPoint = "GetJobW", CharSet = CharSet.Unicode, SetLastError = true, ExactSpelling = false, CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winspool.drv", EntryPoint = "GetJobW", CharSet = CharSet.Unicode, SetLastError = true,
+                ExactSpelling = false, CallingConvention = CallingConvention.StdCall)]
             [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool GetJobW([In] IntPtr hPrinter, [In] Int32 jobId, [In] Int32 level, [Out] byte[] pJob, [In] Int32 cbBuf, ref Int32 lpbSizeNeeded);
+            public static extern bool GetJobW([In] IntPtr hPrinter, [In] Int32 jobId, [In] Int32 level,
+                [Out] byte[] pJob, [In] Int32 cbBuf, ref Int32 lpbSizeNeeded);
 
-            [DllImport("winspool.drv", EntryPoint = "FindFirstPrinterChangeNotification", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-            public static extern IntPtr FindFirstPrinterChangeNotification([In] IntPtr hPrinter, [In] Int32 fwFlags, [In] Int32 fwOptions, [In, MarshalAs(UnmanagedType.LPStruct)] PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions);
+            [DllImport("winspool.drv", EntryPoint = "FindFirstPrinterChangeNotification", SetLastError = true,
+                CharSet = CharSet.Unicode, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
+            public static extern IntPtr FindFirstPrinterChangeNotification([In] IntPtr hPrinter, [In] Int32 fwFlags,
+                [In] Int32 fwOptions, [In, MarshalAs(UnmanagedType.LPStruct)]
+                PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions);
 
-            [DllImport("winspool.drv", EntryPoint = "FindNextPrinterChangeNotification", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = false, CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winspool.drv", EntryPoint = "FindNextPrinterChangeNotification", SetLastError = true,
+                CharSet = CharSet.Unicode, ExactSpelling = false, CallingConvention = CallingConvention.StdCall)]
             public static extern bool FindNextPrinterChangeNotification
-            ([In] IntPtr hChangeObject, [Out] out Int32 pdwChange, [In, MarshalAs(UnmanagedType.LPStruct)] PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions, [Out] out IntPtr lppPrinterNotifyInfo);
+            ([In] IntPtr hChangeObject, [Out] out Int32 pdwChange, [In, MarshalAs(UnmanagedType.LPStruct)]
+                PRINTER_NOTIFY_OPTIONS pPrinterNotifyOptions, [Out] out IntPtr lppPrinterNotifyInfo);
+
+            [DllImport("winspool.drv", EntryPoint = "FindClosePrinterChangeNotification", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = false, CallingConvention = CallingConvention.StdCall)]
+            public static extern bool FindClosePrinterChangeNotification([In] IntPtr hChangeObject);
+
+            [DllImport("winspool.drv", EntryPoint = "FreePrinterNotifyInfo", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = false, CallingConvention = CallingConvention.StdCall)]
+            public static extern bool FreePrinterNotifyInfo([In] IntPtr pPrinterNotifyInfo);
         }
 
         public event PrinterJobChanged OnPrinterJobChange;
@@ -120,7 +136,8 @@ namespace ThePrinterSpyService.Core
         private void Start()
         {
             if (!NativeMethods.OpenPrinterW($@"\\{_computerName}", out _printerHandle, IntPtr.Zero)) return;
-            _changeHandle = NativeMethods.FindFirstPrinterChangeNotification(_printerHandle, (int)(PRINTER_CHANGES.PRINTER_CHANGE_JOB + PRINTER_CHANGES.PRINTER_CHANGE_PRINTER), 0, _notifyOptions);
+            _changeHandle = NativeMethods.FindFirstPrinterChangeNotification(_printerHandle,
+                (int) (PRINTER_CHANGES.PRINTER_CHANGE_JOB + PRINTER_CHANGES.PRINTER_CHANGE_PRINTER), 0, _notifyOptions);
             if (_changeHandle == IntPtr.Zero)
             {
                 Stop();
@@ -137,6 +154,12 @@ namespace ThePrinterSpyService.Core
                 NativeMethods.ClosePrinterW((int)_printerHandle);
                 _printerHandle = IntPtr.Zero;
             }
+
+            if (_changeHandle != IntPtr.Zero)
+            {
+                NativeMethods.FindClosePrinterChangeNotification(_changeHandle);
+                _changeHandle = IntPtr.Zero;
+            }
         }
 
         private void PrinterNotifyWaitCallback(object state, bool timeOut)
@@ -145,7 +168,19 @@ namespace ThePrinterSpyService.Core
             _notifyOptions.Count = 1;
             IntPtr pNotifyInfo = IntPtr.Zero;
             bool bResult = NativeMethods.FindNextPrinterChangeNotification(_changeHandle, out int pdwChange, _notifyOptions, out pNotifyInfo);
-            if (bResult == false/* || (int)pNotifyInfo == 0*/) return;
+            if (bResult == false)
+            {
+                return;
+            }
+
+            if (pNotifyInfo == IntPtr.Zero)
+            {
+                int oldFlags = _notifyOptions.dwFlags;
+                _notifyOptions.dwFlags = 1;
+                //NativeMethods.FreePrinterNotifyInfo(pNotifyInfo);
+                NativeMethods.FindNextPrinterChangeNotification(_changeHandle, out pdwChange, _notifyOptions, out pNotifyInfo);
+                _notifyOptions.dwFlags = oldFlags;
+            }
 
             bool relatedChange =
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_ADD_JOB) == PRINTER_CHANGES.PRINTER_CHANGE_ADD_JOB) ||
@@ -164,7 +199,21 @@ namespace ThePrinterSpyService.Core
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_SET_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_SET_PRINTER);
             if (!relatedChange) return;
 
-            PRINTER_NOTIFY_INFO info = (PRINTER_NOTIFY_INFO)Marshal.PtrToStructure(pNotifyInfo, typeof(PRINTER_NOTIFY_INFO));//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! при удалении принтера - вылет
+            PRINTER_NOTIFY_INFO info = (PRINTER_NOTIFY_INFO)Marshal.PtrToStructure(pNotifyInfo, typeof(PRINTER_NOTIFY_INFO));
+
+
+
+            if ((info.Flags & 1) == 1)
+            {
+                int oldFlags = _notifyOptions.dwFlags;
+                _notifyOptions.dwFlags = 1;
+                NativeMethods.FreePrinterNotifyInfo(pNotifyInfo);
+                NativeMethods.FindNextPrinterChangeNotification(_changeHandle, out pdwChange, _notifyOptions, out pNotifyInfo);
+                _notifyOptions.dwFlags = oldFlags;
+            }
+
+
+
             int pData = (int)pNotifyInfo + Marshal.SizeOf(typeof(PRINTER_NOTIFY_INFO));
             PRINTER_NOTIFY_INFO_DATA[] data = new PRINTER_NOTIFY_INFO_DATA[info.Count];
             for (uint i = 0; i < info.Count; i++)
