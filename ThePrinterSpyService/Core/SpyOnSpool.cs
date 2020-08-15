@@ -15,9 +15,9 @@ namespace ThePrinterSpyService.Core
 
         private readonly Computer _currentComputer;
         private readonly User _currentUser;
-        //private readonly Dictionary<int, PrinterChangeNotification> _printersMonitor;
         private PrinterChangeNotification _printersMonitor;
         private readonly Dictionary<int, int> _pagesPrinted;
+        private List<Printer> _localPrinters;
 
         public SpyOnSpool()
         {
@@ -39,9 +39,8 @@ namespace ThePrinterSpyService.Core
             string sid = (string)collection.Cast<ManagementBaseObject>().First()["SID"];
 
             _currentUser = User.Add(username, sid);
-            //_printersMonitor = new Dictionary<int, PrinterChangeNotification>();
-            _printersMonitor = new PrinterChangeNotification();
             _pagesPrinted = new Dictionary<int, int>();
+            _localPrinters = new List<Printer>();
         }
 
         public async Task RunAsync()
@@ -50,19 +49,15 @@ namespace ThePrinterSpyService.Core
             {
                 try
                 {
-                    List<Printer> localPrinters = Printer.GetLocalPrinters(_currentComputer.Id, _currentUser.Id);
-                    /*foreach (Printer p in localPrinters)
-                    {
-                        if (!p.Enabled) continue;
-                        _printersMonitor.Add(p.Id, new PrinterChangeNotification(p.Name, p.Id));
-                        _printersMonitor[p.Id].OnPrinterJobChange += OnPrinterJobChange;
-                        _printersMonitor[p.Id].OnPrinterNameChange += OnPrinterNameChange;
-                    }*/
+                    _printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
+                    _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
                     _printersMonitor.OnPrinterJobChange += OnPrinterJobChange;
                     _printersMonitor.OnPrinterNameChange += OnPrinterNameChange;
+                    _printersMonitor.OnPrinterAddedDeleted += _printersMonitor_OnPrinterAddedDeleted;
                 }
                 catch (Exception ex)
                 {
+                    Debug.WriteLine("error: "+ex.Message);
                     ProceedError(ex);
                 }
             });
@@ -70,6 +65,8 @@ namespace ThePrinterSpyService.Core
 
         public void Stop()
         {
+            _printersMonitor?.Stop();
+            _printersMonitor = null;
         }
 
         private void AddPrintJob(JobInfo job, int userId, int computerId, int serverId, int printerId)
@@ -110,17 +107,16 @@ namespace ThePrinterSpyService.Core
                 Submitted = e.JobInfo.Submitted,
                 JobId = (uint)e.JobId
             }, _currentUser.Id, _currentComputer.Id, _currentComputer.Id, e.PrinterId);
-
-            Debug.WriteLine($"INFO ::: {e.PrinterId} - {e.JobId} - {e.JobName} - {e.JobStatus} - {e.JobInfo.PagesPrinted}/{e.JobInfo.TotalPages}");
         }
 
         private void OnPrinterNameChange(object sender, PrinterNameChangeEventArgs e)
         {
-            /*_printersMonitor[e.PrinterId].OnPrinterJobChange -= OnPrinterJobChange;
-            _printersMonitor[e.PrinterId] = null;
-            _printersMonitor[e.PrinterId] = new PrinterChangeNotification(e.PrinterName, e.PrinterId);
-            _printersMonitor[e.PrinterId].OnPrinterJobChange += OnPrinterJobChange;*/
-            Printer.Rename(e.PrinterId, e.PrinterName);
+            Printer.Rename(_currentComputer.Id, _currentUser.Id, e.PrinterName, ref _localPrinters);
+        }
+
+        private void _printersMonitor_OnPrinterAddedDeleted(object sender, PrinterNameChangeEventArgs e)
+        {
+            _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
         }
     }
 }

@@ -94,8 +94,9 @@ namespace ThePrinterSpyControl.ModelBuilders
         public void SetPrinterName(int id, string name)
         {
             var p = Printers.FirstOrDefault(x => x.Id == id);
-            if (p != null) p.Name = name;
-            SetDbPrinterName(id, name);
+            if (p == null) return;
+            p.Name = name;
+            //SetDbPrinterName(id, name);
         }
 
         public async Task Remove(int id)
@@ -108,7 +109,7 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         private void SetDbPrinterEnabled(int id, bool enabled) =>_base.SetPrinterEnabled(id, enabled);
 
-        private void SetDbPrinterName(int id, string name) => _base.SetPrinterName(id, name);
+        //private void SetDbPrinterName(int id, string name) => _base.SetPrinterName(id, name);
 
         private async Task RemoveFromDb(int id)
         {

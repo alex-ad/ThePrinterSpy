@@ -54,13 +54,18 @@ namespace ThePrinterSpyControl.Views
             PrinterSpyViewModel.SelectedPrinter.Id = 0;
         }
 
-        private void BtnPrinterRename_Click(object sender, RoutedEventArgs e)
+        private async void BtnPrinterRename_Click(object sender, RoutedEventArgs e)
         {
             var id = PrinterSpyViewModel.SelectedPrinter.Id;
             if (id < 1) return;
+
             string computerName = _computers.GetNameByPrinterId(id);
-            if (string.IsNullOrEmpty(computerName) || string.IsNullOrEmpty(PrinterSpyViewModel.SelectedPrinter.NewName) || string.Equals(PrinterSpyViewModel.SelectedPrinter.NewName, PrinterSpyViewModel.SelectedPrinter.OldName, StringComparison.InvariantCulture)) return;
-            PrinterManagement.Rename(PrinterSpyViewModel.SelectedPrinter, computerName);
+            if (string.IsNullOrEmpty(computerName) ||
+                string.IsNullOrEmpty(PrinterSpyViewModel.SelectedPrinter.NewName) ||
+                string.Equals(PrinterSpyViewModel.SelectedPrinter.NewName, PrinterSpyViewModel.SelectedPrinter.OldName,
+                    StringComparison.InvariantCulture)) return;
+
+            await PrinterManagement.Rename(PrinterSpyViewModel.SelectedPrinter, computerName);
             PrinterSpyViewModel.SelectedPrinter.OldName = PrinterSpyViewModel.SelectedPrinter.NewName;
             _computers.PropertyPrinterIdsChanged(id);
             _users.PropertyPrinterIdsChanged(id);

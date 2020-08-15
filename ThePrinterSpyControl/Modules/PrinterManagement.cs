@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Management;
+using System.Threading.Tasks;
+using System.Windows;
 using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Models;
 
@@ -14,28 +16,34 @@ namespace ThePrinterSpyControl.Modules
             Printers = new PrintersCollection();
         }
 
-        public static void Rename(SelectedPrinter printer, string computerName)
+        public static async Task Rename(SelectedPrinter printer, string computerName)
         {
             if (printer == null || printer.Id < 1) throw new ArgumentException("The Printer is undefined", nameof(printer));
-            if (printer.NewName.Equals(printer.OldName, StringComparison.InvariantCulture)) return;
+            if (string.Compare(printer.NewName, printer.OldName, StringComparison.OrdinalIgnoreCase) == 0) return;
             if (string.IsNullOrEmpty(printer.NewName) || printer.NewName.Length < 3) return;
 
-            ManagementScope scope = new ManagementScope($@"\\{computerName}\root\cimv2");
-            scope.Connect();
-
-            SelectQuery selectQuery = new SelectQuery();
-            selectQuery.QueryString = @"SELECT * FROM Win32_Printer WHERE Name = '" + printer.OldName.Replace("\\", "\\\\") + "'";
-
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, selectQuery);
-            ManagementObjectCollection items = searcher.Get();
-
-            if (items.Count == 0) return;
-
-            foreach (ManagementObject item in items)
+            await Task.Run((() =>
             {
-                item.InvokeMethod("RenamePrinter", new object[] { printer.NewName });
-                Printers.SetPrinterName(printer.Id, printer.NewName);
-            }
+                ManagementScope scope = new ManagementScope($@"\\{computerName}\root\cimv2");
+                scope.Connect();
+
+                SelectQuery selectQuery = new SelectQuery();
+                selectQuery.QueryString = @"SELECT * FROM Win32_Printer WHERE Name = '" + printer.OldName.Replace("\\", "\\\\") + "'";
+
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, selectQuery);
+                ManagementObjectCollection items = searcher.Get();
+
+                if (items.Count == 0) return;
+
+                foreach (ManagementObject item in items)
+                {
+                    if (Convert.ToInt32(item.InvokeMethod("RenamePrinter", new object[] { printer.NewName })) == 0)
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Printers.SetPrinterName(printer.Id, printer.NewName);
+                        });
+                }
+            }));
         }
 
         public static void SetEnabled(SelectedPrinter printer)
