@@ -47,7 +47,6 @@ namespace ThePrinterSpyService.Core
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("error: "+ex.Message);
                     ProceedError(ex);
                 }
             });
@@ -96,7 +95,7 @@ namespace ThePrinterSpyService.Core
                 pDocument = e.JobName,
                 Submitted = e.JobInfo.Submitted,
                 JobId = (uint)e.JobId
-            }, _currentUser.Id, _currentComputer.Id, _currentComputer.Id, e.PrinterId);
+            }, _currentUser.Id, e.Printer.ComputerId, e.Printer.ServerId, e.Printer.Id);
         }
 
         private void OnPrinterNameChange(object sender, PrinterNameChangeEventArgs e)

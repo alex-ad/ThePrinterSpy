@@ -41,14 +41,14 @@ namespace ThePrinterSpyService.Core
 
     public class PrinterJobChangeEventArgs : EventArgs
     {
-        public int PrinterId { get; }
+        public Printer Printer { get; }
         public int JobId { get; }
         public string JobName { get; }
         public JOBSTATUS JobStatus { get; }
         public JobInfo JobInfo { get; }
-        public PrinterJobChangeEventArgs(int printerId, int jobId, string jobName, JOBSTATUS jobStatus, JobInfo jobInfo)
+        public PrinterJobChangeEventArgs(Printer printer, int jobId, string jobName, JOBSTATUS jobStatus, JobInfo jobInfo)
         {
-            PrinterId = printerId;
+            Printer = printer;
             JobId = jobId;
             JobName = jobName;
             JobStatus = jobStatus;
@@ -261,14 +261,13 @@ namespace ThePrinterSpyService.Core
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("error: " + ex.Message);
                 _jobDocNames.TryGetValue(jobId, out jobDocName);
                 return;
             }
 
             var p = Printer.GetPrinterByName(_computerId, _userId, jobInfo.pPrinterName);
             if (p == null) return;
-            OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(p.Id, jobId, jobDocName, jStatus, jobInfo));
+            OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(p, jobId, jobDocName, jStatus, jobInfo));
         }
 
         private void PrinterNameNotification(PRINTER_NOTIFY_INFO_DATA data)

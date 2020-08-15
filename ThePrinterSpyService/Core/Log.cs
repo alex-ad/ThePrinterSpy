@@ -10,21 +10,28 @@ namespace ThePrinterSpyService.Core
 
         public ErrorMessage(string message, string stackTrace)
         {
-            this.Message = message;
-            this.StackTrace = stackTrace;
+            Message = message;
+            StackTrace = stackTrace;
         }
     }
 
     static class Log
     {
+        private static readonly string CurrentPath;
+        static Log()
+        {
+            CurrentPath = Path.Combine(Environment.CurrentDirectory, "Log");
+            if (!Directory.Exists(CurrentPath)) Directory.CreateDirectory(CurrentPath);
+        }
+
         public static void AddException(Exception exception)
         {
-            File.AppendAllText(@"\Log\error.txt", FormatMsg(new ErrorMessage(exception.Message, exception.StackTrace)));
+            File.AppendAllText($@"{CurrentPath}\error.txt", FormatMsg(new ErrorMessage(exception.Message, exception.StackTrace)));
         }
         
         public static void AddTextLine(string message)
         {
-            File.AppendAllText(@"\Log\error.txt", message);
+            File.AppendAllText($@"{CurrentPath}\error.txt", message);
         }
 
         private static string FormatMsg(ErrorMessage errorMessage)
