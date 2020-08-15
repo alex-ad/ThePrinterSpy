@@ -25,7 +25,6 @@ namespace ThePrinterSpyService.Core
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
             if (searcher == null)
             {
-                var ex = new ThePrinterSpyException("WMI is unavailable", "ManagementObjectSearcher");
                 Log.AddTextLine("ManagementObjectSearcher: WMI is unavailable");
                 throw new ThePrinterSpyException("WMI is unavailable", "ManagementObjectSearcher");
             }
