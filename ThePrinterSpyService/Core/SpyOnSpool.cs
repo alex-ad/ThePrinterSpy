@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Management;
+using System.IO;
 using System.Threading.Tasks;
-using ThePrinterSpyService.Exceptions;
 using ThePrinterSpyService.Models;
+using System.Security.Principal;
 
 namespace ThePrinterSpyService.Core
 {
@@ -22,23 +21,14 @@ namespace ThePrinterSpyService.Core
         public SpyOnSpool()
         {
             _currentComputer = Computer.Add(Environment.MachineName);
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
-            if (searcher == null)
-            {
-                Log.AddTextLine("ManagementObjectSearcher: WMI is unavailable");
-                throw new ThePrinterSpyException("WMI is unavailable", "ManagementObjectSearcher");
-            }
-            
-            ManagementObjectCollection collection = searcher.Get();
-            string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
-            var slash = username.LastIndexOf('\\');
-            if (slash > 0) username = username.Substring(slash+1);
 
-            searcher = new ManagementObjectSearcher($"SELECT SID FROM Win32_UserAccount WHERE name='{username}'");
-            collection = searcher.Get();
-            string sid = (string)collection.Cast<ManagementBaseObject>().First()["SID"];
+            var identity = WindowsIdentity.GetCurrent();
+            var userName = identity.Name;
+            var slash = userName.LastIndexOf('\\');
+            if (slash > 0) userName = userName.Substring(slash + 1);
+            var sid = identity.Owner?.Value ?? "";
 
-            _currentUser = User.Add(username, sid);
+            _currentUser = User.Add(userName, sid);
             _pagesPrinted = new Dictionary<int, int>();
             _localPrinters = new List<Printer>();
         }

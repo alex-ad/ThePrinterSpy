@@ -29,7 +29,7 @@ namespace ThePrinterSpyService.Core
 
         private static string FormatMsg(ErrorMessage errorMessage)
         {
-            return $@"[ERROR] {DateTime.Now:HH:mm:ss}: [Message] {errorMessage.Message} [Stack] {errorMessage.StackTrace}"+"\r\n";
+            return $@"[ERROR] {DateTime.Now:HH:mm:ss}: [Message] {errorMessage.Message} [Stack] {errorMessage.StackTrace}"+"\\r\\n";
         }
     }
 }

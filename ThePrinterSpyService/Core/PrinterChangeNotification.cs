@@ -82,10 +82,10 @@ namespace ThePrinterSpyService.Core
         private readonly Dictionary<int, string> _jobDocNames = new Dictionary<int, string>();
         private static class NativeMethods
         {
-            [DllImport("winspool.drv", EntryPoint = "OpenPrinterW", SetLastError = true, CharSet = CharSet.Unicode,
+            [DllImport("winspool.drv", EntryPoint = "OpenPrinter", SetLastError = true, CharSet = CharSet.Unicode,
                 CallingConvention = CallingConvention.StdCall)]
             [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool OpenPrinterW([In] [MarshalAs(UnmanagedType.LPWStr)] string pPrinterName,
+            public static extern bool OpenPrinter([In] [MarshalAs(UnmanagedType.LPWStr)] string pPrinterName,
                 [Out] out IntPtr phPrinter, [In] IntPtr pDefault);
 
             [DllImport("winspool.drv", EntryPoint = "ClosePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
@@ -135,7 +135,7 @@ namespace ThePrinterSpyService.Core
 
         private void Start()
         {
-            if (!NativeMethods.OpenPrinterW($@"\\{_computerName}", out _printerHandle, IntPtr.Zero)) return;
+            if (!NativeMethods.OpenPrinter($@"\\{_computerName}", out _printerHandle, IntPtr.Zero)) return;
             _changeHandle = NativeMethods.FindFirstPrinterChangeNotification(_printerHandle,
                 (int) (PRINTER_CHANGES.PRINTER_CHANGE_JOB + PRINTER_CHANGES.PRINTER_CHANGE_PRINTER), 0, _notifyOptions);
             if (_changeHandle == IntPtr.Zero)
