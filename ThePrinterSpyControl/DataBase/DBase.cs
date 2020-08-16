@@ -171,8 +171,8 @@ namespace ThePrinterSpyControl.DataBase
                 where d.UserId == id
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) > -1 || d.TimeStamp.CompareTo(start) == 0)
-                              && (d.TimeStamp.CompareTo(end) < 1 || d.TimeStamp.CompareTo(end) == 0)
+                              (d.TimeStamp.CompareTo(start) >= 0)
+                              && (d.TimeStamp.CompareTo(end) <= 0)
                               && isReport
                           )
                           || (!isReport)
@@ -194,8 +194,8 @@ namespace ThePrinterSpyControl.DataBase
                       && d.PrinterId == p.Id
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) > -1 || d.TimeStamp.CompareTo(start) == 0)
-                              && (d.TimeStamp.CompareTo(end) < 1 || d.TimeStamp.CompareTo(end) == 0)
+                              (d.TimeStamp.CompareTo(start) >= 0)
+                              && (d.TimeStamp.CompareTo(end) <= 0)
                               && isReport
                           )
                           || (!isReport)
@@ -214,8 +214,8 @@ namespace ThePrinterSpyControl.DataBase
                 where d.ComputerId == id
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) > -1 || d.TimeStamp.CompareTo(start) == 0)
-                              && (d.TimeStamp.CompareTo(end) < 1 || d.TimeStamp.CompareTo(end) == 0)
+                              (d.TimeStamp.CompareTo(start) >= 0)
+                              && (d.TimeStamp.CompareTo(end) <= 0)
                               && isReport
                           )
                           || (!isReport)
@@ -234,8 +234,8 @@ namespace ThePrinterSpyControl.DataBase
                 where d.PrinterId == id
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) > -1 || d.TimeStamp.CompareTo(start) == 0)
-                              && (d.TimeStamp.CompareTo(end) < 1 || d.TimeStamp.CompareTo(end) == 0)
+                              (d.TimeStamp.CompareTo(start) >= 0)
+                              && (d.TimeStamp.CompareTo(end) <= 0)
                               && isReport
                           )
                           || (!isReport)
@@ -255,8 +255,8 @@ namespace ThePrinterSpyControl.DataBase
                 where d.PrinterId == i
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) > -1 || d.TimeStamp.CompareTo(start) == 0)
-                              && (d.TimeStamp.CompareTo(end) < 1 || d.TimeStamp.CompareTo(end) == 0)
+                              (d.TimeStamp.CompareTo(start) >= 0)
+                              && (d.TimeStamp.CompareTo(end) <= 0)
                               && isReport
                           )
                           || (!isReport)
