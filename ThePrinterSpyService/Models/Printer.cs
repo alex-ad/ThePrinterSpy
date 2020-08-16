@@ -68,9 +68,10 @@ namespace ThePrinterSpyService.Models
                     Server server = Server.Add(Environment.MachineName);
                     PrinterStruct prn = new PrinterStruct
                     {
-                        Name = p["Name"].ToString(),
+                        Name = PrinterNameConvert(p["Name"].ToString()),
                         UserId = userId,
                         ComputerId = computerId,
+                        //ServerId = GetServerByPrinterName(p["Name"].ToString(), server.Id),
                         ServerId = server.Id,
                         Enabled = !IsFilter(p["Name"].ToString())
                     };
@@ -94,9 +95,10 @@ namespace ThePrinterSpyService.Models
                     Server server = Server.Add(Environment.MachineName);
                     PrinterStruct prn = new PrinterStruct
                     {
-                        Name = p["Name"].ToString(),
+                        Name = PrinterNameConvert(p["Name"].ToString()),
                         UserId = userId,
                         ComputerId = computerId,
+                        //ServerId = GetServerByPrinterName(p["Name"].ToString(), server.Id),
                         ServerId = server.Id,
                         Enabled = !IsFilter(p["Name"].ToString())
                     };
@@ -139,6 +141,29 @@ namespace ThePrinterSpyService.Models
             {
                 return null;
             }
+        }
+
+        private static string PrinterNameConvert(string name)
+        {
+            var slash = name.LastIndexOf('\\');
+            if (slash > 0)
+                name = name.Substring(slash + 1) + " via " + name.Substring(0, slash).Replace("\\", "");
+            return name;
+        }
+
+        private static int GetServerByPrinterName(string printerName, int serverId)
+        {
+            var slash = printerName.LastIndexOf('\\');
+            if (slash < 0) return serverId;
+
+            string serverName = printerName.Substring(0, slash).Replace("\\", "");
+            if (string.IsNullOrEmpty(serverName)) return serverId;
+            
+            var server = SpyOnSpool.PrintSpyContext.Servers.FirstOrDefault(x =>
+                string.Compare(x.Name, serverName, StringComparison.OrdinalIgnoreCase) == 0);
+            if (server == null) return serverId;
+
+            return server.Id;
         }
     }
 }

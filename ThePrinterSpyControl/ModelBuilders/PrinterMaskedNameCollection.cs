@@ -95,14 +95,14 @@ namespace ThePrinterSpyControl.ModelBuilders
             }
             else if (_printerMask.Type == ConfigPrinterNameMask.MaskType.ContainsName)
             {
-                int start = name.IndexOf(_printerMask.Mask, StringComparison.InvariantCultureIgnoreCase);
+                int start = name.IndexOf(_printerMask.Mask, StringComparison.OrdinalIgnoreCase);
                 m = start < 0 ? string.Empty : name;
                 mask = m;
                 ids = printers.Where(p => p.Name.Contains(name)).Select(i => i.Id).ToList();
             }
             else
             {
-                Regex regex = new Regex(_printerMask.Mask);
+                Regex regex = new Regex(_printerMask.Mask, RegexOptions.IgnoreCase);
                 MatchCollection matches = regex.Matches(name);
                 m = (matches.Count < 1) ? name : matches[0].Value;
                 mask = (matches.Count < 1) ? string.Empty : matches[0].Value.ToUpper();

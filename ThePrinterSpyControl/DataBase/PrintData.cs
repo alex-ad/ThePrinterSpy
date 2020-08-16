@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace ThePrinterSpyControl.DataBase
 {
     using System;
@@ -22,6 +24,8 @@ namespace ThePrinterSpyControl.DataBase
         public string DocName { get; set; }
         public int Pages { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        [NotMapped]
+        public System.DateTime Date => TimeStamp.Date;
         public int JobId { get; set; }
     }
 }

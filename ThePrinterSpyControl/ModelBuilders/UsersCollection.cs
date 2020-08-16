@@ -6,20 +6,19 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
+using ThePrinterSpyControl.ViewModels;
 
 namespace ThePrinterSpyControl.ModelBuilders
 {
     public class UsersCollection
     {
         public static ObservableCollection<UserNode> Users { get; }
-        private static readonly TotalCountStat TotalStat;
         private readonly DBase _base;
         private readonly PrintersCollection _printers;
 
         static UsersCollection()
         {
             Users = new ObservableCollection<UserNode>();
-            TotalStat = new TotalCountStat();
             Users.CollectionChanged += Users_CollectionChanged;
         }
 
@@ -34,7 +33,7 @@ namespace ThePrinterSpyControl.ModelBuilders
             if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Remove ||
                 e.Action == NotifyCollectionChangedAction.Reset)
             {
-                TotalStat.Users = Users.Count();
+                PrinterSpyViewModel.TotalStat.Users = Users.Count();
             }
         }
 

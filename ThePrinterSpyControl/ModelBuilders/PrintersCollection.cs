@@ -6,19 +6,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
+using ThePrinterSpyControl.ViewModels;
 
 namespace ThePrinterSpyControl.ModelBuilders
 {
     public class PrintersCollection
     {
         public static ObservableCollection<PrinterNode> Printers { get; }
-        private static readonly TotalCountStat TotalStat;
         private readonly DBase _base;
 
         static PrintersCollection()
         {
             Printers = new ObservableCollection<PrinterNode>();
-            TotalStat = new TotalCountStat();
             Printers.CollectionChanged += Printers_CollectionChanged;
         }
 
@@ -32,8 +31,8 @@ namespace ThePrinterSpyControl.ModelBuilders
             if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Remove ||
                 e.Action == NotifyCollectionChangedAction.Reset)
             {
-                TotalStat.PrintersAll = Printers.Count;
-                TotalStat.PrintersEnabled = Printers.Count(x => x.Enabled);
+                PrinterSpyViewModel.TotalStat.PrintersAll = Printers.Count;
+                PrinterSpyViewModel.TotalStat.PrintersEnabled = Printers.Count(x => x.Enabled);
             }
         }
 

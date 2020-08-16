@@ -24,9 +24,17 @@ namespace ThePrinterSpyControl.Modules
 
             await Task.Run((() =>
             {
-                ManagementScope scope = new ManagementScope($@"\\{computerName}\root\cimv2");
-                scope.Connect();
-
+                ManagementScope scope;
+                try
+                {
+                    scope = new ManagementScope($@"\\{computerName}\root\cimv2");
+                    scope.Connect();
+                }
+                catch
+                {
+                    return;
+                }
+                
                 SelectQuery selectQuery = new SelectQuery();
                 selectQuery.QueryString = @"SELECT * FROM Win32_Printer WHERE Name = '" + printer.OldName.Replace("\\", "\\\\") + "'";
 
@@ -52,10 +60,10 @@ namespace ThePrinterSpyControl.Modules
             Printers.SetPrinterEnabled(printer.Id, printer.Enabled);
         }
 
-        public static void DeleteFromDb(SelectedPrinter printer)
+        public static async Task DeleteFromDb(SelectedPrinter printer)
         {
             if (printer == null || printer.Id < 1) throw new ArgumentException("The Printer is undefined", nameof(printer));
-            Printers.Remove(printer.Id);
+            await Printers.Remove(printer.Id);
         }
     }
 }

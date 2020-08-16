@@ -43,6 +43,8 @@ namespace ThePrinterSpyControl.ViewModels
         public PrinterSpyViewModel()
         {
             _base = new DBase();
+            TotalStat = new TotalCountStat();
+
             PrintersCollection = new PrintersCollection();
             UsersCollection = new UsersCollection();
             ComputersCollection = new ComputersCollection();
@@ -51,7 +53,6 @@ namespace ThePrinterSpyControl.ViewModels
 
             PrintDatas = new ObservableCollection<PrintDataGrid>();
 
-            TotalStat = new TotalCountStat();
             AppConfig = new AppConfig();
             SelectedPrinter = new SelectedPrinter();
 

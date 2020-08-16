@@ -89,12 +89,12 @@ namespace ThePrinterSpyService.Core
                 [Out] out IntPtr phPrinter, [In] IntPtr pDefault);
 
             [DllImport("winspool.drv", EntryPoint = "ClosePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-            public static extern bool ClosePrinterW(Int32 hPrinter);
+            public static extern bool ClosePrinter(Int32 hPrinter);
 
             [DllImport("winspool.drv", EntryPoint = "GetJobW", CharSet = CharSet.Unicode, SetLastError = true,
                 ExactSpelling = false, CallingConvention = CallingConvention.StdCall)]
             [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool GetJobW([In] IntPtr hPrinter, [In] Int32 jobId, [In] Int32 level,
+            public static extern bool GetJob([In] IntPtr hPrinter, [In] Int32 jobId, [In] Int32 level,
                 [Out] byte[] pJob, [In] Int32 cbBuf, ref Int32 lpbSizeNeeded);
 
             [DllImport("winspool.drv", EntryPoint = "FindFirstPrinterChangeNotification", SetLastError = true,
@@ -151,7 +151,7 @@ namespace ThePrinterSpyService.Core
         {
             if (_printerHandle != IntPtr.Zero)
             {
-                NativeMethods.ClosePrinterW((int)_printerHandle);
+                NativeMethods.ClosePrinter((int)_printerHandle);
                 _printerHandle = IntPtr.Zero;
             }
 
@@ -229,11 +229,11 @@ namespace ThePrinterSpyService.Core
 
             JobInfo jobInfo = new JobInfo();
 
-            NativeMethods.GetJobW(_printerHandle, jobId, 1, ptBuf, 0, ref bytesWritten);
+            NativeMethods.GetJob(_printerHandle, jobId, 1, ptBuf, 0, ref bytesWritten);
             if (bytesWritten > 0)
                 ptBuf = new byte[bytesWritten];
 
-            if (NativeMethods.GetJobW(_printerHandle, jobId, 1, ptBuf, bytesWritten, ref bytesWritten))
+            if (NativeMethods.GetJob(_printerHandle, jobId, 1, ptBuf, bytesWritten, ref bytesWritten))
             {
                 GCHandle handle = GCHandle.Alloc(ptBuf, GCHandleType.Pinned);
                 jobInfo = (JobInfo)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(JobInfo));
@@ -267,6 +267,7 @@ namespace ThePrinterSpyService.Core
 
             var p = Printer.GetPrinterByName(_computerId, _userId, jobInfo.pPrinterName);
             if (p == null) return;
+
             OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(p, jobId, jobDocName, jStatus, jobInfo));
         }
 

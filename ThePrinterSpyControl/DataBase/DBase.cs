@@ -21,7 +21,14 @@ namespace ThePrinterSpyControl.DataBase
 
         public DBase()
         {
-            _context = new PrintSpyEntities();
+            try
+            {
+                _context = new PrintSpyEntities();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
         }
 
         public void SaveChanges()
@@ -171,8 +178,8 @@ namespace ThePrinterSpyControl.DataBase
                 where d.UserId == id
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) >= 0)
-                              && (d.TimeStamp.CompareTo(end) <= 0)
+                              (DbFunctions.TruncateTime(d.TimeStamp) >= start)
+                              && (DbFunctions.TruncateTime(d.TimeStamp) <= end)
                               && isReport
                           )
                           || (!isReport)
@@ -194,8 +201,8 @@ namespace ThePrinterSpyControl.DataBase
                       && d.PrinterId == p.Id
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) >= 0)
-                              && (d.TimeStamp.CompareTo(end) <= 0)
+                              (DbFunctions.TruncateTime(d.TimeStamp) >= start)
+                              && (DbFunctions.TruncateTime(d.TimeStamp) <= end)
                               && isReport
                           )
                           || (!isReport)
@@ -214,8 +221,8 @@ namespace ThePrinterSpyControl.DataBase
                 where d.ComputerId == id
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) >= 0)
-                              && (d.TimeStamp.CompareTo(end) <= 0)
+                              (DbFunctions.TruncateTime(d.TimeStamp) >= start)
+                              && (DbFunctions.TruncateTime(d.TimeStamp) <= end)
                               && isReport
                           )
                           || (!isReport)
@@ -234,8 +241,8 @@ namespace ThePrinterSpyControl.DataBase
                 where d.PrinterId == id
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) >= 0)
-                              && (d.TimeStamp.CompareTo(end) <= 0)
+                              (DbFunctions.TruncateTime(d.TimeStamp) >= start)
+                              && (DbFunctions.TruncateTime(d.TimeStamp) <= end)
                               && isReport
                           )
                           || (!isReport)
@@ -255,8 +262,8 @@ namespace ThePrinterSpyControl.DataBase
                 where d.PrinterId == i
                       && (
                           (
-                              (d.TimeStamp.CompareTo(start) >= 0)
-                              && (d.TimeStamp.CompareTo(end) <= 0)
+                              (DbFunctions.TruncateTime(d.TimeStamp) >= start)
+                              && (DbFunctions.TruncateTime(d.TimeStamp) <= end)
                               && isReport
                           )
                           || (!isReport)

@@ -45,10 +45,10 @@ namespace ThePrinterSpyControl.Views
             PrinterSpyViewModel.SelectedPrinter.Reset();
         }
 
-        private void BtnPrinterDeleteFromDb_Click(object sender, RoutedEventArgs e)
+        private async void BtnPrinterDeleteFromDb_Click(object sender, RoutedEventArgs e)
         {
             var id = PrinterSpyViewModel.SelectedPrinter.Id;
-            PrinterManagement.DeleteFromDb(PrinterSpyViewModel.SelectedPrinter);
+            await PrinterManagement.DeleteFromDb(PrinterSpyViewModel.SelectedPrinter);
             _computers.PropertyPrinterListChanged(id);
             _users.PropertyPrinterListChanged(id);
             PrinterSpyViewModel.SelectedPrinter.Id = 0;
@@ -65,7 +65,9 @@ namespace ThePrinterSpyControl.Views
                 string.Equals(PrinterSpyViewModel.SelectedPrinter.NewName, PrinterSpyViewModel.SelectedPrinter.OldName,
                     StringComparison.InvariantCulture)) return;
 
+            btnPrinterRename.IsEnabled = false;
             await PrinterManagement.Rename(PrinterSpyViewModel.SelectedPrinter, computerName);
+            btnPrinterRename.IsEnabled = true;
             PrinterSpyViewModel.SelectedPrinter.OldName = PrinterSpyViewModel.SelectedPrinter.NewName;
             _computers.PropertyPrinterIdsChanged(id);
             _users.PropertyPrinterIdsChanged(id);

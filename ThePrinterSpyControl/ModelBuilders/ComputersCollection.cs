@@ -5,20 +5,19 @@ using System.Collections.Specialized;
 using System.Linq;
 using ThePrinterSpyControl.DataBase;
 using ThePrinterSpyControl.Models;
+using ThePrinterSpyControl.ViewModels;
 
 namespace ThePrinterSpyControl.ModelBuilders
 {
     public class ComputersCollection
     {
         public static ObservableCollection<ComputerNode> Computers { get; }
-        private static readonly TotalCountStat TotalStat;
         private readonly DBase _base;
         private readonly PrintersCollection _printers;
 
         static ComputersCollection()
         {
             Computers = new ObservableCollection<ComputerNode>();
-            TotalStat = new TotalCountStat();
             Computers.CollectionChanged += Computers_CollectionChanged;
         }
 
@@ -33,7 +32,7 @@ namespace ThePrinterSpyControl.ModelBuilders
             if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Remove ||
                 e.Action == NotifyCollectionChangedAction.Reset)
             {
-                TotalStat.Computers = Computers.Count();
+                PrinterSpyViewModel.TotalStat.Computers = Computers.Count();
             }
         }
 
