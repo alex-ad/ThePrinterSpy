@@ -123,9 +123,9 @@ namespace ThePrinterSpyControl.DataBase
             SaveChanges();
         }*/
 
-        public void SetPrinterEnabled(int id, bool enabled)
+        public async Task SetPrinterEnabled(int id, bool enabled)
         {
-            var p = GetPrinterById(id).Result;
+            var p = await GetPrinterById(id);
             if (p == null) return;
 
             p.Enabled = enabled;
@@ -184,7 +184,6 @@ namespace ThePrinterSpyControl.DataBase
                           )
                           || (!isReport)
                       )
-                      && p.Enabled
                 select new PrintDataCollection { Data = d, Printer = p, User = u };
 
             return await data.ToListAsync().ConfigureAwait(false);
@@ -281,6 +280,12 @@ namespace ThePrinterSpyControl.DataBase
             if (!data.Any()) return;
             _context.PrintDatas.RemoveRange(data);
         }
+
+        #endregion
+
+        #region Servers
+
+        public async Task<List<Server>> GetServersList() => await _context.Servers.ToListAsync().ConfigureAwait(false);
 
         #endregion
     }

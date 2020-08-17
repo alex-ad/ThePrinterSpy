@@ -50,7 +50,7 @@ namespace ThePrinterSpyControl.Models
             get => _enabled;
             set
             {
-                if (!_isNewModel) PrinterManagement.SetEnabled(this);
+                if (!_isNewModel) PrinterManagement.SetEnabled(this).ConfigureAwait(false);
                 if (value == _enabled) return;
                 _enabled = value;
                 OnPropertyChanged();

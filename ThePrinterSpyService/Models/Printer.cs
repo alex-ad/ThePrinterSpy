@@ -65,13 +65,12 @@ namespace ThePrinterSpyService.Models
             using (ManagementObjectCollection o = m.GetInstances())
                 foreach (ManagementObject p in o)
                 {
-                    Server server = Server.Add(Environment.MachineName);
+                    Server server = Server.Add(GetServerName(p["ServerName"]?.ToString(), p["PortName"]?.ToString()));
                     PrinterStruct prn = new PrinterStruct
                     {
                         Name = PrinterNameConvert(p["Name"].ToString()),
                         UserId = userId,
                         ComputerId = computerId,
-                        //ServerId = GetServerByPrinterName(p["Name"].ToString(), server.Id),
                         ServerId = server.Id,
                         Enabled = !IsFilter(p["Name"].ToString())
                     };
@@ -92,13 +91,12 @@ namespace ThePrinterSpyService.Models
             using (ManagementObjectCollection o = m.GetInstances())
                 foreach (ManagementObject p in o)
                 {
-                    Server server = Server.Add(Environment.MachineName);
+                    Server server = Server.Add(GetServerName(p["ServerName"].ToString(), p["PortName"].ToString()));
                     PrinterStruct prn = new PrinterStruct
                     {
                         Name = PrinterNameConvert(p["Name"].ToString()),
                         UserId = userId,
                         ComputerId = computerId,
-                        //ServerId = GetServerByPrinterName(p["Name"].ToString(), server.Id),
                         ServerId = server.Id,
                         Enabled = !IsFilter(p["Name"].ToString())
                     };
@@ -147,23 +145,20 @@ namespace ThePrinterSpyService.Models
         {
             var slash = name.LastIndexOf('\\');
             if (slash > 0)
-                name = name.Substring(slash + 1) + " via " + name.Substring(0, slash).Replace("\\", "");
+                name = name.Substring(slash + 1);
             return name;
         }
 
-        private static int GetServerByPrinterName(string printerName, int serverId)
+        private static string GetServerName(string server, string port)
         {
-            var slash = printerName.LastIndexOf('\\');
-            if (slash < 0) return serverId;
+            var serverName = server?.Replace("\\", "") ?? Environment.MachineName;
 
-            string serverName = printerName.Substring(0, slash).Replace("\\", "");
-            if (string.IsNullOrEmpty(serverName)) return serverId;
-            
-            var server = SpyOnSpool.PrintSpyContext.Servers.FirstOrDefault(x =>
-                string.Compare(x.Name, serverName, StringComparison.OrdinalIgnoreCase) == 0);
-            if (server == null) return serverId;
+            var slash = port.LastIndexOf('\\');
+            if (slash < 0) return serverName;
 
-            return server.Id;
+            serverName = port.Substring(0, slash).Replace("\\", "");
+
+            return serverName;
         }
     }
 }

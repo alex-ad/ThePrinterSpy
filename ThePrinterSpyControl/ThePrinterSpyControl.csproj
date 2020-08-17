@@ -92,6 +92,7 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandT.cs" />
+    <Compile Include="ModelBuilders\ServersCollection.cs" />
     <Compile Include="Models\AdIdentity.cs" />
     <Compile Include="Models\ConfigActiveDirectory.cs" />
     <Compile Include="DataBase\Computer.cs">
@@ -111,6 +112,7 @@
     <Compile Include="ModelBuilders\UsersCollection.cs" />
     <Compile Include="DataBase\DBase.cs" />
     <Compile Include="Models\LastError.cs" />
+    <Compile Include="Models\ServerNode.cs" />
     <Compile Include="Modules\ActiveDirectory.cs" />
     <Compile Include="Validators\ConfigValidator.cs" />
     <Compile Include="ValueConverters\PrinterFromIdValueConverter.cs" />

@@ -259,7 +259,7 @@ namespace ThePrinterSpyService.Core
                     _jobDocNames[jobId] = jobInfo.pDocument;
                 jobDocName = jobInfo.pDocument;
             }
-            catch (Exception ex)
+            catch
             {
                 _jobDocNames.TryGetValue(jobId, out jobDocName);
                 return;

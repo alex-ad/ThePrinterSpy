@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/31/2020 18:06:17
--- Generated from EDMX file: C:\Users\l0t\source\repos\ThePrinterSpy\ThePrinterSpyControl\Models\PrintSpyDb.edmx
+-- Date Created: 08/17/2020 11:34:04
+-- Generated from EDMX file: C:\Users\l0t\source\repos\ThePrinterSpy\ThePrinterSpyControl\DataBase\PrintSpyDb.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -25,6 +25,9 @@ GO
 IF OBJECT_ID(N'[dbo].[Computers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Computers];
 GO
+IF OBJECT_ID(N'[dbo].[Configs]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Configs];
+GO
 IF OBJECT_ID(N'[dbo].[PrintDatas]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PrintDatas];
 GO
@@ -36,9 +39,6 @@ IF OBJECT_ID(N'[dbo].[Servers]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Users]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Users];
-GO
-IF OBJECT_ID(N'[dbo].[Config]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Config];
 GO
 
 -- --------------------------------------------------
@@ -96,13 +96,14 @@ CREATE TABLE [dbo].[Users] (
 );
 GO
 
--- Creating table 'Config'
-CREATE TABLE [dbo].[Config] (
-    [Id] int  NOT NULL,
+-- Creating table 'Configs'
+CREATE TABLE [dbo].[Configs] (
+    [Id] int IDENTITY(1,1) NOT NULL,
     [AdEnabled] tinyint  NOT NULL,
-    [AdServer] nvarchar(50)  NULL,
-    [AdUser] nvarchar(50)  NULL,
-    [AdPassword] nvarchar(50)  NULL
+    [AdServer] nvarchar(max)  NULL,
+    [AdUser] nvarchar(max)  NULL,
+    [AdPassword] nvarchar(max)  NULL,
+    [AdDn] nvarchar(max)  NULL
 );
 GO
 
@@ -140,9 +141,9 @@ ADD CONSTRAINT [PK_Users]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Config'
-ALTER TABLE [dbo].[Config]
-ADD CONSTRAINT [PK_Config]
+-- Creating primary key on [Id] in table 'Configs'
+ALTER TABLE [dbo].[Configs]
+ADD CONSTRAINT [PK_Configs]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

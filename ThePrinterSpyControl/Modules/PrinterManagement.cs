@@ -54,10 +54,10 @@ namespace ThePrinterSpyControl.Modules
             }));
         }
 
-        public static void SetEnabled(SelectedPrinter printer)
+        public static async Task SetEnabled(SelectedPrinter printer)
         {
             if (printer == null || printer.Id < 1) throw new ArgumentException("The Printer is undefined", nameof(printer));
-            Printers.SetPrinterEnabled(printer.Id, printer.Enabled);
+            await Printers.SetPrinterEnabled(printer.Id, printer.Enabled);
         }
 
         public static async Task DeleteFromDb(SelectedPrinter printer)

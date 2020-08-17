@@ -2,6 +2,8 @@
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using ThePrinterSpyService.Exceptions;
+using ThePrinterSpyService.Models;
 
 namespace ThePrinterSpyService.Core
 {
@@ -20,7 +22,15 @@ namespace ThePrinterSpyService.Core
 
         public ActiveDirectory()
         {
-            var ad = SpyOnSpool.PrintSpyContext.Configs.First();
+            Config ad;
+            try
+            {
+                ad = SpyOnSpool.PrintSpyContext.Configs.First();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ThePrinterSpyException("DataBase is missing or not initialized. Please, reinstall program.", ex.Message, DateTime.Now);
+            }
 
             _domain = ad?.AdServer;
             _accountName = ad?.AdUser;

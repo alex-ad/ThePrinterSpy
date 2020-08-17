@@ -68,7 +68,7 @@ namespace ThePrinterSpyControl.ModelBuilders
             }
         }
 
-        public string GetNameByPrinterId(int id)
+        public string GetComputerByPrinterId(int id)
         {
             string computerName = string.Empty;
 
@@ -79,6 +79,8 @@ namespace ThePrinterSpyControl.ModelBuilders
             if (c != null) computerName = c.NetBiosName;
             return computerName;
         }
+
+        public string GetComputer(int id) => Computers.FirstOrDefault(x => x.Id == id)?.NetBiosName;
 
         public void PropertyPrinterIdsChanged(int id)
         {

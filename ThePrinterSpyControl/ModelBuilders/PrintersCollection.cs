@@ -83,11 +83,11 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         public ObservableCollection<PrinterNode> GetCollection() => Printers;
 
-        public void SetPrinterEnabled(int id, bool enabled)
+        public async Task SetPrinterEnabled(int id, bool enabled)
         {
             var p = Printers.FirstOrDefault(x => x.Id == id);
             if (p != null) p.Enabled = enabled;
-            SetDbPrinterEnabled(id, enabled);
+            await SetDbPrinterEnabled(id, enabled);
         }
 
         public void SetPrinterName(int id, string name)
@@ -106,7 +106,7 @@ namespace ThePrinterSpyControl.ModelBuilders
             Printers.Remove(p);
         }
 
-        private void SetDbPrinterEnabled(int id, bool enabled) =>_base.SetPrinterEnabled(id, enabled);
+        private async Task SetDbPrinterEnabled(int id, bool enabled) => await _base.SetPrinterEnabled(id, enabled);
 
         //private void SetDbPrinterName(int id, string name) => _base.SetPrinterName(id, name);
 

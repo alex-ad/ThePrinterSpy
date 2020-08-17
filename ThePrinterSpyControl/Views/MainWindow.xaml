@@ -270,16 +270,28 @@
                         <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" DataContext="{Binding Path=TotalStat}" Text="{Binding DocsByNode}"/>
                         <Label Grid.Column="0" Grid.Row="1" Content="Напечатано страниц: "/>
                         <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" DataContext="{Binding Path=TotalStat}" Text="{Binding PagesByNode}"/>
-                        <Label Grid.Column="0" Grid.Row="2" Content="Период отчета: "/>
+                        <Label Grid.Column="0" Grid.Row="2" Content="Период отчета: " IsEnabled="{Binding AppConfig.ReportDate.IsEnabled, Mode=OneWay, UpdateSourceTrigger=Explicit}"/>
                         <Grid Grid.Column="1" Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding AppConfig.ReportDate.Start, Mode=OneWay, StringFormat={}{0:dd.MM.yyyy}}"/>
-                            <TextBlock Grid.Column="1" VerticalAlignment="Center" Text=" - "/>
-                            <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding AppConfig.ReportDate.End, Mode=OneWay, StringFormat={}{0:dd.MM.yyyy}}"/>
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{Binding AppConfig.ReportDate.Start, Mode=OneWay, StringFormat={}{0:dd.MM.yyyy}}"
+                                IsEnabled="{Binding AppConfig.ReportDate.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text=" - "
+                                IsEnabled="{Binding AppConfig.ReportDate.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                            <TextBlock
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Text="{Binding AppConfig.ReportDate.End, Mode=OneWay, StringFormat={}{0:dd.MM.yyyy}}"
+                                IsEnabled="{Binding AppConfig.ReportDate.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
                         </Grid>
                     </Grid>
                 </Expander>

@@ -59,11 +59,11 @@ namespace ThePrinterSpyControl.Views
             var id = PrinterSpyViewModel.SelectedPrinter.Id;
             if (id < 1) return;
 
-            string computerName = _computers.GetNameByPrinterId(id);
+            string computerName = _computers.GetComputerByPrinterId(id);
             if (string.IsNullOrEmpty(computerName) ||
                 string.IsNullOrEmpty(PrinterSpyViewModel.SelectedPrinter.NewName) ||
-                string.Equals(PrinterSpyViewModel.SelectedPrinter.NewName, PrinterSpyViewModel.SelectedPrinter.OldName,
-                    StringComparison.InvariantCulture)) return;
+                string.Compare(PrinterSpyViewModel.SelectedPrinter.NewName, PrinterSpyViewModel.SelectedPrinter.OldName,
+                    StringComparison.OrdinalIgnoreCase) == 0) return;
 
             btnPrinterRename.IsEnabled = false;
             await PrinterManagement.Rename(PrinterSpyViewModel.SelectedPrinter, computerName);

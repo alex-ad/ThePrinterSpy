@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ThePrinterSpyControl.ModelBuilders;
+using ThePrinterSpyControl.ViewModels;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
 namespace ThePrinterSpyControl.Models
@@ -62,6 +64,7 @@ namespace ThePrinterSpyControl.Models
             {
                 if (value == _isEnabled) return;
                 _isEnabled = value;
+                PrinterSpyViewModel.PrinterNamesCollection.GetAll();
                 OnPropertyChanged();
             }
         }

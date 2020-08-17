@@ -8,11 +8,11 @@ namespace ThePrinterSpyControl.Models
 {
     public class ConfigReportDate : INotifyPropertyChanged
     {
-        private DateTime _start;
-        private DateTime _end;
-        private PeriodType _period;
-        private byte _periodIndex;
-        private bool _isEnabled;
+        private static DateTime _start;
+        private static DateTime _end;
+        private static PeriodType _period;
+        private static byte _periodIndex;
+        private static bool _isEnabled;
 
         public enum PeriodType : byte
         {
@@ -131,8 +131,6 @@ namespace ThePrinterSpyControl.Models
         }
 
         public override string ToString() => $"{_start.ToString("dd.MM.yyyy")} - {_end.ToString("dd.MM.yyyy")}";
-
-        //public bool IsInPeriod(DateTime date) => (date.CompareTo(_start) > -1 && date.CompareTo(_end) < 1);
 
         private void SetStart(DateTime date)
         {

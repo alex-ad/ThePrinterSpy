@@ -14,7 +14,7 @@ namespace ThePrinterSpyControl.Views
     /// <summary>
     /// Логика взаимодействия для OptionsWindow.xaml
     /// </summary>
-    public partial class OptionsWindow : Window
+    public partial class OptionsWindow
     {
         private static OptionsWindow _obj;
         private readonly UsersCollection _users = new UsersCollection();
@@ -48,21 +48,21 @@ namespace ThePrinterSpyControl.Views
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            checkPrinterNameMaskEnabled.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
-            comboPrinterNameMaskType.GetBindingExpression(ComboBox.SelectedIndexProperty).UpdateSource();
-            textPrinterNameMaskValue.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            dateReportPeriodStart.GetBindingExpression(DatePicker.TextProperty).UpdateSource();
-            dateReportPeriodEnd.GetBindingExpression(DatePicker.TextProperty).UpdateSource();
-            comboReportPeriodType.GetBindingExpression(ComboBox.SelectedIndexProperty).UpdateSource();
-            checkReportPeriodEnabled.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
-            comboDbaseConnectionType.GetBindingExpression(ComboBox.SelectedIndexProperty).UpdateSource();
-            textDbaseServer.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            textDbaseName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            textDbaseUser.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            checkAdEnabled.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
-            textAdServer.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            textAdUser.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            pswAdPassword.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            CheckPrinterNameMaskEnabled.GetBindingExpression(CheckBox.IsCheckedProperty)?.UpdateSource();
+            ComboPrinterNameMaskType.GetBindingExpression(ComboBox.SelectedIndexProperty)?.UpdateSource();
+            TextPrinterNameMaskValue.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            DateReportPeriodStart.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
+            DateReportPeriodEnd.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
+            ComboReportPeriodType.GetBindingExpression(ComboBox.SelectedIndexProperty)?.UpdateSource();
+            CheckReportPeriodEnabled.GetBindingExpression(CheckBox.IsCheckedProperty)?.UpdateSource();
+            ComboDbaseConnectionType.GetBindingExpression(ComboBox.SelectedIndexProperty)?.UpdateSource();
+            TextDbaseServer.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            TextDbaseName.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            TextDbaseUser.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            CheckAdEnabled.GetBindingExpression(CheckBox.IsCheckedProperty)?.UpdateSource();
+            TextAdServer.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            TextAdUser.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            PswAdPassword.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 
             if (ConfigValidator.AnyError) return;
 
@@ -73,15 +73,15 @@ namespace ThePrinterSpyControl.Views
 
         private async void btnAdSync_Click(object sender, RoutedEventArgs e)
         {
-            textAdServer.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            textAdUser.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            pswAdPassword.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            TextAdServer.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            TextAdUser.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            PswAdPassword.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 
             if (ConfigValidator.AnyError) return;
 
-            btnAdSync.IsEnabled = false;
+            BtnAdSync.IsEnabled = false;
             await SyncUsersWithAd();
-            btnAdSync.IsEnabled = true;
+            BtnAdSync.IsEnabled = true;
         }
 
         private async Task SyncUsersWithAd()

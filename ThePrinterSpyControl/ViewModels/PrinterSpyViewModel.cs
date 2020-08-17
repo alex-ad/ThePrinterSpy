@@ -30,6 +30,7 @@ namespace ThePrinterSpyControl.ViewModels
         public static PrintersCollection PrintersCollection { get; private set; }
         public static ComputersCollection ComputersCollection { get; private set; }
         public static DepartmentsCollection DepartmentsCollection { get; private set; }
+        public static ServersCollection ServersCollection { get; private set; }
         public static PrinterMaskedNameCollection PrinterNamesCollection { get; private set; }
         public ObservableCollection<PrintDataGrid> PrintDatas { get; }
         public static TotalCountStat TotalStat { get; private set; }
@@ -50,6 +51,7 @@ namespace ThePrinterSpyControl.ViewModels
             ComputersCollection = new ComputersCollection();
             DepartmentsCollection = new DepartmentsCollection();
             PrinterNamesCollection = new PrinterMaskedNameCollection();
+            ServersCollection = new ServersCollection();
 
             PrintDatas = new ObservableCollection<PrintDataGrid>();
 
@@ -249,6 +251,7 @@ namespace ThePrinterSpyControl.ViewModels
             ComputersCollection.GetAll();
             DepartmentsCollection.GetAll();
             PrinterNamesCollection.GetAll();
+            ServersCollection.GetAll();
         }
     }
 }

@@ -4,78 +4,78 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PrintSpyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Computers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="Configs">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AdEnabled" Type="tinyint" Nullable="false" />
-          <Property Name="AdServer" Type="nvarchar(max)" />
-          <Property Name="AdUser" Type="nvarchar(max)" />
-          <Property Name="AdPassword" Type="nvarchar(max)" />
-          <Property Name="AdDn" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="PrintDatas">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PrinterId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="ComputerId" Type="int" Nullable="false" />
-          <Property Name="ServerId" Type="int" Nullable="false" />
-          <Property Name="DocName" Type="nvarchar(max)" />
-          <Property Name="Pages" Type="int" Nullable="false" />
-          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
-          <Property Name="JobId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Printers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="ComputerId" Type="int" Nullable="false" />
-          <Property Name="ServerId" Type="int" Nullable="false" />
-          <Property Name="Enabled" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Servers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AccountName" Type="nvarchar(max)" />
-          <Property Name="FullName" Type="nvarchar(max)" />
-          <Property Name="Department" Type="nvarchar(max)" />
-          <Property Name="Position" Type="nvarchar(max)" />
-          <Property Name="Company" Type="nvarchar(max)" />
-          <Property Name="Sid" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityContainer Name="PrintSpyModelStoreContainer">
-          <EntitySet Name="Computers" EntityType="Self.Computers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Configs" EntityType="Self.Configs" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PrintDatas" EntityType="Self.PrintDatas" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Printers" EntityType="Self.Printers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Servers" EntityType="Self.Servers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+    <Schema Namespace="PrintSpyModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="PrintSpyModelStoreContainer">
+    <EntitySet Name="Computers" EntityType="PrintSpyModel.Store.Computers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PrintDatas" EntityType="PrintSpyModel.Store.PrintDatas" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Printers" EntityType="PrintSpyModel.Store.Printers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Servers" EntityType="PrintSpyModel.Store.Servers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="PrintSpyModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Configs" EntityType="PrintSpyModel.Store.Configs" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Computers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="PrintDatas">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PrinterId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="ComputerId" Type="int" Nullable="false" />
+    <Property Name="ServerId" Type="int" Nullable="false" />
+    <Property Name="DocName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Pages" Type="int" Nullable="false" />
+    <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Printers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="ComputerId" Type="int" Nullable="false" />
+    <Property Name="ServerId" Type="int" Nullable="false" />
+    <Property Name="Enabled" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Servers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FullName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Department" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Position" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Company" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Sid" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Configs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdEnabled" Type="tinyint" Nullable="false" />
+    <Property Name="AdServer" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="AdUser" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="AdPassword" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="AdDn" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PrintSpyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -211,18 +211,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-          <EntitySetMapping Name="Configs">
-            <EntityTypeMapping TypeName="PrintSpyModel.Config">
-              <MappingFragment StoreEntitySet="Configs">
-                <ScalarProperty Name="AdDn" ColumnName="AdDn" />
-                <ScalarProperty Name="AdPassword" ColumnName="AdPassword" />
-                <ScalarProperty Name="AdUser" ColumnName="AdUser" />
-                <ScalarProperty Name="AdServer" ColumnName="AdServer" />
-                <ScalarProperty Name="AdEnabled" ColumnName="AdEnabled" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+    <EntitySetMapping Name="Configs">
+      <EntityTypeMapping TypeName="IsTypeOf(PrintSpyModel.Config)">
+        <MappingFragment StoreEntitySet="Configs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AdEnabled" ColumnName="AdEnabled" />
+          <ScalarProperty Name="AdServer" ColumnName="AdServer" />
+          <ScalarProperty Name="AdUser" ColumnName="AdUser" />
+          <ScalarProperty Name="AdPassword" ColumnName="AdPassword" />
+          <ScalarProperty Name="AdDn" ColumnName="AdDn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
