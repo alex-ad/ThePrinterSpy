@@ -31,7 +31,7 @@ namespace ThePrinterSpyService.Core
         
         public static void AddTextLine(string message)
         {
-            File.AppendAllText($@"{CurrentPath}\error.txt", message);
+            File.AppendAllText($@"{CurrentPath}\log.txt", message);
         }
 
         private static string FormatMsg(ErrorMessage errorMessage)
