@@ -48,18 +48,18 @@ namespace ThePrinterSpyControl.Views
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            CheckPrinterNameMaskEnabled.GetBindingExpression(CheckBox.IsCheckedProperty)?.UpdateSource();
-            ComboPrinterNameMaskType.GetBindingExpression(ComboBox.SelectedIndexProperty)?.UpdateSource();
+            CheckPrinterNameMaskEnabled.GetBindingExpression(System.Windows.Controls.Primitives.ToggleButton.IsCheckedProperty)?.UpdateSource();
+            ComboPrinterNameMaskType.GetBindingExpression(System.Windows.Controls.Primitives.Selector.SelectedIndexProperty)?.UpdateSource();
             TextPrinterNameMaskValue.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             DateReportPeriodStart.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
             DateReportPeriodEnd.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
-            ComboReportPeriodType.GetBindingExpression(ComboBox.SelectedIndexProperty)?.UpdateSource();
-            CheckReportPeriodEnabled.GetBindingExpression(CheckBox.IsCheckedProperty)?.UpdateSource();
-            ComboDbaseConnectionType.GetBindingExpression(ComboBox.SelectedIndexProperty)?.UpdateSource();
+            ComboReportPeriodType.GetBindingExpression(System.Windows.Controls.Primitives.Selector.SelectedIndexProperty)?.UpdateSource();
+            CheckReportPeriodEnabled.GetBindingExpression(System.Windows.Controls.Primitives.ToggleButton.IsCheckedProperty)?.UpdateSource();
+            ComboDbaseConnectionType.GetBindingExpression(System.Windows.Controls.Primitives.Selector.SelectedIndexProperty)?.UpdateSource();
             TextDbaseServer.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             TextDbaseName.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             TextDbaseUser.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
-            CheckAdEnabled.GetBindingExpression(CheckBox.IsCheckedProperty)?.UpdateSource();
+            CheckAdEnabled.GetBindingExpression(System.Windows.Controls.Primitives.ToggleButton.IsCheckedProperty)?.UpdateSource();
             TextAdServer.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             TextAdUser.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             PswAdPassword.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();

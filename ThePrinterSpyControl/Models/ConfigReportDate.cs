@@ -53,17 +53,6 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
-        public PeriodType Period
-        {
-            get => _period;
-            set
-            {
-                if (value == _period) return;
-                _period = value;
-                OnPropertyChanged();
-            }
-        }
-
         public byte PeriodIndex
         {
             get => _periodIndex;

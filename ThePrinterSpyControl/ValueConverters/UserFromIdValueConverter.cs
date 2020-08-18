@@ -13,9 +13,7 @@ namespace ThePrinterSpyControl.ValueConverters
         {
             if (value == null) throw new ArgumentNullException(nameof(value), "User Id cannot be Null");
             var u = _users.GetUser((int) value);
-            var name = u.AccountName;
-            if (!string.IsNullOrEmpty(u.FullName)) name = $"{u.FullName} ({u.AccountName})";
-            return name;
+            return (!string.IsNullOrEmpty(u.FullName)) ? $"{u.FullName} ({u.AccountName})" : u.AccountName;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
