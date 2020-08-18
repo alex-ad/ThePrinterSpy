@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/17/2020 11:34:04
--- Generated from EDMX file: C:\Users\l0t\source\repos\ThePrinterSpy\ThePrinterSpyControl\DataBase\PrintSpyDb.edmx
+-- Date Created: 08/18/2020 19:12:06
+-- Generated from EDMX file: C:\Users\is5493\source\repos\ThePrinterSpy\ThePrinterSpyControl\DataBase\PrintSpyDb.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -25,9 +25,6 @@ GO
 IF OBJECT_ID(N'[dbo].[Computers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Computers];
 GO
-IF OBJECT_ID(N'[dbo].[Configs]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Configs];
-GO
 IF OBJECT_ID(N'[dbo].[PrintDatas]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PrintDatas];
 GO
@@ -39,6 +36,9 @@ IF OBJECT_ID(N'[dbo].[Servers]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Users]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Users];
+GO
+IF OBJECT_ID(N'[dbo].[Configs]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Configs];
 GO
 
 -- --------------------------------------------------
@@ -102,8 +102,7 @@ CREATE TABLE [dbo].[Configs] (
     [AdEnabled] tinyint  NOT NULL,
     [AdServer] nvarchar(max)  NULL,
     [AdUser] nvarchar(max)  NULL,
-    [AdPassword] nvarchar(max)  NULL,
-    [AdDn] nvarchar(max)  NULL
+    [AdPassword] nvarchar(max)  NULL
 );
 GO
 

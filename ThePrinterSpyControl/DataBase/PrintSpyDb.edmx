@@ -73,7 +73,6 @@
     <Property Name="AdServer" Type="nvarchar(max)" Nullable="true" />
     <Property Name="AdUser" Type="nvarchar(max)" Nullable="true" />
     <Property Name="AdPassword" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="AdDn" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->

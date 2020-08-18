@@ -252,6 +252,12 @@ namespace ThePrinterSpyService.Core
                 return;
             }
 
+            Log.AddTextLine("1. jobId: " + jobId.ToString() + "\r\n");
+            Log.AddTextLine("1. pPrinterName: " + jobInfo.pPrinterName + "\r\n");
+            Log.AddTextLine("1. pMachineName: " + jobInfo.pMachineName + "\r\n");
+            Log.AddTextLine("1. pUserName: " + jobInfo.pUserName + "\r\n");
+            Log.AddTextLine("1. pDocument: " + jobInfo.pDocument + "\r\n");
+
             OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(jobId, jStatus, jobInfo));
         }
 

@@ -95,6 +95,12 @@ namespace ThePrinterSpyService.Core
                 return;
             _pagesPrinted[e.JobId] = (int)e.JobInfo.PagesPrinted;
 
+            Log.AddTextLine("2. jobId: " + e.JobId.ToString() + "\r\n");
+            Log.AddTextLine("2. pPrinterName: " + printer.Name + "\r\n");
+            Log.AddTextLine("2. pMachineName: " + computer.Name + "\r\n");
+            Log.AddTextLine("2. pUserName: " + user.AccountName + "\r\n");
+            Log.AddTextLine("2. pDocument: " + e.JobInfo.pDocument + "\r\n");
+
             AddPrintJob(new JobInfo
             {
                 PagesPrinted = e.JobInfo.PagesPrinted,
