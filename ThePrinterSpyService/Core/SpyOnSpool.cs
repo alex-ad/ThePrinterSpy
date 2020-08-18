@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using ThePrinterSpyService.Models;
 using System.Security.Principal;
@@ -23,9 +21,7 @@ namespace ThePrinterSpyService.Core
             _currentComputer = Computer.Add(Environment.MachineName);
 
             var identity = WindowsIdentity.GetCurrent();
-            var userName = identity.Name;
-            var slash = userName.LastIndexOf('\\');
-            if (slash > 0) userName = userName.Substring(slash + 1);
+            var userName = TruncateElemName(identity.Name);
             var sid = identity.Owner?.Value ?? "";
 
             _currentUser = User.Add(userName, sid);
@@ -39,7 +35,7 @@ namespace ThePrinterSpyService.Core
             {
                 try
                 {
-                    _printersMonitor = new PrinterChangeNotification(_currentUser.Id, _currentComputer.Id, _currentComputer.Name);
+                    _printersMonitor = new PrinterChangeNotification(_currentComputer.Name);
                     _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
                     _printersMonitor.OnPrinterJobChange += OnPrinterJobChange;
                     _printersMonitor.OnPrinterNameChange += OnPrinterNameChange;
@@ -83,6 +79,16 @@ namespace ThePrinterSpyService.Core
 
         private void OnPrinterJobChange(object sender, PrinterJobChangeEventArgs e)
         {
+            if (string.IsNullOrEmpty(e.JobInfo.pPrinterName) || string.IsNullOrEmpty(e.JobInfo.pDocument) ||
+                string.IsNullOrEmpty(e.JobInfo.pMachineName) || string.IsNullOrEmpty(e.JobInfo.pUserName)) return;
+
+            var computer = Computer.Get(e.JobInfo.pMachineName.Replace("\\", ""));
+            if (computer == null) return;
+            var user = User.GetByName(TruncateElemName(e.JobInfo.pUserName));
+            if (user == null) return;
+            var printer = Printer.Get(TruncateElemName(e.JobInfo.pPrinterName), computer.Id, user.Id);
+            if (printer == null || !printer.Enabled) return;
+
             if (!_pagesPrinted.ContainsKey(e.JobId))
                 _pagesPrinted.Add(e.JobId, (int)e.JobInfo.PagesPrinted);
             else if (_pagesPrinted[e.JobId] == (int)e.JobInfo.PagesPrinted)
@@ -92,10 +98,10 @@ namespace ThePrinterSpyService.Core
             AddPrintJob(new JobInfo
             {
                 PagesPrinted = e.JobInfo.PagesPrinted,
-                pDocument = e.JobName,
+                pDocument = e.JobInfo.pDocument,
                 Submitted = e.JobInfo.Submitted,
                 JobId = (uint)e.JobId
-            }, _currentUser.Id, e.Printer.ComputerId, e.Printer.ServerId, e.Printer.Id);
+            }, printer.UserId, printer.ComputerId, printer.ServerId, printer.Id);
         }
 
         private void OnPrinterNameChange(object sender, PrinterNameChangeEventArgs e)
@@ -106,6 +112,13 @@ namespace ThePrinterSpyService.Core
         private void _printersMonitor_OnPrinterAddedDeleted(object sender, PrinterNameChangeEventArgs e)
         {
             _localPrinters = Printer.BuildLocalPrintersList(_currentComputer.Id, _currentUser.Id);
+        }
+
+        private string TruncateElemName(string name)
+        {
+            var slash = name.LastIndexOf('\\');
+            if (slash > 0) name = name.Substring(slash + 1);
+            return name;
         }
     }
 }

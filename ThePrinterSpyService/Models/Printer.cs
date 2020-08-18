@@ -106,9 +106,11 @@ namespace ThePrinterSpyService.Models
             return prnList;
         }
 
-        public static Printer GetPrinterByName(int computerId, int userId, string printerName) => SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(p => ((p.ComputerId == computerId) && (p.UserId == userId) && (p.Name == printerName)));
-
         private static Printer Get(PrinterStruct printer) => SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(p => ((p.ComputerId == printer.ComputerId) && (p.ServerId == printer.ServerId) && (p.Name == printer.Name) ));
+
+        public static Printer Get(string printerName, int computerId, int userId) =>
+            SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(x =>
+                x.Name == printerName && x.ComputerId == computerId && x.UserId == userId);
 
         public static void Rename(int computerId, int userId, string printerName, ref List<Printer> printersList)
         {

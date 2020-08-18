@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using ThePrinterSpyService.Models;
 
 namespace ThePrinterSpyService.Core
 {
@@ -41,16 +39,12 @@ namespace ThePrinterSpyService.Core
 
     public class PrinterJobChangeEventArgs : EventArgs
     {
-        public Printer Printer { get; }
         public int JobId { get; }
-        public string JobName { get; }
         public JOBSTATUS JobStatus { get; }
         public JobInfo JobInfo { get; }
-        public PrinterJobChangeEventArgs(Printer printer, int jobId, string jobName, JOBSTATUS jobStatus, JobInfo jobInfo)
+        public PrinterJobChangeEventArgs(int jobId, JOBSTATUS jobStatus, JobInfo jobInfo)
         {
-            Printer = printer;
             JobId = jobId;
-            JobName = jobName;
             JobStatus = jobStatus;
             JobInfo = jobInfo;
         }
@@ -72,8 +66,6 @@ namespace ThePrinterSpyService.Core
 
     class PrinterChangeNotification
     {
-        private readonly int _userId;
-        private readonly int _computerId;
         private readonly string _computerName;
         private IntPtr _printerHandle = IntPtr.Zero;
         private IntPtr _changeHandle = IntPtr.Zero;
@@ -120,10 +112,8 @@ namespace ThePrinterSpyService.Core
         public event PrinterNameChanged OnPrinterNameChange;
         public event PrinterAddedDeleted OnPrinterAddedDeleted;
 
-        public PrinterChangeNotification(int userId, int computerId, string computerName)
+        public PrinterChangeNotification(string computerName)
         {
-            _userId = userId;
-            _computerId = computerId;
             _computerName = computerName;
             Start();
         }
@@ -248,7 +238,6 @@ namespace ThePrinterSpyService.Core
         {
             JOBSTATUS jStatus = (JOBSTATUS)Enum.Parse(typeof(JOBSTATUS), data.NotifyData.Data.cbBuf.ToString());
             int jobId = (int)data.Id;
-            string jobDocName;
             JobInfo jobInfo;
 
             try
@@ -257,18 +246,13 @@ namespace ThePrinterSpyService.Core
                 if (jobInfo.PagesPrinted == 0) return;
                 if (!_jobDocNames.ContainsKey(jobId))
                     _jobDocNames[jobId] = jobInfo.pDocument;
-                jobDocName = jobInfo.pDocument;
             }
             catch
             {
-                _jobDocNames.TryGetValue(jobId, out jobDocName);
                 return;
             }
 
-            var p = Printer.GetPrinterByName(_computerId, _userId, jobInfo.pPrinterName);
-            if (p == null) return;
-
-            OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(p, jobId, jobDocName, jStatus, jobInfo));
+            OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(jobId, jStatus, jobInfo));
         }
 
         private void PrinterNameNotification(PRINTER_NOTIFY_INFO_DATA data)

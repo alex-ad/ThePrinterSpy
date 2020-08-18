@@ -147,7 +147,6 @@
           <Property Name="AdServer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AdUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AdPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AdDn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -219,7 +218,6 @@
           <ScalarProperty Name="AdServer" ColumnName="AdServer" />
           <ScalarProperty Name="AdUser" ColumnName="AdUser" />
           <ScalarProperty Name="AdPassword" ColumnName="AdPassword" />
-          <ScalarProperty Name="AdDn" ColumnName="AdDn" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

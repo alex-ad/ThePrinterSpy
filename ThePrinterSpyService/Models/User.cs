@@ -16,7 +16,7 @@ namespace ThePrinterSpyService.Models
         public static User Add(string name, string sid)
         {
             if (IsExists(sid))
-                return Get(sid);
+                return GetBySid(sid);
 
             ActiveDirectory ad = new ActiveDirectory();
             if (SpyOnSpool.PrintSpyContext.Configs.Find(1)?.AdEnabled == 1)
@@ -34,7 +34,8 @@ namespace ThePrinterSpyService.Models
             return user;
         }
 
-        public static User Get(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid);
+        public static User GetBySid(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid);
+        public static User GetByName(string name) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.AccountName == name);
         public static bool IsExists(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid) != null;
     }
 }
