@@ -89,9 +89,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="App.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandT.cs" />
+    <Compile Include="Languages\lang.Designer.cs">
+      <DependentUpon>lang.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Languages\lang.ru.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>lang.ru.resx</DependentUpon>
+    </Compile>
     <Compile Include="ModelBuilders\ServersCollection.cs" />
     <Compile Include="Models\AdIdentity.cs" />
     <Compile Include="Models\ConfigActiveDirectory.cs" />
@@ -118,7 +129,6 @@
     <Compile Include="ValueConverters\PrinterFromIdValueConverter.cs" />
     <Compile Include="ValueConverters\SelectedPrinterVisibilityValueConverter.cs" />
     <Compile Include="ValueConverters\UserFromIdValueConverter.cs" />
-    <Compile Include="Models\ConfigDataBase.cs" />
     <Compile Include="DataBase\PrintData.cs">
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
@@ -152,9 +162,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PrintSpyDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Views\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -196,6 +213,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Languages\lang.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>lang.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\lang.ru.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>lang.ru.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -232,6 +259,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\rename.gif" />
+    <Resource Include="Images\delete.gif" />
+    <Resource Include="Images\logo.png" />
     <Resource Include="Images\bag.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

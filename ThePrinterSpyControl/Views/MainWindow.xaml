@@ -4,10 +4,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:modules="clr-namespace:ThePrinterSpyControl.Modules"
         xmlns:valueConverters="clr-namespace:ThePrinterSpyControl.ValueConverters"
+        xmlns:loc="clr-namespace:ThePrinterSpyControl.Languages"
         mc:Ignorable="d"
-        Title="The Printer Spy - Control Panel (Версия 1.0.0.0)" Height="768" Width="1024" MinWidth="600" MinHeight="480" WindowStartupLocation="CenterScreen" Closing="Window_Closing" Loaded="Window_Loaded">
+        Title="{x:Static loc:lang.MainWindowTitle}"
+            Height="768"
+            Width="1024"
+            MinWidth="600"
+            MinHeight="480"
+            WindowStartupLocation="CenterScreen"
+            Closing="Window_Closing"
+            Loaded="Window_Loaded">
     <Window.Resources>
         <valueConverters:FullNameValueConverter x:Key="FullNameValueConverter"></valueConverters:FullNameValueConverter>
         <valueConverters:PrinterEnabledValueConverter x:Key="PrinterEnabledValueConverter"></valueConverters:PrinterEnabledValueConverter>
@@ -23,63 +30,71 @@
     </Window.CommandBindings>
     <DockPanel>
         <Menu Height="26" VerticalAlignment="Top" DockPanel.Dock="Top" Padding="0">
-            <MenuItem Header="_Файл" Height="26" VerticalAlignment="Center" Padding="7,0,7,0">
-                <MenuItem Header="_Экспорт отчета..." Height="22" Command="SaveAs"/>
+            <MenuItem Header="{x:Static loc:lang.MenuFile}" Height="26" VerticalAlignment="Center" Padding="7,0,7,0">
+                <MenuItem Header="{x:Static loc:lang.MenuReportExport}" Height="22" Command="SaveAs"/>
                 <Separator/>
-                <MenuItem Header="В_ыход" Height="22"/>
+                <MenuItem Header="{x:Static loc:lang.MenuExit}" Height="22"/>
             </MenuItem>
-            <MenuItem Header="_Опции" Height="26" VerticalAlignment="Center" Padding="7,0,7,0">
-                <MenuItem Header="_Настройки..."
-                          Height="22"
-                          Command="{Binding Path=DataContext.ShowOptionsWindowCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                          CommandParameter="1"/>
+            <MenuItem Header="{x:Static loc:lang.MenuOptions}" Height="26" VerticalAlignment="Center" Padding="7,0,7,0">
+                <MenuItem
+                    Header="{x:Static loc:lang.MenuConfig}"
+                    Height="22"
+                    Command="{Binding Path=DataContext.ShowOptionsWindowCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
                 <Separator/>
-                <MenuItem x:Name="menuTabUsers" Header="Вкладка [Пользователи]" Height="22" IsCheckable="True" StaysOpenOnClick="True"/>
-                <MenuItem x:Name="menuTabPrinters" Header="Вкладка [Принтеры]" Height="22" IsCheckable="True" StaysOpenOnClick="True"/>
-                <MenuItem x:Name="menuTabComputers" Header="Вкладка [Компьютеры]" Height="22" IsCheckable="True" StaysOpenOnClick="True"/>
-                <MenuItem x:Name="menuTabDepartments" Header="Вкладка [Подразделения]" Height="22" IsCheckable="True" StaysOpenOnClick="True"/>
+                <MenuItem x:Name="MenuTabUsers" Header="{x:Static loc:lang.MenuUsersShow}" Height="22" IsCheckable="True" StaysOpenOnClick="True"/>
+                <MenuItem x:Name="MenuTabPrinters" Header="{x:Static loc:lang.MenuPrintersShow}" Height="22" IsCheckable="True" StaysOpenOnClick="True"/>
+                <MenuItem x:Name="MenuTabComputers" Header="{x:Static loc:lang.MenuComputersShow}" Height="22" IsCheckable="True" StaysOpenOnClick="True"/>
+                <MenuItem x:Name="MenuTabDepartments" Header="{x:Static loc:lang.MenuDepartmentsShow}" Height="22" IsCheckable="True" StaysOpenOnClick="True"/>
             </MenuItem>
-            <MenuItem Header="_Помощь" Height="26" Padding="7,0,7,0"/>
+            <MenuItem
+                Header="{x:Static loc:lang.MenuAbout}"
+                Height="26"
+                Padding="7,0,7,0"
+                Command="{Binding Path=DataContext.ShowAboutWindowCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
         </Menu>
         <ToolBar Height="32" DockPanel.Dock="Top" VerticalAlignment="Top">
-            <Button x:Name="btnRefresh" Content="Обновить" Height="27" VerticalAlignment="Top" Padding="7,0,7,0" Command="Refresh"/>
-            <Button Content="Настройки..."
-                    Height="27"
-                    VerticalAlignment="Top"
-                    Padding="7,0,7,0"
-                    Command="{Binding Path=DataContext.ShowOptionsWindowCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                    CommandParameter="1"/>
-            <Button x:Name="btnExport" Content="Экспорт..." Height="27" VerticalAlignment="Top" Padding="7,0,7,0" Command="SaveAs"/>
+            <Button x:Name="BtnRefresh" Content="{x:Static loc:lang.NavRefresh}" Height="27" VerticalAlignment="Top" Padding="7,0,7,0" Command="Refresh"/>
+            <Button
+                Content="{x:Static loc:lang.NavConfig}"
+                Height="27"
+                VerticalAlignment="Top"
+                Padding="7,0,7,0"
+                Command="{Binding Path=DataContext.ShowOptionsWindowCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Button x:Name="BtnExport" Content="{x:Static loc:lang.NavReportExport}" Height="27" VerticalAlignment="Top" Padding="7,0,7,0" Command="SaveAs"/>
         </ToolBar>
         <StatusBar Height="26" VerticalAlignment="Top" DockPanel.Dock="Bottom" DataContext="{Binding Path=TotalStat}">
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Пользователей: "/>
-                    <TextBlock Name="statusUsers" Text="{Binding Users}"/>
+                    <TextBlock Text="{x:Static loc:lang.StatusUsers}"/>
+                    <TextBlock Text=": "/>
+                    <TextBlock Name="StatusUsers" Text="{Binding Users}"/>
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Компьютеров: "/>
-                    <TextBlock Name="statusComputers" Text="{Binding Computers}"/>
+                    <TextBlock Text="{x:Static loc:lang.StatusComputers}"/>
+                    <TextBlock Text=": "/>
+                    <TextBlock Name="StatusComputers" Text="{Binding Computers}"/>
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Принтеров: "/>
-                    <TextBlock Name="statusPrintersEnabled" Text="{Binding PrintersEnabled}"/>
+                    <TextBlock Text="{x:Static loc:lang.StatusPrinters}"/>
+                    <TextBlock Text=": "/>
+                    <TextBlock Name="StatusPrintersEnabled" Text="{Binding PrintersEnabled}"/>
                     <TextBlock Text="/"/>
-                    <TextBlock Name="statusPrintersAll" Text="{Binding PrintersAll}"/>
+                    <TextBlock Name="StatusPrintersAll" Text="{Binding PrintersAll}"/>
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Подразделений: "/>
-                    <TextBlock Name="statusDepartments" Text="{Binding Departments}"/>
+                    <TextBlock Text="{x:Static loc:lang.StatusDepartments}"/>
+                    <TextBlock Text=": "/>
+                    <TextBlock Name="StatusDepartments" Text="{Binding Departments}"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
-        <Grid x:Name="gridMain" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="AliceBlue" Height="Auto">
+        <Grid x:Name="GridMain" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="AliceBlue" Height="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="135*" MinWidth="200"/>
                 <ColumnDefinition Width="119*"/>
@@ -93,15 +108,17 @@
                         <RowDefinition Height="105"/>
                     </Grid.RowDefinitions>
                     <TabControl x:Name="TabControl" Grid.Row="0" MinHeight="50" Margin="0,0,5,0">
-                        <TabItem x:Name="tabUsers"
-                                 TabIndex="0"
-                                 Header="Пользователи"
-                                 Visibility="{Binding IsChecked, ElementName=menuTabUsers, Converter={StaticResource TabVisibilityValueConverter}}"
-                                 IsVisibleChanged="tabUsers_IsVisibleChanged">
-                            <TreeView x:Name="treeUsers"
-                                      ItemsSource="{Binding Path=UsersCollection.Users}"
-                                      Visibility="{Binding Visibility, ElementName=tabUsers}"
-                                      ScrollViewer.CanContentScroll="True">
+                        <TabItem
+                            x:Name="TabUsers"
+                            TabIndex="0"
+                            Header="{x:Static loc:lang.TabUsers}"
+                            Visibility="{Binding IsChecked, ElementName=MenuTabUsers, Converter={StaticResource TabVisibilityValueConverter}}"
+                            IsVisibleChanged="tabUsers_IsVisibleChanged">
+                            <TreeView
+                                x:Name="TreeUsers"
+                                ItemsSource="{Binding Path=UsersCollection.Users}"
+                                Visibility="{Binding Visibility, ElementName=TabUsers}"
+                                ScrollViewer.CanContentScroll="True">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding PrinterIds}">
                                         <StackPanel Orientation="Horizontal">
@@ -116,25 +133,27 @@
                                         <HierarchicalDataTemplate.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock
-                                                Text="{Binding Converter={StaticResource PrinterFromIdValueConverter}}"
-                                                Foreground="{Binding Converter={StaticResource PrinterEnabledValueConverter}}"/>
+                                                    Text="{Binding Converter={StaticResource PrinterFromIdValueConverter}}"
+                                                    Foreground="{Binding Converter={StaticResource PrinterEnabledValueConverter}}"/>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
                                     </HierarchicalDataTemplate>
                                 </TreeView.ItemTemplate>
                             </TreeView>
                         </TabItem>
-                        <TabItem x:Name="tabComputers"
-                                 TabIndex="1"
-                                 Header="Компьютеры"
-                                 Visibility="{Binding IsChecked, ElementName=menuTabComputers, Converter={StaticResource TabVisibilityValueConverter}}"
-                                 IsVisibleChanged="tabComputers_IsVisibleChanged">
-                            <TreeView x:Name="treeComputers"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"
-                                      Height="Auto"
-                                      ItemsSource="{Binding Path=ComputersCollection.Computers}"
-                                      Visibility="{Binding Visibility, ElementName=tabComputers}">
+                        <TabItem
+                            x:Name="TabComputers"
+                            TabIndex="1"
+                            Header="{x:Static loc:lang.TabComputers}"
+                            Visibility="{Binding IsChecked, ElementName=MenuTabComputers, Converter={StaticResource TabVisibilityValueConverter}}"
+                            IsVisibleChanged="tabComputers_IsVisibleChanged">
+                            <TreeView
+                                x:Name="TreeComputers"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Height="Auto"
+                                ItemsSource="{Binding Path=ComputersCollection.Computers}"
+                                Visibility="{Binding Visibility, ElementName=TabComputers}">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding PrinterIds}">
                                         <StackPanel Orientation="Horizontal">
@@ -146,25 +165,27 @@
                                         <HierarchicalDataTemplate.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock
-                                                Text="{Binding Converter={StaticResource PrinterFromIdValueConverter}}"
-                                                Foreground="{Binding Converter={StaticResource PrinterEnabledValueConverter}}"/>
+                                                    Text="{Binding Converter={StaticResource PrinterFromIdValueConverter}}"
+                                                    Foreground="{Binding Converter={StaticResource PrinterEnabledValueConverter}}"/>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
                                     </HierarchicalDataTemplate>
                                 </TreeView.ItemTemplate>
                             </TreeView>
                         </TabItem>
-                        <TabItem x:Name="tabDepartments"
-                                 TabIndex="2"
-                                 Header="Подразделения"
-                                 Visibility="{Binding IsChecked, ElementName=menuTabDepartments, Converter={StaticResource TabVisibilityValueConverter}}"
-                                 IsVisibleChanged="tabDepartments_IsVisibleChanged">
-                            <TreeView x:Name="treeDepartments"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"
-                                      Height="Auto"
-                                      ItemsSource="{Binding Path=DepartmentsCollection.Departments}"
-                                      Visibility="{Binding Visibility, ElementName=tabDepartments}">
+                        <TabItem
+                            x:Name="TabDepartments"
+                            TabIndex="2"
+                            Header="{x:Static loc:lang.TabDepartments}"
+                            Visibility="{Binding IsChecked, ElementName=MenuTabDepartments, Converter={StaticResource TabVisibilityValueConverter}}"
+                            IsVisibleChanged="tabDepartments_IsVisibleChanged">
+                            <TreeView
+                                x:Name="TreeDepartments"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Height="Auto"
+                                ItemsSource="{Binding Path=DepartmentsCollection.Departments}"
+                                Visibility="{Binding Visibility, ElementName=TabDepartments}">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Path=UserIds}">
                                         <StackPanel Orientation="Horizontal">
@@ -182,18 +203,20 @@
                                 </TreeView.ItemTemplate>
                             </TreeView>
                         </TabItem>
-                        <TabItem x:Name="tabPrinters"
-                                 TabIndex="3"
-                                 Header="Принтеры"
-                                 Visibility="{Binding IsChecked, ElementName=menuTabPrinters, Converter={StaticResource TabVisibilityValueConverter}}"
-                                 IsVisibleChanged="tabPrinters_IsVisibleChanged">
-                            <ListView x:Name="treePrinters"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"
-                                      Height="Auto"
-                                      ItemsSource="{Binding Path=PrinterNamesCollection.PrinterNames}"
-                                      SelectionMode="Single"
-                                      Visibility="{Binding Visibility, ElementName=tabPrinters}">
+                        <TabItem
+                            x:Name="TabPrinters"
+                            TabIndex="3"
+                            Header="{x:Static loc:lang.TabPrinters}"
+                            Visibility="{Binding IsChecked, ElementName=MenuTabPrinters, Converter={StaticResource TabVisibilityValueConverter}}"
+                            IsVisibleChanged="tabPrinters_IsVisibleChanged">
+                            <ListView
+                                x:Name="TreePrinters"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Height="Auto"
+                                ItemsSource="{Binding Path=PrinterNamesCollection.PrinterNames}"
+                                SelectionMode="Single"
+                                Visibility="{Binding Visibility, ElementName=TabPrinters}">
                                 <ListView.ItemTemplate>
                                     <HierarchicalDataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -208,54 +231,64 @@
                             </ListView>
                         </TabItem>
                     </TabControl>
-                    <Grid Grid.Row="1"
-                          Margin="5,5,10,5"
-                          IsEnabled="{Binding SelectedIndex, ElementName=TabControl, Converter={StaticResource SelectedPrinterVisibilityValueConverter}}">
+                    <Grid
+                        Grid.Row="1"
+                        Margin="5,5,10,5"
+                        IsEnabled="{Binding SelectedIndex, ElementName=TabControl, Converter={StaticResource SelectedPrinterVisibilityValueConverter}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="32"/>
                             <RowDefinition Height="32"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="45*"/>
-                            <ColumnDefinition Width="151*"/>
-                            <ColumnDefinition Width="49*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="28"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox x:Name="checkPrinterEnabled"
-                                  Grid.Row="0"
-                                  Grid.ColumnSpan="3"
-                                  Content="Включен"
-                                  IsChecked="{Binding SelectedPrinter.Enabled}"
-                                  IsEnabled="{Binding SelectedPrinter.Id}"
-                                  Height="24"
-                                  VerticalAlignment="Bottom"/>
-                        <TextBox x:Name="textNewPrinterName"
-                                 Grid.Row="1" Grid.Column="0"
-                                 Text="{Binding SelectedPrinter.NewName}"
-                                 Padding="0"
-                                 Margin="0,4,3,4"
-                                 Height="24"
-                                 Grid.ColumnSpan="2"/>
-                        <Button x:Name="btnPrinterRename"
-                                Grid.Row="1" Grid.Column="2"
-                                Content="OK"
-                                HorizontalAlignment="Stretch"
-                                Height="24"
-                                Margin="0,4"
-                                IsEnabled="{Binding Text.Length, ElementName=textNewPrinterName}" />
-                        <Button x:Name="btnPrinterDeleteFromDb"
-                                Grid.Row="2"
-                                Grid.Column="2"
-                                Content="Del"
-                                HorizontalAlignment="Stretch"
-                                Height="24"
-                                Margin="0,4"
-                                IsEnabled="{Binding SelectedPrinter.Id}"/>
+                        <CheckBox
+                            x:Name="CheckPrinterEnabled"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="3"
+                            Content="{x:Static loc:lang.CheckPrinterEnabled}"
+                            IsChecked="{Binding SelectedPrinter.Enabled}"
+                            IsEnabled="{Binding SelectedPrinter.Id}"
+                            Height="24"
+                            VerticalAlignment="Bottom"/>
+                        <TextBox
+                            x:Name="TextNewPrinterName"
+                            Grid.Row="1" Grid.Column="0"
+                            Text="{Binding SelectedPrinter.NewName}"
+                            Padding="0"
+                            Margin="0,4,3,4"
+                            Height="24"
+                            Grid.ColumnSpan="2"/>
+                        <Button
+                            x:Name="BtnPrinterRename"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            Height="24"
+                            Margin="0,4"
+                            IsEnabled="{Binding Text.Length, ElementName=TextNewPrinterName}"
+                            ToolTip="{x:Static loc:lang.ButtonPrinterRename}">
+                            <Image Source="../Images/rename.gif" Width="16" Height="16"/>
+                        </Button>
+                        <Button
+                            x:Name="BtnPrinterDeleteFromDb"
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            Height="24"
+                            Margin="0,4"
+                            IsEnabled="{Binding SelectedPrinter.Id}"
+                            ToolTip="{x:Static loc:lang.ButtonPrinterDelete}">
+                            <Image Source="../Images/delete.gif" Width="16" Height="16"/>
+                        </Button>
                     </Grid>
                 </Grid>
             </DockPanel>
             <DockPanel Grid.Column="2" Grid.Row="0">
-                <Expander Header="Сводная информация" IsExpanded="True" DockPanel.Dock="Top">
+                <Expander Header="{x:Static loc:lang.SummaryTitle}" IsExpanded="True" DockPanel.Dock="Top">
                     <Grid HorizontalAlignment="Left">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -266,11 +299,21 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="InfoLabels"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Content="Напечатано документов: "/>
+                        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Label Content="{x:Static loc:lang.SummaryTotalDocuments}" Margin="0" Padding="5 5 0 5"/>
+                            <Label Content=": " Margin="0" Padding="3 5 5 5"/>
+                        </StackPanel>
                         <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" DataContext="{Binding Path=TotalStat}" Text="{Binding DocsByNode}"/>
-                        <Label Grid.Column="0" Grid.Row="1" Content="Напечатано страниц: "/>
+                        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Label Content="{x:Static loc:lang.SummaryTotalPages}" Margin="0" Padding="5 5 0 5"/>
+                            <Label Content=": " Margin="0" Padding="3 5 5 5"/>
+                        </StackPanel>
                         <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" DataContext="{Binding Path=TotalStat}" Text="{Binding PagesByNode}"/>
-                        <Label Grid.Column="0" Grid.Row="2" Content="Период отчета: " IsEnabled="{Binding AppConfig.ReportDate.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Label Content="{x:Static loc:lang.SummaryReportPeriod}" Margin="0" Padding="5 5 0 5"
+                                   IsEnabled="{Binding AppConfig.ReportDate.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+                            <Label Content=": " Margin="0" Padding="3 5 5 5"/>
+                        </StackPanel>
                         <Grid Grid.Column="1" Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -295,27 +338,28 @@
                         </Grid>
                     </Grid>
                 </Expander>
-                <DataGrid x:Name="gridPrintData" ItemsSource="{Binding PrintDatas}"
-                          DockPanel.Dock="Top"
-                          IsReadOnly="True"
-                          AutoGenerateColumns="False"
-                          VerticalAlignment="Top"
-                          SelectionMode="Single"
-                          HorizontalGridLinesBrush="#FFEDEDED"
-                          VerticalGridLinesBrush="#FFD0D0D0"
-                          AlternationCount="2"
-                          AlternatingRowBackground="#FFFAFAFA"
-                          RowBackground="White"
-                          RowHeight="21"
-                          HeadersVisibility="Column"
-                          ColumnHeaderHeight="24"
-                          MinWidth="250">
+                <DataGrid
+                    x:Name="GridPrintData" ItemsSource="{Binding PrintDatas}"
+                    DockPanel.Dock="Top"
+                    IsReadOnly="True"
+                    AutoGenerateColumns="False"
+                    VerticalAlignment="Top"
+                    SelectionMode="Single"
+                    HorizontalGridLinesBrush="#FFEDEDED"
+                    VerticalGridLinesBrush="#FFD0D0D0"
+                    AlternationCount="2"
+                    AlternatingRowBackground="#FFFAFAFA"
+                    RowBackground="White"
+                    RowHeight="21"
+                    HeadersVisibility="Column"
+                    ColumnHeaderHeight="24"
+                    MinWidth="250">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Имя документа" Binding="{Binding DocName}" />
-                        <DataGridTextColumn Header="Принтер" Binding="{Binding PrinterName}"/>
-                        <DataGridTextColumn Header="Страниц" Binding="{Binding Pages}" />
-                        <DataGridTextColumn Header="Пользователь" Binding="{Binding UserName}"/>
-                        <DataGridTextColumn Header="Дата и время" Binding="{Binding TimeStamp, StringFormat={}{0:dd.MM.yyyy - HH:mm:ss}}"/>
+                        <DataGridTextColumn Header="{x:Static loc:lang.ReportDocument}" Binding="{Binding DocName}" />
+                        <DataGridTextColumn Header="{x:Static loc:lang.ReportPrinter}" Binding="{Binding PrinterName}"/>
+                        <DataGridTextColumn Header="{x:Static loc:lang.ReportPages}" Binding="{Binding Pages}" />
+                        <DataGridTextColumn Header="{x:Static loc:lang.ReportUser}" Binding="{Binding UserName}"/>
+                        <DataGridTextColumn Header="{x:Static loc:lang.ReportDateTime}" Binding="{Binding TimeStamp, StringFormat={}{0:dd.MM.yyyy - HH:mm:ss}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

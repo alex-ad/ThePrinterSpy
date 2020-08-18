@@ -12,7 +12,7 @@ namespace ThePrinterSpyControl.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -102,42 +102,6 @@ namespace ThePrinterSpyControl.Properties {
             }
             set {
                 this["ReportPeriod"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public byte DbConnectionType {
-            get {
-                return ((byte)(this["DbConnectionType"]));
-            }
-            set {
-                this["DbConnectionType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DbPassword {
-            get {
-                return ((string)(this["DbPassword"]));
-            }
-            set {
-                this["DbPassword"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DbUser {
-            get {
-                return ((string)(this["DbUser"]));
-            }
-            set {
-                this["DbUser"] = value;
             }
         }
         
@@ -251,34 +215,13 @@ namespace ThePrinterSpyControl.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DbServer {
+        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        public string Language {
             get {
-                return ((string)(this["DbServer"]));
+                return ((string)(this["Language"]));
             }
             set {
-                this["DbServer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DbName {
-            get {
-                return ((string)(this["DbName"]));
-            }
-            set {
-                this["DbName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        public string DbaseConnectionString {
-            get {
-                return ((string)(this["DbaseConnectionString"]));
+                this["Language"] = value;
             }
         }
     }

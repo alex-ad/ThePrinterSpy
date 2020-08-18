@@ -39,7 +39,9 @@ namespace ThePrinterSpyControl.ViewModels
 
         private readonly DBase _base;
         private RelayCommand<string> _showOptionsWindowCommand;
+        private RelayCommand<string> _showAboutWindowCommand;
         public RelayCommand<string> ShowOptionsWindowCommand => _showOptionsWindowCommand ?? (_showOptionsWindowCommand = new RelayCommand<string>(ShowOptionsWindows, CanShowOptionsWindows));
+        public RelayCommand<string> ShowAboutWindowCommand => _showAboutWindowCommand ?? (_showAboutWindowCommand = new RelayCommand<string>(ShowAboutWindows, CanShowAboutWindows));
 
         public PrinterSpyViewModel()
         {
@@ -242,6 +244,16 @@ namespace ThePrinterSpyControl.ViewModels
         private void ShowOptionsWindows(string obj)
         {
             OptionsWindow.Instance.Show();
+        }
+        
+        private bool CanShowAboutWindows(string arg)
+        {
+            return !AboutWindow.Instance.IsVisible;
+        }
+
+        private void ShowAboutWindows(string obj)
+        {
+            AboutWindow.Instance.Show();
         }
 
         public void GetAll()

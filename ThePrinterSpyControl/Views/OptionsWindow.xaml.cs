@@ -7,7 +7,6 @@ using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
 using ThePrinterSpyControl.Validators;
-using TextBox = System.Windows.Controls.TextBox;
 
 namespace ThePrinterSpyControl.Views
 {
@@ -55,10 +54,6 @@ namespace ThePrinterSpyControl.Views
             DateReportPeriodEnd.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateSource();
             ComboReportPeriodType.GetBindingExpression(System.Windows.Controls.Primitives.Selector.SelectedIndexProperty)?.UpdateSource();
             CheckReportPeriodEnabled.GetBindingExpression(System.Windows.Controls.Primitives.ToggleButton.IsCheckedProperty)?.UpdateSource();
-            ComboDbaseConnectionType.GetBindingExpression(System.Windows.Controls.Primitives.Selector.SelectedIndexProperty)?.UpdateSource();
-            TextDbaseServer.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
-            TextDbaseName.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
-            TextDbaseUser.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             CheckAdEnabled.GetBindingExpression(System.Windows.Controls.Primitives.ToggleButton.IsCheckedProperty)?.UpdateSource();
             TextAdServer.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             TextAdUser.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();

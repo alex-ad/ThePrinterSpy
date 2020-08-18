@@ -25,18 +25,18 @@ namespace ThePrinterSpyControl.Views
         public MainWindow()
         {
             InitializeComponent();
-            treeUsers.SelectedItemChanged += TreeUsers_SelectedItemChanged;
-            treeUsers.GotFocus += TreeUsers_GotFocus;
-            treeComputers.SelectedItemChanged += TreeComputers_SelectedItemChanged;
-            treeComputers.GotFocus += TreeComputers_GotFocus;
-            treeDepartments.SelectedItemChanged += TreeDepartments_SelectedItemChanged;
-            treeDepartments.GotFocus += TreeDepartments_GotFocus;
-            treePrinters.SelectionChanged += TreePrinters_SelectionChanged;
-            treePrinters.GotFocus += TreePrinters_GotFocus;
-            textNewPrinterName.TextChanged += TextNewPrinterName_TextChanged;
-            checkPrinterEnabled.Click += CheckPrinterEnabled_Click;
-            btnPrinterRename.Click += BtnPrinterRename_Click;
-            btnPrinterDeleteFromDb.Click += BtnPrinterDeleteFromDb_Click;
+            TreeUsers.SelectedItemChanged += TreeUsers_SelectedItemChanged;
+            TreeUsers.GotFocus += TreeUsers_GotFocus;
+            TreeComputers.SelectedItemChanged += TreeComputers_SelectedItemChanged;
+            TreeComputers.GotFocus += TreeComputers_GotFocus;
+            TreeDepartments.SelectedItemChanged += TreeDepartments_SelectedItemChanged;
+            TreeDepartments.GotFocus += TreeDepartments_GotFocus;
+            TreePrinters.SelectionChanged += TreePrinters_SelectionChanged;
+            TreePrinters.GotFocus += TreePrinters_GotFocus;
+            TextNewPrinterName.TextChanged += TextNewPrinterName_TextChanged;
+            CheckPrinterEnabled.Click += CheckPrinterEnabled_Click;
+            BtnPrinterRename.Click += BtnPrinterRename_Click;
+            BtnPrinterDeleteFromDb.Click += BtnPrinterDeleteFromDb_Click;
             TabControl.SelectionChanged += TabControl_SelectionChanged;
         }
 
@@ -65,9 +65,9 @@ namespace ThePrinterSpyControl.Views
                 string.Compare(PrinterSpyViewModel.SelectedPrinter.NewName, PrinterSpyViewModel.SelectedPrinter.OldName,
                     StringComparison.OrdinalIgnoreCase) == 0) return;
 
-            btnPrinterRename.IsEnabled = false;
+            BtnPrinterRename.IsEnabled = false;
             await PrinterManagement.Rename(PrinterSpyViewModel.SelectedPrinter, computerName);
-            btnPrinterRename.IsEnabled = true;
+            BtnPrinterRename.IsEnabled = true;
             PrinterSpyViewModel.SelectedPrinter.OldName = PrinterSpyViewModel.SelectedPrinter.NewName;
             _computers.PropertyPrinterIdsChanged(id);
             _users.PropertyPrinterIdsChanged(id);
@@ -225,12 +225,13 @@ namespace ThePrinterSpyControl.Views
             Props.Default.WinX = (int)Application.Current.MainWindow.Left;
             Props.Default.WinWidth = (int)Application.Current.MainWindow.Width;
             Props.Default.WinHeight = (int)Application.Current.MainWindow.Height;
-            Props.Default.TabDepartments = menuTabDepartments.IsChecked;
-            Props.Default.TabComputers = menuTabComputers.IsChecked;
-            Props.Default.TabPrinters = menuTabPrinters.IsChecked;
-            Props.Default.TabUsers = menuTabUsers.IsChecked;
+            Props.Default.TabDepartments = MenuTabDepartments.IsChecked;
+            Props.Default.TabComputers = MenuTabComputers.IsChecked;
+            Props.Default.TabPrinters = MenuTabPrinters.IsChecked;
+            Props.Default.TabUsers = MenuTabUsers.IsChecked;
             Props.Default.Save();
             OptionsWindow.Instance.Close();
+            AboutWindow.Instance.Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -239,10 +240,10 @@ namespace ThePrinterSpyControl.Views
             Application.Current.MainWindow.Left = Props.Default.WinX;
             Application.Current.MainWindow.Width = Props.Default.WinWidth;
             Application.Current.MainWindow.Height = Props.Default.WinHeight;
-            menuTabDepartments.IsChecked = Props.Default.TabDepartments;
-            menuTabComputers.IsChecked = Props.Default.TabComputers;
-            menuTabPrinters.IsChecked = Props.Default.TabPrinters;
-            menuTabUsers.IsChecked = Props.Default.TabUsers;
+            MenuTabDepartments.IsChecked = Props.Default.TabDepartments;
+            MenuTabComputers.IsChecked = Props.Default.TabComputers;
+            MenuTabPrinters.IsChecked = Props.Default.TabPrinters;
+            MenuTabUsers.IsChecked = Props.Default.TabUsers;
         }
 
         private void tabUsers_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

@@ -12,7 +12,6 @@ namespace ThePrinterSpyControl.Modules
         public static ConfigPrinterNameMask PrinterNameMask { get; set; }
         public static ConfigReportDate ReportDate { get; set; }
         public static ConfigActiveDirectory ActiveDirectory { get; set; }
-        public static ConfigDataBase Base { get; set; }
 
         public struct AdConfig
         {
@@ -26,7 +25,6 @@ namespace ThePrinterSpyControl.Modules
         {
             PrinterNameMask = new ConfigPrinterNameMask();
             ReportDate = new ConfigReportDate();
-            Base = new ConfigDataBase();
 
             _base = new PrintSpyEntities();
             if (_base == null || !_base.Configs.Any()) return;
