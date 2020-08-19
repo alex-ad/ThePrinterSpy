@@ -7,6 +7,7 @@ namespace ThePrinterSpyControl
         private App()
         {
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(ThePrinterSpyControl.Properties.Settings.Default.Language);
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-GB");
         }
     }
 }
