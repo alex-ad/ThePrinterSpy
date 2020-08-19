@@ -12,11 +12,6 @@ namespace ThePrinterSpyControl.ViewModels
 {
     public class PrinterSpyViewModel
     {
-        //http://blog.gandjustas.ru/2009/09/29/mvvm-treeview/
-        //https://stackru.com/questions/20816956/poluchit-vyibrannyij-element-wpf-treeview
-        //https://issue.life/questions/39147491
-        //https://iconbird.com/search/?q=iconset:Beautiful%20Flat%20Icons
-        //https://iconbird.com/search/?q=iconset:Blueberry
         public enum PrintDataGroup : byte
         {
             User = 1,
@@ -34,6 +29,7 @@ namespace ThePrinterSpyControl.ViewModels
         public static PrinterMaskedNameCollection PrinterNamesCollection { get; private set; }
         public ObservableCollection<PrintDataGrid> PrintDatas { get; }
         public static TotalCountStat TotalStat { get; private set; }
+        public static ConfigReportDate ReportDate { get; set; }
         public AppConfig AppConfig { get; }
         public static SelectedPrinter SelectedPrinter { get; private set; }
 
@@ -47,6 +43,7 @@ namespace ThePrinterSpyControl.ViewModels
         {
             _base = new DBase();
             TotalStat = new TotalCountStat();
+            ReportDate = new ConfigReportDate();
 
             PrintersCollection = new PrintersCollection();
             UsersCollection = new UsersCollection();
@@ -79,13 +76,12 @@ namespace ThePrinterSpyControl.ViewModels
         private void BuildDataByUserId(int id)
         {
             PrintDatas.Clear();
+            TotalStat.PagesByNode = 0;
+            TotalStat.DocsByNode = 0;
 
             var data = _base.GetDataByUserId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
                 AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
-
-            TotalStat.PagesByNode = 0;
-            TotalStat.DocsByNode = 0;
 
             int totalPages = 0; int totalDocs = 0;
             foreach (var d in data)
@@ -111,12 +107,12 @@ namespace ThePrinterSpyControl.ViewModels
         private void BuildDataByDepartmentId(string name)
         {
             PrintDatas.Clear();
+            TotalStat.PagesByNode = 0;
+            TotalStat.DocsByNode = 0;
+
             var data = _base.GetDataByDepartmentName(name, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
                 AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
-
-            TotalStat.PagesByNode = 0;
-            TotalStat.DocsByNode = 0;
 
             int totalPages = 0; int totalDocs = 0;
             foreach (var d in data)
@@ -142,13 +138,12 @@ namespace ThePrinterSpyControl.ViewModels
         private void BuildDataByComputerId(int id)
         {
             PrintDatas.Clear();
+            TotalStat.PagesByNode = 0;
+            TotalStat.DocsByNode = 0;
 
             var data = _base.GetDataByComputerId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
                 AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
-
-            TotalStat.PagesByNode = 0;
-            TotalStat.DocsByNode = 0;
 
             int totalPages = 0; int totalDocs = 0;
             foreach (var d in data)
@@ -174,13 +169,12 @@ namespace ThePrinterSpyControl.ViewModels
         private void BuildDataByPrinterId(int id)
         {
             PrintDatas.Clear();
+            TotalStat.PagesByNode = 0;
+            TotalStat.DocsByNode = 0;
 
             var data = _base.GetDataByPrinterId(id, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
                 AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
-
-            TotalStat.PagesByNode = 0;
-            TotalStat.DocsByNode = 0;
 
             int totalPages = 0; int totalDocs = 0;
             foreach (var d in data)
@@ -207,13 +201,12 @@ namespace ThePrinterSpyControl.ViewModels
         private void BuildDataByPrintersGroup(List<int> ids)
         {
             PrintDatas.Clear();
+            TotalStat.PagesByNode = 0;
+            TotalStat.DocsByNode = 0;
 
             var data = _base.GetDataByPrintersGroup(ids, AppConfig.ReportDate.Start, AppConfig.ReportDate.End,
                 AppConfig.ReportDate.IsEnabled).Result;
             if (!data.Any()) return;
-
-            TotalStat.PagesByNode = 0;
-            TotalStat.DocsByNode = 0;
 
             int totalPages = 0; int totalDocs = 0;
             foreach (var d in data)

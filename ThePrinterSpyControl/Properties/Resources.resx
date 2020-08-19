@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,222 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutButtonClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="AboutLabelHomePage" xml:space="preserve">
+    <value>Home page</value>
+  </data>
+  <data name="AboutLabelProgramName" xml:space="preserve">
+    <value>The Printer Spy</value>
+  </data>
+  <data name="AboutLabelVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="AboutWindowTitle" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="ButtonPrinterDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ButtonPrinterRename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="CheckPrinterEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="ConfigButtonADSync" xml:space="preserve">
+    <value>Synchronize all users</value>
+  </data>
+  <data name="ConfigCheckADEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="ConfigCheckMaskEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="ConfigCheckReportPeriodEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="ConfigGroupADTitle" xml:space="preserve">
+    <value>Synchronization with Active Directory</value>
+  </data>
+  <data name="ConfigGroupPrinterNameMaskTitle" xml:space="preserve">
+    <value>Printer Name Mask</value>
+  </data>
+  <data name="ConfigGroupReportPeriodTitle" xml:space="preserve">
+    <value>Report Period</value>
+  </data>
+  <data name="ConfigLabelADDomain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="ConfigLabelADPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="ConfigLabelADUser" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="ConfigLabelMaskType" xml:space="preserve">
+    <value>Mask Type</value>
+  </data>
+  <data name="ConfigLabelMaskValue" xml:space="preserve">
+    <value>Mask</value>
+  </data>
+  <data name="ConfigLabelReportPeriodEnd" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="ConfigLabelReportPeriodStart" xml:space="preserve">
+    <value>Begin</value>
+  </data>
+  <data name="ConfigLabelReportPeriodType" xml:space="preserve">
+    <value>Period Type</value>
+  </data>
+  <data name="ConfigWindowsButtonCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ConfigWindowsButtonOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ConfigWindowTitle" xml:space="preserve">
+    <value>Config</value>
+  </data>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>The Printer Spy - Control Panel</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>_About</value>
+  </data>
+  <data name="MenuComputersShow" xml:space="preserve">
+    <value>Tab [Computers]</value>
+  </data>
+  <data name="MenuConfig" xml:space="preserve">
+    <value>Config</value>
+  </data>
+  <data name="MenuDepartmentsShow" xml:space="preserve">
+    <value>Tab [Departments]</value>
+  </data>
+  <data name="MenuExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="MenuFile" xml:space="preserve">
+    <value>_File</value>
+  </data>
+  <data name="MenuOptions" xml:space="preserve">
+    <value>_Options</value>
+  </data>
+  <data name="MenuPrintersShow" xml:space="preserve">
+    <value>Tab [Printers]</value>
+  </data>
+  <data name="MenuReportExport" xml:space="preserve">
+    <value>Export Report...</value>
+  </data>
+  <data name="MenuUsersShow" xml:space="preserve">
+    <value>Tab [Users]</value>
+  </data>
+  <data name="NavConfig" xml:space="preserve">
+    <value>Config</value>
+  </data>
+  <data name="NavRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="NavReportExport" xml:space="preserve">
+    <value>Export Report...</value>
+  </data>
+  <data name="ReportDateTime" xml:space="preserve">
+    <value>Date-Time</value>
+  </data>
+  <data name="ReportDocument" xml:space="preserve">
+    <value>Document Name</value>
+  </data>
+  <data name="ReportPages" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="ReportPeriodAllTime" xml:space="preserve">
+    <value>[all time]</value>
+  </data>
+  <data name="ReportPeriodTypeCurrentDay" xml:space="preserve">
+    <value>Current Day</value>
+  </data>
+  <data name="ReportPeriodTypeCurrentMonth" xml:space="preserve">
+    <value>Current Month</value>
+  </data>
+  <data name="ReportPeriodTypeCurrentWeek" xml:space="preserve">
+    <value>Current Week</value>
+  </data>
+  <data name="ReportPeriodTypeCurrentYear" xml:space="preserve">
+    <value>Current Year</value>
+  </data>
+  <data name="ReportPeriodTypeFromDateToDate" xml:space="preserve">
+    <value>Manual Defined (Date-Date)</value>
+  </data>
+  <data name="ReportPeriodTypeFromDateToNow" xml:space="preserve">
+    <value>From Date To Now</value>
+  </data>
+  <data name="ReportPeriodTypeLast180Days" xml:space="preserve">
+    <value>Last 180 Days</value>
+  </data>
+  <data name="ReportPeriodTypeLast30Days" xml:space="preserve">
+    <value>Last 30 Days</value>
+  </data>
+  <data name="ReportPeriodTypeLast7Days" xml:space="preserve">
+    <value>Last 7 Days</value>
+  </data>
+  <data name="ReportPeriodTypePreviousDay" xml:space="preserve">
+    <value>Previous Day</value>
+  </data>
+  <data name="ReportPeriodTypePreviousMonth" xml:space="preserve">
+    <value>Previous Month</value>
+  </data>
+  <data name="ReportPeriodTypePreviousWeek" xml:space="preserve">
+    <value>Previous Week</value>
+  </data>
+  <data name="ReportPeriodTypePreviousYear" xml:space="preserve">
+    <value>Previous Year</value>
+  </data>
+  <data name="ReportPrinter" xml:space="preserve">
+    <value>Printer</value>
+  </data>
+  <data name="ReportUser" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="StatusComputers" xml:space="preserve">
+    <value>Computer(s)</value>
+  </data>
+  <data name="StatusDepartments" xml:space="preserve">
+    <value>Department(s)</value>
+  </data>
+  <data name="StatusPrinters" xml:space="preserve">
+    <value>Printer(s)</value>
+  </data>
+  <data name="StatusUsers" xml:space="preserve">
+    <value>User(s)</value>
+  </data>
+  <data name="SummaryReportPeriod" xml:space="preserve">
+    <value>Report Period</value>
+  </data>
+  <data name="SummaryTitle" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="SummaryTotalDocuments" xml:space="preserve">
+    <value>Documents Printered</value>
+  </data>
+  <data name="SummaryTotalPages" xml:space="preserve">
+    <value>Pages Printered</value>
+  </data>
+  <data name="TabComputers" xml:space="preserve">
+    <value>Computers</value>
+  </data>
+  <data name="TabDepartments" xml:space="preserve">
+    <value>Departments</value>
+  </data>
+  <data name="TabPrinters" xml:space="preserve">
+    <value>Printers</value>
+  </data>
+  <data name="TabUsers" xml:space="preserve">
+    <value>Users</value>
+  </data>
 </root>

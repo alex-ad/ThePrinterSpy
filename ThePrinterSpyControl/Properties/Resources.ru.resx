@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,174 +118,216 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutButtonClose" xml:space="preserve">
-    <value>Close</value>
+    <value>Закрыть</value>
   </data>
   <data name="AboutLabelHomePage" xml:space="preserve">
-    <value>Home page</value>
+    <value>Домашний адрес</value>
   </data>
   <data name="AboutLabelProgramName" xml:space="preserve">
     <value>The Printer Spy</value>
   </data>
   <data name="AboutLabelVersion" xml:space="preserve">
-    <value>Version</value>
+    <value>Версия</value>
   </data>
   <data name="AboutWindowTitle" xml:space="preserve">
-    <value>About</value>
+    <value>О программе</value>
   </data>
   <data name="ButtonPrinterDelete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Удалить</value>
   </data>
   <data name="ButtonPrinterRename" xml:space="preserve">
-    <value>Rename</value>
+    <value>Переименовать</value>
   </data>
   <data name="CheckPrinterEnabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Включен</value>
   </data>
   <data name="ConfigButtonADSync" xml:space="preserve">
-    <value>Synchronize all users</value>
+    <value>Синхронизировать всех пользователей</value>
   </data>
   <data name="ConfigCheckADEnabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Включить</value>
   </data>
   <data name="ConfigCheckMaskEnabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Включить</value>
   </data>
   <data name="ConfigCheckReportPeriodEnabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Включить</value>
   </data>
   <data name="ConfigGroupADTitle" xml:space="preserve">
-    <value>Synchronization with Active Directory</value>
+    <value>Синхронизация с Active Directory</value>
   </data>
   <data name="ConfigGroupPrinterNameMaskTitle" xml:space="preserve">
-    <value>Printer Name Mask</value>
+    <value>Маска имени принтера</value>
   </data>
   <data name="ConfigGroupReportPeriodTitle" xml:space="preserve">
-    <value>Report Period</value>
+    <value>Период отчета</value>
   </data>
   <data name="ConfigLabelADDomain" xml:space="preserve">
-    <value>Domain</value>
+    <value>Домен</value>
   </data>
   <data name="ConfigLabelADPassword" xml:space="preserve">
-    <value>Password</value>
+    <value>Пароль</value>
   </data>
   <data name="ConfigLabelADUser" xml:space="preserve">
-    <value>User Name</value>
+    <value>Пользователь</value>
   </data>
   <data name="ConfigLabelMaskType" xml:space="preserve">
-    <value>Mask Type</value>
+    <value>Тип маски</value>
   </data>
   <data name="ConfigLabelMaskValue" xml:space="preserve">
-    <value>Mask</value>
+    <value>Маска</value>
   </data>
   <data name="ConfigLabelReportPeriodEnd" xml:space="preserve">
-    <value>End</value>
+    <value>Конец</value>
   </data>
   <data name="ConfigLabelReportPeriodStart" xml:space="preserve">
-    <value>Begin</value>
+    <value>Начало</value>
   </data>
   <data name="ConfigLabelReportPeriodType" xml:space="preserve">
-    <value>Period Type</value>
+    <value>Тип периода</value>
   </data>
   <data name="ConfigWindowsButtonCancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="ConfigWindowsButtonOk" xml:space="preserve">
-    <value>OK</value>
+    <value>ОК</value>
   </data>
   <data name="ConfigWindowTitle" xml:space="preserve">
-    <value>Config</value>
+    <value>Настройки</value>
   </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>The Printer Spy - Control Panel</value>
   </data>
   <data name="MenuAbout" xml:space="preserve">
-    <value>_About</value>
+    <value>О програ_мме</value>
   </data>
   <data name="MenuComputersShow" xml:space="preserve">
-    <value>Tab [Computers]</value>
+    <value>Вкладка [Компьютеры]</value>
   </data>
   <data name="MenuConfig" xml:space="preserve">
-    <value>Config</value>
+    <value>Настройки</value>
   </data>
   <data name="MenuDepartmentsShow" xml:space="preserve">
-    <value>Tab [Departments]</value>
+    <value>Вкладка [Подразделения]</value>
   </data>
   <data name="MenuExit" xml:space="preserve">
-    <value>Exit</value>
+    <value>Выход</value>
   </data>
   <data name="MenuFile" xml:space="preserve">
-    <value>_File</value>
+    <value>_Файл</value>
   </data>
   <data name="MenuOptions" xml:space="preserve">
-    <value>_Options</value>
+    <value>Оп_ции</value>
   </data>
   <data name="MenuPrintersShow" xml:space="preserve">
-    <value>Tab [Printers]</value>
+    <value>Вкладка [Принтеры]</value>
   </data>
   <data name="MenuReportExport" xml:space="preserve">
-    <value>Export Report...</value>
+    <value>Экспорт отчета...</value>
   </data>
   <data name="MenuUsersShow" xml:space="preserve">
-    <value>Tab [Users]</value>
+    <value>Вкладка [Пользователи]</value>
   </data>
   <data name="NavConfig" xml:space="preserve">
-    <value>Config</value>
+    <value>Настройки</value>
   </data>
   <data name="NavRefresh" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="NavReportExport" xml:space="preserve">
-    <value>Export Report...</value>
+    <value>Экспорт отчета...</value>
   </data>
   <data name="ReportDateTime" xml:space="preserve">
-    <value>Date-Time</value>
+    <value>Дата и время</value>
   </data>
   <data name="ReportDocument" xml:space="preserve">
-    <value>Document Name</value>
+    <value>Имя документа</value>
   </data>
   <data name="ReportPages" xml:space="preserve">
-    <value>Pages</value>
+    <value>Страниц</value>
+  </data>
+  <data name="ReportPeriodAllTime" xml:space="preserve">
+    <value>[за все время]</value>
+  </data>
+  <data name="ReportPeriodTypeCurrentDay" xml:space="preserve">
+    <value>Текущий день</value>
+  </data>
+  <data name="ReportPeriodTypeCurrentMonth" xml:space="preserve">
+    <value>Текущий месяц</value>
+  </data>
+  <data name="ReportPeriodTypeCurrentWeek" xml:space="preserve">
+    <value>Текущая неделя</value>
+  </data>
+  <data name="ReportPeriodTypeCurrentYear" xml:space="preserve">
+    <value>Текущий год</value>
+  </data>
+  <data name="ReportPeriodTypeFromDateToDate" xml:space="preserve">
+    <value>Указанный вручную (дата-дата)</value>
+  </data>
+  <data name="ReportPeriodTypeFromDateToNow" xml:space="preserve">
+    <value>От указанной даты по текущий день</value>
+  </data>
+  <data name="ReportPeriodTypeLast180Days" xml:space="preserve">
+    <value>Последние 180 дней</value>
+  </data>
+  <data name="ReportPeriodTypeLast30Days" xml:space="preserve">
+    <value>Последние 30 дней</value>
+  </data>
+  <data name="ReportPeriodTypeLast7Days" xml:space="preserve">
+    <value>Последние 7 дней</value>
+  </data>
+  <data name="ReportPeriodTypePreviousDay" xml:space="preserve">
+    <value>Предыдущий день</value>
+  </data>
+  <data name="ReportPeriodTypePreviousMonth" xml:space="preserve">
+    <value>Предыдущий месяц</value>
+  </data>
+  <data name="ReportPeriodTypePreviousWeek" xml:space="preserve">
+    <value>Предыдущая неделя</value>
+  </data>
+  <data name="ReportPeriodTypePreviousYear" xml:space="preserve">
+    <value>Предыдущий год</value>
   </data>
   <data name="ReportPrinter" xml:space="preserve">
-    <value>Printer</value>
+    <value>Принтер</value>
   </data>
   <data name="ReportUser" xml:space="preserve">
-    <value>User</value>
+    <value>Пользователь</value>
   </data>
   <data name="StatusComputers" xml:space="preserve">
-    <value>Computer(s)</value>
+    <value>Компьютеров</value>
   </data>
   <data name="StatusDepartments" xml:space="preserve">
-    <value>Department(s)</value>
+    <value>Подразделений</value>
   </data>
   <data name="StatusPrinters" xml:space="preserve">
-    <value>Printer(s)</value>
+    <value>Принтеров</value>
   </data>
   <data name="StatusUsers" xml:space="preserve">
-    <value>User(s)</value>
+    <value>Пользователей</value>
   </data>
   <data name="SummaryReportPeriod" xml:space="preserve">
-    <value>Report Period</value>
+    <value>Период отчета</value>
   </data>
   <data name="SummaryTitle" xml:space="preserve">
-    <value>Summary</value>
+    <value>Сводная информация</value>
   </data>
   <data name="SummaryTotalDocuments" xml:space="preserve">
-    <value>Documents Printered</value>
+    <value>Напечатано документов</value>
   </data>
   <data name="SummaryTotalPages" xml:space="preserve">
-    <value>Pages Printered</value>
+    <value>Напечатано страниц</value>
   </data>
   <data name="TabComputers" xml:space="preserve">
-    <value>Computers</value>
+    <value>Компьютеры</value>
   </data>
   <data name="TabDepartments" xml:space="preserve">
-    <value>Departments</value>
+    <value>Подразделения</value>
   </data>
   <data name="TabPrinters" xml:space="preserve">
-    <value>Printers</value>
+    <value>Принтеры</value>
   </data>
   <data name="TabUsers" xml:space="preserve">
-    <value>Users</value>
+    <value>Пользователи</value>
   </data>
 </root>

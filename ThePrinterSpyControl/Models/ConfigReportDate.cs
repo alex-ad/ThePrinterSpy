@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ThePrinterSpyControl.Properties;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
 namespace ThePrinterSpyControl.Models
@@ -80,19 +81,19 @@ namespace ThePrinterSpyControl.Models
 
         public Dictionary<PeriodType, string> TypeList { get; } = new Dictionary<PeriodType, string>
         {
-            { PeriodType.FromDateToDate, "Заданный период (дата-дата)" },
-            { PeriodType.FromDateToNow, "От указанной даты по текущий день" },
-            { PeriodType.CurrentDay, "Текущий день" },
-            { PeriodType.CurrentWeek, "Текущая неделя" },
-            { PeriodType.CurrentMonth, "Текущий месяц" },
-            { PeriodType.CurrentYear, "Текущий год" },
-            { PeriodType.PreviousDay, "Предыдущий день" },
-            { PeriodType.PreviousWeek, "Предыдущая неделя" },
-            { PeriodType.PreviousMonth, "Предыдущий месяц" },
-            { PeriodType.PreviousYear, "Предыдущий год" },
-            { PeriodType.Last7Days, "Последние 7 дней" },
-            { PeriodType.Last30Days, "Последние 30 дней" },
-            { PeriodType.Last180Days, "Последние 180 дней" }
+            { PeriodType.FromDateToDate, Resources.ReportPeriodTypeFromDateToDate },
+            { PeriodType.FromDateToNow, Resources.ReportPeriodTypeFromDateToNow },
+            { PeriodType.CurrentDay, Resources.ReportPeriodTypeCurrentDay },
+            { PeriodType.CurrentWeek, Resources.ReportPeriodTypeCurrentWeek },
+            { PeriodType.CurrentMonth, Resources.ReportPeriodTypeCurrentMonth },
+            { PeriodType.CurrentYear, Resources.ReportPeriodTypeCurrentYear },
+            { PeriodType.PreviousDay, Resources.ReportPeriodTypePreviousDay },
+            { PeriodType.PreviousWeek, Resources.ReportPeriodTypePreviousWeek },
+            { PeriodType.PreviousMonth, Resources.ReportPeriodTypePreviousMonth },
+            { PeriodType.PreviousYear, Resources.ReportPeriodTypePreviousYear },
+            { PeriodType.Last7Days, Resources.ReportPeriodTypeLast7Days },
+            { PeriodType.Last30Days, Resources.ReportPeriodTypeLast30Days },
+            { PeriodType.Last180Days, Resources.ReportPeriodTypeLast180Days }
         };
 
         public ConfigReportDate()
@@ -119,7 +120,7 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
-        public override string ToString() => $"{_start.ToString("dd.MM.yyyy")} - {_end.ToString("dd.MM.yyyy")}";
+        public override string ToString() => _isEnabled ? $"{_start.ToString("dd.MM.yyyy")} - {_end.ToString("dd.MM.yyyy")}" : Resources.ReportPeriodAllTime;
 
         private void SetStart(DateTime date)
         {

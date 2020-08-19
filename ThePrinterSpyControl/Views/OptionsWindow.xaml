@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:loc="clr-namespace:ThePrinterSpyControl.Languages"
+        xmlns:loc="clr-namespace:ThePrinterSpyControl.Properties"
         DataContext="{Binding OptionsViewModel, RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
-        Title="{x:Static loc:lang.ConfigWindowTitle}"
+        Title="{x:Static loc:Resources.ConfigWindowTitle}"
             Height="420" Width="696.223"
             WindowStyle="ToolWindow"
             ResizeMode="NoResize"
@@ -26,7 +26,7 @@
         </Style>
     </Window.Resources>
     <DockPanel>
-        <GroupBox Header="{x:Static loc:lang.ConfigGroupReportPeriodTitle}" DockPanel.Dock="Top" Height="Auto" Margin="5">
+        <GroupBox Header="{x:Static loc:Resources.ConfigGroupReportPeriodTitle}" DockPanel.Dock="Top" Height="Auto" Margin="5">
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -42,7 +42,7 @@
                     </Grid.ColumnDefinitions>
                     <CheckBox
                         x:Name="CheckReportPeriodEnabled"
-                        Content="{x:Static loc:lang.ConfigCheckReportPeriodEnabled}"
+                        Content="{x:Static loc:Resources.ConfigCheckReportPeriodEnabled}"
                         Grid.Column="0"
                         Grid.Row="0"
                         HorizontalAlignment="Left"
@@ -54,7 +54,7 @@
                     <Label
                         Grid.Column="0"
                         Grid.Row="1"
-                        Content="{x:Static loc:lang.ConfigLabelReportPeriodType}"
+                        Content="{x:Static loc:Resources.ConfigLabelReportPeriodType}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="3 0 3 0"
@@ -62,14 +62,14 @@
                     <Label
                         Grid.Column="0"
                         Grid.Row="2"
-                        Content="{x:Static loc:lang.ConfigLabelReportPeriodStart}"
+                        Content="{x:Static loc:Resources.ConfigLabelReportPeriodStart}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="3 0 3 0" Padding="0"/>
                     <Label
                         Grid.Column="2"
                         Grid.Row="2"
-                        Content="{x:Static loc:lang.ConfigLabelReportPeriodEnd}"
+                        Content="{x:Static loc:Resources.ConfigLabelReportPeriodEnd}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="3 0 3 0"
@@ -105,7 +105,7 @@
                 </Grid>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="{x:Static loc:lang.ConfigGroupADTitle}" DockPanel.Dock="Top" Height="Auto" Margin="5">
+        <GroupBox Header="{x:Static loc:Resources.ConfigGroupADTitle}" DockPanel.Dock="Top" Height="Auto" Margin="5">
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -121,7 +121,7 @@
                     </Grid.ColumnDefinitions>
                     <CheckBox
                         x:Name="CheckAdEnabled"
-                        Content="{x:Static loc:lang.ConfigCheckADEnabled}"
+                        Content="{x:Static loc:Resources.ConfigCheckADEnabled}"
                         Grid.Column="0"
                         Grid.Row="0"
                         HorizontalAlignment="Left"
@@ -135,13 +135,13 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Margin="3 3 4 3"
-                        Content="{x:Static loc:lang.ConfigButtonADSync}"
+                        Content="{x:Static loc:Resources.ConfigButtonADSync}"
                         IsEnabled="{Binding IsChecked, ElementName=CheckAdEnabled}"
                         Click="btnAdSync_Click"/>
                     <Label
                         Grid.Column="0"
                         Grid.Row="1"
-                        Content="{x:Static loc:lang.ConfigLabelADDomain}"
+                        Content="{x:Static loc:Resources.ConfigLabelADDomain}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="3 0 3 0"
@@ -149,7 +149,7 @@
                     <Label
                         Grid.Column="0"
                         Grid.Row="2"
-                        Content="{x:Static loc:lang.ConfigLabelADUser}"
+                        Content="{x:Static loc:Resources.ConfigLabelADUser}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="3 0 3 0"
@@ -157,7 +157,7 @@
                     <Label
                         Grid.Column="2"
                         Grid.Row="2"
-                        Content="{x:Static loc:lang.ConfigLabelADPassword}"
+                        Content="{x:Static loc:Resources.ConfigLabelADPassword}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="3 0 3 0"
@@ -198,7 +198,7 @@
                 </Grid>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="{x:Static loc:lang.ConfigGroupPrinterNameMaskTitle}" DockPanel.Dock="Top" Height="Auto" Margin="5">
+        <GroupBox Header="{x:Static loc:Resources.ConfigGroupPrinterNameMaskTitle}" DockPanel.Dock="Top" Height="Auto" Margin="5">
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -213,7 +213,7 @@
                     </Grid.ColumnDefinitions>
                     <CheckBox
                         x:Name="CheckPrinterNameMaskEnabled"
-                        Content="{x:Static loc:lang.ConfigCheckMaskEnabled}"
+                        Content="{x:Static loc:Resources.ConfigCheckMaskEnabled}"
                         Grid.Column="0"
                         Grid.Row="0"
                         HorizontalAlignment="Left"
@@ -225,7 +225,7 @@
                     <Label
                         Grid.Column="0"
                         Grid.Row="1"
-                        Content="{x:Static loc:lang.ConfigLabelMaskType}"
+                        Content="{x:Static loc:Resources.ConfigLabelMaskType}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="3 0 3 0"
@@ -233,7 +233,7 @@
                     <Label
                         Grid.Column="2"
                         Grid.Row="1"
-                        Content="{x:Static loc:lang.ConfigLabelMaskValue}"
+                        Content="{x:Static loc:Resources.ConfigLabelMaskValue}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="3 0 3 0"
@@ -268,7 +268,7 @@
                 <Button
                     x:Name="BtnOk"
                     Grid.Column="0"
-                    Content="{x:Static loc:lang.ConfigWindowsButtonOk}"
+                    Content="{x:Static loc:Resources.ConfigWindowsButtonOk}"
                     HorizontalAlignment="Right"
                     Margin="0 8 5 0"
                     Height="24"
@@ -277,7 +277,7 @@
                 <Button
                     x:Name="BtnCancel"
                     Grid.Column="1"
-                    Content="{x:Static loc:lang.ConfigWindowsButtonCancel}"
+                    Content="{x:Static loc:Resources.ConfigWindowsButtonCancel}"
                     HorizontalAlignment="Right"
                     Margin="0 8 8 0"
                     Height="24"

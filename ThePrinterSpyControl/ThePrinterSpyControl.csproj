@@ -94,17 +94,6 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandT.cs" />
-    <Compile Include="Languages\lang.Designer.cs">
-      <DependentUpon>lang.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Languages\lang.ru.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>lang.ru.resx</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
     <Compile Include="ModelBuilders\ServersCollection.cs" />
     <Compile Include="Models\AdIdentity.cs" />
     <Compile Include="Models\ConfigActiveDirectory.cs" />
@@ -124,9 +113,18 @@
     <Compile Include="ModelBuilders\PrintersCollection.cs" />
     <Compile Include="ModelBuilders\UsersCollection.cs" />
     <Compile Include="DataBase\DBase.cs" />
-    <Compile Include="Models\LastError.cs" />
     <Compile Include="Models\ServerNode.cs" />
     <Compile Include="Modules\ActiveDirectory.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.ru.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.ru.resx</DependentUpon>
+    </Compile>
     <Compile Include="Validators\ConfigValidator.cs" />
     <Compile Include="ValueConverters\PrinterFromIdValueConverter.cs" />
     <Compile Include="ValueConverters\SelectedPrinterVisibilityValueConverter.cs" />
@@ -205,32 +203,11 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <EmbeddedResource Include="Languages\lang.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>lang.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Languages\lang.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>lang.ru.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <EntityDeploy Include="DataBase\PrintSpyDb.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -239,10 +216,18 @@
     <None Include="DataBase\PrintSpyDb.edmx.diagram">
       <DependentUpon>PrintSpyDb.edmx</DependentUpon>
     </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ru.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

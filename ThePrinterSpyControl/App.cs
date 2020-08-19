@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 
 namespace ThePrinterSpyControl
 {
@@ -6,8 +7,15 @@ namespace ThePrinterSpyControl
     {
         private App()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(ThePrinterSpyControl.Properties.Settings.Default.Language);
-            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-GB");
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentUICulture =
+                    new CultureInfo(ThePrinterSpyControl.Properties.Settings.Default.Language);
+            }
+            catch
+            {
+                System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.DefaultThreadCurrentUICulture;
+            }
         }
     }
 }

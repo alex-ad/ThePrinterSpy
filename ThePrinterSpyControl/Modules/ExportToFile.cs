@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 
 using Microsoft.Office.Interop.Excel;
 using ThePrinterSpyControl.Models;
+using ThePrinterSpyControl.Properties;
 
 namespace ThePrinterSpyControl.Modules
 {
@@ -12,11 +13,11 @@ namespace ThePrinterSpyControl.Modules
         {
             var excelApp = new Microsoft.Office.Interop.Excel.Application();
             excelApp.Application.Workbooks.Add(Type.Missing);
-            excelApp.Cells[1, 1] = "Документ";
-            excelApp.Cells[1, 2] = "Принтер";
-            excelApp.Cells[1, 3] = "Страницы, шт.";
-            excelApp.Cells[1, 4] = "Пользователь";
-            excelApp.Cells[1, 5] = "Дата и время";
+            excelApp.Cells[1, 1] = Resources.ReportDocument;
+            excelApp.Cells[1, 2] = Resources.ReportPrinter;
+            excelApp.Cells[1, 3] = Resources.ReportPages;
+            excelApp.Cells[1, 4] = Resources.ReportUser;
+            excelApp.Cells[1, 5] = Resources.ReportDateTime;
             (excelApp.Cells[1, 1] as Range).EntireRow.Font.Bold = true;
             for (int i = 0; i < reportGrid.Count; i++)
             {

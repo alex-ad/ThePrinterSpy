@@ -18,15 +18,8 @@ namespace ThePrinterSpyControl.Modules
         private static PrincipalSearchResult<Principal> GetUsers()
         {
             if (_identity == null) return null;
-
-            PrincipalContext oPrincipalContext = GetPrincipalContext();
-            if (oPrincipalContext == null)
-            {
-                LastError.Set("Ошибка подключения к Active Directory");
-                return null;
-            }
-
-            return new PrincipalSearcher(new UserPrincipal(oPrincipalContext)).FindAll();
+            var oPrincipalContext = GetPrincipalContext();
+            return oPrincipalContext==null ? null : new PrincipalSearcher(new UserPrincipal(oPrincipalContext)).FindAll();
         }
 
         private static PrincipalContext GetPrincipalContext()

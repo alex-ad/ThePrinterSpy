@@ -7,6 +7,7 @@ using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.Models;
 using ThePrinterSpyControl.Modules;
 using ThePrinterSpyControl.Validators;
+using ThePrinterSpyControl.ViewModels;
 
 namespace ThePrinterSpyControl.Views
 {
@@ -60,6 +61,8 @@ namespace ThePrinterSpyControl.Views
             PswAdPassword.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 
             if (ConfigValidator.AnyError) return;
+
+            PrinterSpyViewModel.TotalStat.ReportPeriod = AppConfig.ReportDate.ToString();
 
             OptionsViewModel.SaveToLocal();
             OptionsViewModel.SaveToBase();

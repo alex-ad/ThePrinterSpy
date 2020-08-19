@@ -22,7 +22,7 @@ namespace ThePrinterSpyControl.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ThePrinterSpyControl.Properties {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ThePrinterSpyControl.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,651 @@ namespace ThePrinterSpyControl.Properties {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Close.
+        /// </summary>
+        public static string AboutButtonClose {
+            get {
+                return ResourceManager.GetString("AboutButtonClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Home page.
+        /// </summary>
+        public static string AboutLabelHomePage {
+            get {
+                return ResourceManager.GetString("AboutLabelHomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The Printer Spy.
+        /// </summary>
+        public static string AboutLabelProgramName {
+            get {
+                return ResourceManager.GetString("AboutLabelProgramName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Version.
+        /// </summary>
+        public static string AboutLabelVersion {
+            get {
+                return ResourceManager.GetString("AboutLabelVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на About.
+        /// </summary>
+        public static string AboutWindowTitle {
+            get {
+                return ResourceManager.GetString("AboutWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete.
+        /// </summary>
+        public static string ButtonPrinterDelete {
+            get {
+                return ResourceManager.GetString("ButtonPrinterDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Rename.
+        /// </summary>
+        public static string ButtonPrinterRename {
+            get {
+                return ResourceManager.GetString("ButtonPrinterRename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enabled.
+        /// </summary>
+        public static string CheckPrinterEnabled {
+            get {
+                return ResourceManager.GetString("CheckPrinterEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Synchronize all users.
+        /// </summary>
+        public static string ConfigButtonADSync {
+            get {
+                return ResourceManager.GetString("ConfigButtonADSync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enabled.
+        /// </summary>
+        public static string ConfigCheckADEnabled {
+            get {
+                return ResourceManager.GetString("ConfigCheckADEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enabled.
+        /// </summary>
+        public static string ConfigCheckMaskEnabled {
+            get {
+                return ResourceManager.GetString("ConfigCheckMaskEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enabled.
+        /// </summary>
+        public static string ConfigCheckReportPeriodEnabled {
+            get {
+                return ResourceManager.GetString("ConfigCheckReportPeriodEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Synchronization with Active Directory.
+        /// </summary>
+        public static string ConfigGroupADTitle {
+            get {
+                return ResourceManager.GetString("ConfigGroupADTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Printer Name Mask.
+        /// </summary>
+        public static string ConfigGroupPrinterNameMaskTitle {
+            get {
+                return ResourceManager.GetString("ConfigGroupPrinterNameMaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Report Period.
+        /// </summary>
+        public static string ConfigGroupReportPeriodTitle {
+            get {
+                return ResourceManager.GetString("ConfigGroupReportPeriodTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Domain.
+        /// </summary>
+        public static string ConfigLabelADDomain {
+            get {
+                return ResourceManager.GetString("ConfigLabelADDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password.
+        /// </summary>
+        public static string ConfigLabelADPassword {
+            get {
+                return ResourceManager.GetString("ConfigLabelADPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User Name.
+        /// </summary>
+        public static string ConfigLabelADUser {
+            get {
+                return ResourceManager.GetString("ConfigLabelADUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Mask Type.
+        /// </summary>
+        public static string ConfigLabelMaskType {
+            get {
+                return ResourceManager.GetString("ConfigLabelMaskType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Mask.
+        /// </summary>
+        public static string ConfigLabelMaskValue {
+            get {
+                return ResourceManager.GetString("ConfigLabelMaskValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на End.
+        /// </summary>
+        public static string ConfigLabelReportPeriodEnd {
+            get {
+                return ResourceManager.GetString("ConfigLabelReportPeriodEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Begin.
+        /// </summary>
+        public static string ConfigLabelReportPeriodStart {
+            get {
+                return ResourceManager.GetString("ConfigLabelReportPeriodStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Period Type.
+        /// </summary>
+        public static string ConfigLabelReportPeriodType {
+            get {
+                return ResourceManager.GetString("ConfigLabelReportPeriodType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        public static string ConfigWindowsButtonCancel {
+            get {
+                return ResourceManager.GetString("ConfigWindowsButtonCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на OK.
+        /// </summary>
+        public static string ConfigWindowsButtonOk {
+            get {
+                return ResourceManager.GetString("ConfigWindowsButtonOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Config.
+        /// </summary>
+        public static string ConfigWindowTitle {
+            get {
+                return ResourceManager.GetString("ConfigWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The Printer Spy - Control Panel.
+        /// </summary>
+        public static string MainWindowTitle {
+            get {
+                return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на _About.
+        /// </summary>
+        public static string MenuAbout {
+            get {
+                return ResourceManager.GetString("MenuAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tab [Computers].
+        /// </summary>
+        public static string MenuComputersShow {
+            get {
+                return ResourceManager.GetString("MenuComputersShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Config.
+        /// </summary>
+        public static string MenuConfig {
+            get {
+                return ResourceManager.GetString("MenuConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tab [Departments].
+        /// </summary>
+        public static string MenuDepartmentsShow {
+            get {
+                return ResourceManager.GetString("MenuDepartmentsShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Exit.
+        /// </summary>
+        public static string MenuExit {
+            get {
+                return ResourceManager.GetString("MenuExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на _File.
+        /// </summary>
+        public static string MenuFile {
+            get {
+                return ResourceManager.GetString("MenuFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на _Options.
+        /// </summary>
+        public static string MenuOptions {
+            get {
+                return ResourceManager.GetString("MenuOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tab [Printers].
+        /// </summary>
+        public static string MenuPrintersShow {
+            get {
+                return ResourceManager.GetString("MenuPrintersShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Export Report....
+        /// </summary>
+        public static string MenuReportExport {
+            get {
+                return ResourceManager.GetString("MenuReportExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tab [Users].
+        /// </summary>
+        public static string MenuUsersShow {
+            get {
+                return ResourceManager.GetString("MenuUsersShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Config.
+        /// </summary>
+        public static string NavConfig {
+            get {
+                return ResourceManager.GetString("NavConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Refresh.
+        /// </summary>
+        public static string NavRefresh {
+            get {
+                return ResourceManager.GetString("NavRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Export Report....
+        /// </summary>
+        public static string NavReportExport {
+            get {
+                return ResourceManager.GetString("NavReportExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Date-Time.
+        /// </summary>
+        public static string ReportDateTime {
+            get {
+                return ResourceManager.GetString("ReportDateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Document Name.
+        /// </summary>
+        public static string ReportDocument {
+            get {
+                return ResourceManager.GetString("ReportDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pages.
+        /// </summary>
+        public static string ReportPages {
+            get {
+                return ResourceManager.GetString("ReportPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на [all time].
+        /// </summary>
+        public static string ReportPeriodAllTime {
+            get {
+                return ResourceManager.GetString("ReportPeriodAllTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Current Day.
+        /// </summary>
+        public static string ReportPeriodTypeCurrentDay {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeCurrentDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Current Month.
+        /// </summary>
+        public static string ReportPeriodTypeCurrentMonth {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeCurrentMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Current Week.
+        /// </summary>
+        public static string ReportPeriodTypeCurrentWeek {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeCurrentWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Current Year.
+        /// </summary>
+        public static string ReportPeriodTypeCurrentYear {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeCurrentYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Manual Defined (Date-Date).
+        /// </summary>
+        public static string ReportPeriodTypeFromDateToDate {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeFromDateToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на From Date To Now.
+        /// </summary>
+        public static string ReportPeriodTypeFromDateToNow {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeFromDateToNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Last 180 Days.
+        /// </summary>
+        public static string ReportPeriodTypeLast180Days {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeLast180Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Last 30 Days.
+        /// </summary>
+        public static string ReportPeriodTypeLast30Days {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeLast30Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Last 7 Days.
+        /// </summary>
+        public static string ReportPeriodTypeLast7Days {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypeLast7Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Previous Day.
+        /// </summary>
+        public static string ReportPeriodTypePreviousDay {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypePreviousDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Previous Month.
+        /// </summary>
+        public static string ReportPeriodTypePreviousMonth {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypePreviousMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Previous Week.
+        /// </summary>
+        public static string ReportPeriodTypePreviousWeek {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypePreviousWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Previous Year.
+        /// </summary>
+        public static string ReportPeriodTypePreviousYear {
+            get {
+                return ResourceManager.GetString("ReportPeriodTypePreviousYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Printer.
+        /// </summary>
+        public static string ReportPrinter {
+            get {
+                return ResourceManager.GetString("ReportPrinter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User.
+        /// </summary>
+        public static string ReportUser {
+            get {
+                return ResourceManager.GetString("ReportUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Computer(s).
+        /// </summary>
+        public static string StatusComputers {
+            get {
+                return ResourceManager.GetString("StatusComputers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Department(s).
+        /// </summary>
+        public static string StatusDepartments {
+            get {
+                return ResourceManager.GetString("StatusDepartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Printer(s).
+        /// </summary>
+        public static string StatusPrinters {
+            get {
+                return ResourceManager.GetString("StatusPrinters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User(s).
+        /// </summary>
+        public static string StatusUsers {
+            get {
+                return ResourceManager.GetString("StatusUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Report Period.
+        /// </summary>
+        public static string SummaryReportPeriod {
+            get {
+                return ResourceManager.GetString("SummaryReportPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Summary.
+        /// </summary>
+        public static string SummaryTitle {
+            get {
+                return ResourceManager.GetString("SummaryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Documents Printered.
+        /// </summary>
+        public static string SummaryTotalDocuments {
+            get {
+                return ResourceManager.GetString("SummaryTotalDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pages Printered.
+        /// </summary>
+        public static string SummaryTotalPages {
+            get {
+                return ResourceManager.GetString("SummaryTotalPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Computers.
+        /// </summary>
+        public static string TabComputers {
+            get {
+                return ResourceManager.GetString("TabComputers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Departments.
+        /// </summary>
+        public static string TabDepartments {
+            get {
+                return ResourceManager.GetString("TabDepartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Printers.
+        /// </summary>
+        public static string TabPrinters {
+            get {
+                return ResourceManager.GetString("TabPrinters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Users.
+        /// </summary>
+        public static string TabUsers {
+            get {
+                return ResourceManager.GetString("TabUsers", resourceCulture);
             }
         }
     }

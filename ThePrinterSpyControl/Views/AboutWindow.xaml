@@ -3,14 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:loc="clr-namespace:ThePrinterSpyControl.Languages"
+        xmlns:loc="clr-namespace:ThePrinterSpyControl.Properties"
         mc:Ignorable="d"
-        Title="{x:Static loc:lang.AboutWindowTitle}"
+        Title="{x:Static loc:Resources.AboutWindowTitle}"
             Height="250"
             Width="450"
             ResizeMode="NoResize"
             WindowStartupLocation="CenterScreen"
-            Icon="/ThePrinterSpyControl;component/Images/logo.png"
             Closed="WndAbout_Closed">
     <Window.CommandBindings>
         <CommandBinding Command="Close" CanExecute="CloseWindowCmdCanExecute" Executed="CloseWindowExecuted"></CommandBinding>
@@ -27,7 +26,7 @@
         <Button
             Grid.Row="1"
             Grid.Column="1"
-            Content="{x:Static loc:lang.AboutButtonClose}"
+            Content="{x:Static loc:Resources.AboutButtonClose}"
             Width="80"
             Height="28"
             HorizontalAlignment="Right"
@@ -55,13 +54,13 @@
                 Grid.Column="1"
                 FontWeight="Bold"
                 VerticalAlignment="Center"
-                Text="{x:Static loc:lang.AboutLabelProgramName}"/>
+                Text="{x:Static loc:Resources.AboutLabelProgramName}"/>
             <StackPanel Grid.Row="1" Grid.Column="1">
-                <TextBlock Text="{x:Static loc:lang.AboutLabelVersion}"/>
+                <TextBlock Text="{x:Static loc:Resources.AboutLabelVersion}"/>
                 <TextBlock Text="1.0.0.0"/>
             </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="1">
-                <TextBlock Text="{x:Static loc:lang.AboutLabelHomePage}"/>
+                <TextBlock Text="{x:Static loc:Resources.AboutLabelHomePage}"/>
                 <TextBlock Text="http://github.com/alex-ad/ThePrinterSpy"/>
             </StackPanel>
         </Grid>
