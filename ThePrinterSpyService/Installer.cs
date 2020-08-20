@@ -14,12 +14,9 @@ namespace ThePrinterSpyService
             ServiceProcessInstaller processInstaller = new ServiceProcessInstaller();
 
             processInstaller.Account = ServiceAccount.LocalSystem;
-            //processInstaller.Account = ServiceAccount.User;
-            //processInstaller.Username = @"LOT\l0t";
-            //processInstaller.Password = "LordWarrior80";
             serviceInstaller.StartType = ServiceStartMode.Automatic;
             serviceInstaller.ServiceName = "ThePrinterSpyService";
-            serviceInstaller.Description = "Отслеживание напечатанных на принтере или многофункциональном устройстве документов";
+            serviceInstaller.Description = "Monitoring on printed documents on local machine";
             Installers.Add(processInstaller);
             Installers.Add(serviceInstaller);
         }

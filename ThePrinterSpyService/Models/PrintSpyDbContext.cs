@@ -1,11 +1,12 @@
 ﻿using System.Data.Entity;
+using ThePrinterSpyService.Core;
 
 namespace ThePrinterSpyService.Models
 {
     public class PrintSpyDbContext : DbContext
     {
         public PrintSpyDbContext()
-            : base("name=PrintSpy")
+            : base(new DataBaseConnection().Get(), true)
         {
         }
 

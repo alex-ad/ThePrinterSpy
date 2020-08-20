@@ -9,14 +9,13 @@
 
 namespace ThePrinterSpyControl.DataBase
 {
-    using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
     public partial class PrintSpyEntities : DbContext
     {
         public PrintSpyEntities()
-            : base("name=PrintSpyEntities")
+            : base(new DataBaseConnection().Get(), true)
         {
         }
     

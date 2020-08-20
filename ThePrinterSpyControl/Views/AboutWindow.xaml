@@ -10,14 +10,16 @@
             Width="450"
             ResizeMode="NoResize"
             WindowStartupLocation="CenterScreen"
-            Closed="WndAbout_Closed">
+            Closed="WndAbout_Closed"
+            Icon="/ThePrinterSpyControl;component/Images/icon.ico">
     <Window.CommandBindings>
         <CommandBinding Command="Close" CanExecute="CloseWindowCmdCanExecute" Executed="CloseWindowExecuted"></CommandBinding>
     </Window.CommandBindings>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="41*"/>
-            <ColumnDefinition Width="107*"/>
+            <ColumnDefinition Width="17*"/>
+            <ColumnDefinition Width="106*"/>
+            <ColumnDefinition Width="321*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -25,14 +27,14 @@
         </Grid.RowDefinitions>
         <Button
             Grid.Row="1"
-            Grid.Column="1"
+            Grid.Column="2"
             Content="{x:Static loc:Resources.AboutButtonClose}"
             Width="80"
             Height="28"
             HorizontalAlignment="Right"
-            Margin="0 0 10 0"
+            Margin="0,11,10,11"
             Command="Close"/>
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="2*"/>

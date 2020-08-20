@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/18/2020 19:12:06
--- Generated from EDMX file: C:\Users\is5493\source\repos\ThePrinterSpy\ThePrinterSpyControl\DataBase\PrintSpyDb.edmx
+-- Date Created: 08/20/2020 15:36:34
+-- Generated from EDMX file: C:\Users\l0t\source\repos\ThePrinterSpy\ThePrinterSpyControl\DataBase\PrintSpyDb.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [PrintSpy];
+USE [PrinterSpy];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO

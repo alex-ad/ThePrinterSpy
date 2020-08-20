@@ -55,6 +55,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
@@ -94,6 +97,8 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandT.cs" />
+    <Compile Include="DataBase\DataBaseConnection.cs" />
+    <Compile Include="DataBase\RegistryConfig.cs" />
     <Compile Include="ModelBuilders\ServersCollection.cs" />
     <Compile Include="Models\AdIdentity.cs" />
     <Compile Include="Models\ConfigActiveDirectory.cs" />
@@ -249,9 +254,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\icon.ico" />
+    <Resource Include="Images\logo.png" />
     <Resource Include="Images\rename.gif" />
     <Resource Include="Images\delete.gif" />
-    <Resource Include="Images\logo.png" />
     <Resource Include="Images\bag.png" />
     <Resource Include="Images\base.png" />
     <Resource Include="Images\calendar.png" />
