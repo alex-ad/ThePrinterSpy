@@ -11,7 +11,7 @@ namespace ThePrinterSpyService
         static void Main(string[] args)
         {
             //debug begin
-            /*if (Environment.UserInteractive)
+            if (Environment.UserInteractive)
             {
                 Service service1 = new Service();
                 service1.TestStartupAndStop(args);
@@ -20,11 +20,11 @@ namespace ThePrinterSpyService
             {
                 ServiceBase[] servicesToRun = { new Service() };
                 ServiceBase.Run(servicesToRun);
-            }*/
+            }
             //debug end
 
-            ServiceBase[] servicesToRun = { new Service() };
-            ServiceBase.Run(servicesToRun);
+            /*ServiceBase[] servicesToRun = { new Service() };
+            ServiceBase.Run(servicesToRun);*/
         }
     }
 }

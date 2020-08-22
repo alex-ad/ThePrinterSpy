@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
@@ -70,6 +71,10 @@ namespace ThePrinterSpyService.Core
 
         private void AddPrintJob(JobInfo job, int userId, int computerId, int serverId, int printerId)
         {
+            var dtUtc = new DateTime(job.Submitted.wYear, job.Submitted.wMonth, job.Submitted.wDay, job.Submitted.wHour,
+                job.Submitted.wMinute, job.Submitted.wSecond, DateTimeKind.Utc);
+            var dtLocal = TimeZoneInfo.ConvertTimeFromUtc(dtUtc, TimeZoneInfo.Local);
+
             PrintDataStruct jobInfo = new PrintDataStruct
             {
                 PrinterId = printerId,
@@ -78,7 +83,7 @@ namespace ThePrinterSpyService.Core
                 ServerId = serverId,
                 DocName = job.pDocument,
                 Pages = (int)job.PagesPrinted,
-                TimeStamp = new DateTime(job.Submitted.wYear, job.Submitted.wMonth, job.Submitted.wDay, job.Submitted.wHour, job.Submitted.wMinute, job.Submitted.wSecond, DateTimeKind.Utc),
+                TimeStamp = dtLocal,
                 JobId = (int)job.JobId
             };
 
@@ -109,11 +114,12 @@ namespace ThePrinterSpyService.Core
                 return;
             _pagesPrinted[e.JobId] = (int)e.JobInfo.PagesPrinted;
 
-            Log.AddTextLine("2. jobId: " + e.JobId.ToString() + "\r\n");
-            Log.AddTextLine("2. pPrinterName: " + printer.Name + "\r\n");
-            Log.AddTextLine("2. pMachineName: " + computer.Name + "\r\n");
-            Log.AddTextLine("2. pUserName: " + user.AccountName + "\r\n");
-            Log.AddTextLine("2. pDocument: " + e.JobInfo.pDocument + "\r\n");
+            Debug.WriteLine("2. jobId: " + e.JobId.ToString());
+            Debug.WriteLine("2. pPrinterName: " + printer.Name);
+            Debug.WriteLine("2. pMachineName: " + computer.Name);
+            Debug.WriteLine("2. pUserName: " + user.AccountName);
+            Debug.WriteLine("2. pDocument: " + e.JobInfo.pDocument);
+            Debug.WriteLine("2. PagesPrinted: " + e.JobInfo.PagesPrinted);
 
             AddPrintJob(new JobInfo
             {

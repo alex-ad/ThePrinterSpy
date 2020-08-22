@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -252,11 +253,12 @@ namespace ThePrinterSpyService.Core
                 return;
             }
 
-            Log.AddTextLine("1. jobId: " + jobId.ToString() + "\r\n");
-            Log.AddTextLine("1. pPrinterName: " + jobInfo.pPrinterName + "\r\n");
-            Log.AddTextLine("1. pMachineName: " + jobInfo.pMachineName + "\r\n");
-            Log.AddTextLine("1. pUserName: " + jobInfo.pUserName + "\r\n");
-            Log.AddTextLine("1. pDocument: " + jobInfo.pDocument + "\r\n");
+            Debug.WriteLine("1. jobId: " + jobId.ToString());
+            Debug.WriteLine("1. pPrinterName: " + jobInfo.pPrinterName);
+            Debug.WriteLine("1. pMachineName: " + jobInfo.pMachineName);
+            Debug.WriteLine("1. pUserName: " + jobInfo.pUserName);
+            Debug.WriteLine("1. pDocument: " + jobInfo.pDocument);
+            Debug.WriteLine("1. PagesPrinted: " + jobInfo.PagesPrinted);
 
             OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(jobId, jStatus, jobInfo));
         }

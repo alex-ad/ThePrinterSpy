@@ -12,13 +12,13 @@ namespace ThePrinterSpyService
             InitializeComponent();
         }
 
-        /*internal void TestStartupAndStop(string[] args)
+        internal void TestStartupAndStop(string[] args)
         {
             //debug method only
             this.OnStart(args);
             Console.ReadLine();
             this.OnStop();
-        }*/
+        }
 
         protected override async void OnStart(string[] args)
         {

@@ -20,7 +20,7 @@ namespace ThePrinterSpyControl.DataBase
 
         public RegistryConfig()
         {
-            RegistryKey rKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Default).OpenSubKey(RegKey, false);
+            RegistryKey rKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(RegKey, false);
             if (rKey == null) throw new Exception("There is error reading config from the system registry. Please, reinstall the application.");
 
             try
