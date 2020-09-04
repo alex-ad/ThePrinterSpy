@@ -114,13 +114,6 @@ namespace ThePrinterSpyService.Core
                 return;
             _pagesPrinted[e.JobId] = (int)e.JobInfo.PagesPrinted;
 
-            Debug.WriteLine("2. jobId: " + e.JobId.ToString());
-            Debug.WriteLine("2. pPrinterName: " + printer.Name);
-            Debug.WriteLine("2. pMachineName: " + computer.Name);
-            Debug.WriteLine("2. pUserName: " + user.AccountName);
-            Debug.WriteLine("2. pDocument: " + e.JobInfo.pDocument);
-            Debug.WriteLine("2. PagesPrinted: " + e.JobInfo.PagesPrinted);
-
             AddPrintJob(new JobInfo
             {
                 PagesPrinted = e.JobInfo.PagesPrinted,
@@ -128,6 +121,8 @@ namespace ThePrinterSpyService.Core
                 Submitted = e.JobInfo.Submitted,
                 JobId = (uint)e.JobId
             }, printer.UserId, printer.ComputerId, printer.ServerId, printer.Id);
+
+            Console.WriteLine(e.JobInfo.PagesPrinted);
         }
 
         private void OnPrinterNameChange(object sender, PrinterNameChangeEventArgs e)

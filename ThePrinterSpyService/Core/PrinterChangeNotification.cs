@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -84,7 +85,7 @@ namespace ThePrinterSpyService.Core
             [DllImport("winspool.drv", EntryPoint = "ClosePrinter", SetLastError = true, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern bool ClosePrinter(Int32 hPrinter);
 
-            [DllImport("winspool.drv", EntryPoint = "GetJobW", CharSet = CharSet.Unicode, SetLastError = true,
+            [DllImport("winspool.drv", EntryPoint = "GetJob", CharSet = CharSet.Unicode, SetLastError = true,
                 ExactSpelling = false, CallingConvention = CallingConvention.StdCall)]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool GetJob([In] IntPtr hPrinter, [In] Int32 jobId, [In] Int32 level,
@@ -194,7 +195,9 @@ namespace ThePrinterSpyService.Core
                 for (int i = 0; i < data.Count(); i++)
                 {
                     if ((data[i].Type == (ushort)PRINTERNOTIFICATIONTYPES.JOB_NOTIFY_TYPE) &&
-                            ((data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_STATUS)))
+                            (/*(data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_STATUS)
+                                || */(data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_PAGES_PRINTED)
+                                ))
                     {
                         PrinterJobNotification(data[i]);
                     }
@@ -215,7 +218,7 @@ namespace ThePrinterSpyService.Core
 
         private JobInfo GetJob(int jobId)
         {
-            var bytesWritten = new Int32();
+            var bytesWritten = new int();
             var ptBuf = new byte[0];
 
             JobInfo jobInfo = new JobInfo();
@@ -229,11 +232,30 @@ namespace ThePrinterSpyService.Core
                 GCHandle handle = GCHandle.Alloc(ptBuf, GCHandleType.Pinned);
                 jobInfo = (JobInfo)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(JobInfo));
                 handle.Free();
-
-                return jobInfo;
             }
             return jobInfo;
         }
+
+        /*private JobInfo GetJobWmi(int jobId)
+        {
+            JobInfo jobInfo = new JobInfo();
+            var searcher = new ManagementObjectSearcher($"SELECT * FROM Win32_PrintJob WHERE JobId='{jobId}'");
+            //var searcher = new ManagementObjectSearcher($"SELECT * FROM Win32_PrintJob");
+            var collection = searcher.Get();
+            if (collection.Count < 1) return jobInfo;
+
+            foreach (var job in collection)
+            {
+
+                var p1 = job.Properties["PaperLength"].Value;
+                var p2 = job.Properties["Size"].Value;
+                var p3 = job.Properties["PagesPrinted"].Value;
+
+                Console.WriteLine(p1 + " : " + p2 + " : " +p3);
+            }
+
+            return jobInfo;
+        }*/
 
         private void PrinterJobNotification(PRINTER_NOTIFY_INFO_DATA data)
         {
@@ -244,6 +266,7 @@ namespace ThePrinterSpyService.Core
             try
             {
                 jobInfo = GetJob(jobId);
+                //GetJobWmi(jobId);
                 if (jobInfo.PagesPrinted == 0) return;
                 if (!_jobDocNames.ContainsKey(jobId))
                     _jobDocNames[jobId] = jobInfo.pDocument;
@@ -252,13 +275,6 @@ namespace ThePrinterSpyService.Core
             {
                 return;
             }
-
-            Debug.WriteLine("1. jobId: " + jobId.ToString());
-            Debug.WriteLine("1. pPrinterName: " + jobInfo.pPrinterName);
-            Debug.WriteLine("1. pMachineName: " + jobInfo.pMachineName);
-            Debug.WriteLine("1. pUserName: " + jobInfo.pUserName);
-            Debug.WriteLine("1. pDocument: " + jobInfo.pDocument);
-            Debug.WriteLine("1. PagesPrinted: " + jobInfo.PagesPrinted);
 
             OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(jobId, jStatus, jobInfo));
         }
