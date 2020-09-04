@@ -121,8 +121,6 @@ namespace ThePrinterSpyService.Core
                 Submitted = e.JobInfo.Submitted,
                 JobId = (uint)e.JobId
             }, printer.UserId, printer.ComputerId, printer.ServerId, printer.Id);
-
-            Console.WriteLine(e.JobInfo.PagesPrinted);
         }
 
         private void OnPrinterNameChange(object sender, PrinterNameChangeEventArgs e)
