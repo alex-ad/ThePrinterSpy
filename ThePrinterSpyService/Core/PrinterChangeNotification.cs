@@ -197,6 +197,7 @@ namespace ThePrinterSpyService.Core
                     if ((data[i].Type == (ushort)PRINTERNOTIFICATIONTYPES.JOB_NOTIFY_TYPE) &&
                             ((data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_STATUS)
                                 || (data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_PAGES_PRINTED)
+                                || (data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_BYTES_PRINTED)
                                 ))
                     {
                         PrinterJobNotification(data[i]);
@@ -236,28 +237,20 @@ namespace ThePrinterSpyService.Core
             return jobInfo;
         }
 
-        private JobInfo GetJobWmi(int jobId)
+        private uint GetPagesPrinted(int jobId)
         {
-            JobInfo jobInfo = new JobInfo();
             var searcher = new ManagementObjectSearcher($"SELECT * FROM Win32_PrintJob WHERE JobId='{jobId}'");
             var collection = searcher.Get();
-            if (collection.Count < 1) return jobInfo;
+            if (collection.Count < 1) return 0;
+            uint pages = 0;
 
             foreach (var job in collection)
             {
-                var dt = DateTime.Now;
-                jobInfo.JobId = (uint)jobId;
-                jobInfo.PagesPrinted = (uint)int.Parse(job.Properties["PagesPrinted"].Value.ToString());
-                jobInfo.pDocument = job.Properties["Document"].Value.ToString();
-                jobInfo.Submitted.wDay = (ushort) dt.Day;
-                jobInfo.Submitted.wMonth = (ushort) dt.Month;
-                jobInfo.Submitted.wYear = (ushort) dt.Year;
-                jobInfo.Submitted.wSecond = (ushort) dt.Second;
-                jobInfo.Submitted.wMinute = (ushort) dt.Minute;
-                jobInfo.Submitted.wHour = (ushort) dt.Hour;
+                pages = (uint)int.Parse(job.Properties["PagesPrinted"].Value.ToString());
+                if (pages > 0) break;
             }
 
-            return jobInfo;
+            return pages;
         }
 
         private void PrinterJobNotification(PRINTER_NOTIFY_INFO_DATA data)
@@ -268,12 +261,13 @@ namespace ThePrinterSpyService.Core
 
             try
             {
-                //jobInfo = GetJob(jobId);
-                jobInfo = GetJobWmi(jobId);
+                jobInfo = GetJob(jobId);
+                jobInfo.PagesPrinted = GetPagesPrinted(jobId);
 
 
-                //Console.WriteLine(jobInfo.PagesPrinted);
+                Console.WriteLine(jobInfo.PagesPrinted);
 
+                
                 if (jobInfo.PagesPrinted == 0) return;
                 if (!_jobDocNames.ContainsKey(jobId))
                     _jobDocNames[jobId] = jobInfo.pDocument;

@@ -32,6 +32,7 @@ namespace ThePrinterSpyService.Core
 
             ManagementObjectCollection collection = searcher.Get();
             string userName = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
+            //string userName = @"vgtz\is5493";
             var slash = userName.LastIndexOf('\\');
             if (slash > 0) userName = userName.Substring(slash + 1);
 
