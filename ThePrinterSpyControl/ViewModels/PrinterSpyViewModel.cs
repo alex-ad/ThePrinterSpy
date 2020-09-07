@@ -95,7 +95,8 @@ namespace ThePrinterSpyControl.ViewModels
                     Pages = d.Data.Pages,
                     TimeStamp = d.Data.TimeStamp,
                     UserName = userName,
-                    PrinterName = d.Printer.Name
+                    PrinterName = d.Printer.Name,
+                    ComputerName = d.Computer.Name
                 });
             }
 
@@ -126,7 +127,8 @@ namespace ThePrinterSpyControl.ViewModels
                     Pages = d.Data.Pages,
                     TimeStamp = d.Data.TimeStamp,
                     UserName = userName,
-                    PrinterName = d.Printer.Name
+                    PrinterName = d.Printer.Name,
+                    ComputerName = d.Computer.Name
                 });
             }
 
@@ -157,7 +159,8 @@ namespace ThePrinterSpyControl.ViewModels
                     Pages = d.Data.Pages,
                     TimeStamp = d.Data.TimeStamp,
                     UserName = userName,
-                    PrinterName = d.Printer.Name
+                    PrinterName = d.Printer.Name,
+                    ComputerName = d.Computer.Name
                 });
             }
 
@@ -189,7 +192,8 @@ namespace ThePrinterSpyControl.ViewModels
                     Pages = d.Data.Pages,
                     TimeStamp = d.Data.TimeStamp,
                     UserName = username,
-                    PrinterName = d.Printer.Name
+                    PrinterName = d.Printer.Name,
+                    ComputerName = d.Computer.Name
                 });
             }
 
@@ -220,7 +224,8 @@ namespace ThePrinterSpyControl.ViewModels
                     Pages = d.Data.Pages,
                     TimeStamp = d.Data.TimeStamp,
                     UserName = username,
-                    PrinterName = d.Printer.Name
+                    PrinterName = d.Printer.Name,
+                    ComputerName = d.Computer.Name
                 });
             }
 

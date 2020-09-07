@@ -237,6 +237,9 @@
   <data name="NavReportExport" xml:space="preserve">
     <value>Export Report...</value>
   </data>
+  <data name="ReportComputer" xml:space="preserve">
+    <value>Computer</value>
+  </data>
   <data name="ReportDateTime" xml:space="preserve">
     <value>Date-Time</value>
   </data>

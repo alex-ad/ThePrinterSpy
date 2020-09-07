@@ -421,6 +421,15 @@ namespace ThePrinterSpyControl.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Computer.
+        /// </summary>
+        public static string ReportComputer {
+            get {
+                return ResourceManager.GetString("ReportComputer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Date-Time.
         /// </summary>
         public static string ReportDateTime {

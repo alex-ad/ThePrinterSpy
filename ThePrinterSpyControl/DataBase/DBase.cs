@@ -15,6 +15,7 @@ namespace ThePrinterSpyControl.DataBase
             public PrintData Data;
             public Printer Printer;
             public User User;
+            public Computer Computer;
         }
 
         private static PrintSpyEntities _context;
@@ -175,6 +176,7 @@ namespace ThePrinterSpyControl.DataBase
                 from d in _context.PrintDatas
                 join p in _context.Printers on d.PrinterId equals p.Id
                 join u in _context.Users on d.UserId equals u.Id
+                join c in _context.Computers on d.ComputerId equals c.Id
                 where d.UserId == id
                       && (
                           (
@@ -184,7 +186,7 @@ namespace ThePrinterSpyControl.DataBase
                           )
                           || (!isReport)
                       )
-                select new PrintDataCollection { Data = d, Printer = p, User = u };
+                select new PrintDataCollection { Data = d, Printer = p, User = u, Computer = c};
 
             return await data.ToListAsync().ConfigureAwait(false);
         }
@@ -195,9 +197,11 @@ namespace ThePrinterSpyControl.DataBase
                 from d in _context.PrintDatas
                 from p in _context.Printers
                 from u in _context.Users
+                from c in _context.Computers
                 where d.UserId == u.Id
                       && u.Department == name
                       && d.PrinterId == p.Id
+                      && d.ComputerId == c.Id
                       && (
                           (
                               (DbFunctions.TruncateTime(d.TimeStamp) >= start)
@@ -206,7 +210,7 @@ namespace ThePrinterSpyControl.DataBase
                           )
                           || (!isReport)
                       )
-                select new PrintDataCollection { Data = d, Printer = p, User = u };
+                select new PrintDataCollection { Data = d, Printer = p, User = u, Computer = c};
 
             return await data.ToListAsync().ConfigureAwait(false);
         }
@@ -217,6 +221,7 @@ namespace ThePrinterSpyControl.DataBase
                 from d in _context.PrintDatas
                 join p in _context.Printers on d.PrinterId equals p.Id
                 join u in _context.Users on d.UserId equals u.Id
+                join c in _context.Computers on d.ComputerId equals c.Id
                 where d.ComputerId == id
                       && (
                           (
@@ -226,7 +231,7 @@ namespace ThePrinterSpyControl.DataBase
                           )
                           || (!isReport)
                       )
-                select new PrintDataCollection { Data = d, Printer = p, User = u };
+                select new PrintDataCollection { Data = d, Printer = p, User = u, Computer = c};
 
             return await data.ToListAsync().ConfigureAwait(false);
         }
@@ -237,6 +242,7 @@ namespace ThePrinterSpyControl.DataBase
                 from d in _context.PrintDatas
                 join p in _context.Printers on d.PrinterId equals p.Id
                 join u in _context.Users on d.UserId equals u.Id
+                join c in _context.Computers on d.ComputerId equals c.Id
                 where d.PrinterId == id
                       && (
                           (
@@ -246,7 +252,7 @@ namespace ThePrinterSpyControl.DataBase
                           )
                           || (!isReport)
                       )
-                select new PrintDataCollection { Data = d, Printer = p, User = u };
+                select new PrintDataCollection { Data = d, Printer = p, User = u, Computer = c};
 
             return await data.ToListAsync().ConfigureAwait(false);
         }
@@ -258,6 +264,7 @@ namespace ThePrinterSpyControl.DataBase
                 from i in ids
                 join p in _context.Printers on d.PrinterId equals p.Id
                 join u in _context.Users on d.UserId equals u.Id
+                join c in _context.Computers on d.ComputerId equals c.Id
                 where d.PrinterId == i
                       && (
                           (
@@ -267,7 +274,7 @@ namespace ThePrinterSpyControl.DataBase
                           )
                           || (!isReport)
                       )
-                select new PrintDataCollection { Data = d, Printer = p, User = u };
+                select new PrintDataCollection { Data = d, Printer = p, User = u, Computer = c};
 
             return await data.ToListAsync().ConfigureAwait(false);
         }

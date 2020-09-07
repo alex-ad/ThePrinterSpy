@@ -343,10 +343,11 @@
                     MinWidth="250"
                     GridLinesVisibility="Vertical">
                     <DataGrid.Columns>
+                        <DataGridTextColumn Header="{x:Static loc:Resources.ReportUser}" Binding="{Binding UserName}" />
+                        <DataGridTextColumn Header="{x:Static loc:Resources.ReportPrinter}" Binding="{Binding PrinterName}" />
+                        <DataGridTextColumn Header="{x:Static loc:Resources.ReportComputer}" Binding="{Binding ComputerName}" />
                         <DataGridTextColumn Header="{x:Static loc:Resources.ReportDocument}" Binding="{Binding DocName}" />
-                        <DataGridTextColumn Header="{x:Static loc:Resources.ReportPrinter}" Binding="{Binding PrinterName}"/>
                         <DataGridTextColumn Header="{x:Static loc:Resources.ReportPages}" Binding="{Binding Pages}" />
-                        <DataGridTextColumn Header="{x:Static loc:Resources.ReportUser}" Binding="{Binding UserName}"/>
                         <DataGridTextColumn Header="{x:Static loc:Resources.ReportDateTime}" Binding="{Binding TimeStamp, StringFormat={}{0:dd.MM.yyyy - HH:mm:ss}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
