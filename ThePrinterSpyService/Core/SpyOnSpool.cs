@@ -96,6 +96,10 @@ namespace ThePrinterSpyService.Core
             };
 
             PrintData.AddOrUpdate(jobInfo);
+
+
+
+            Console.WriteLine(" *** DONE ***");
         }
 
         private void ProceedError(Exception exception)

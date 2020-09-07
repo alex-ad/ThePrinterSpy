@@ -295,10 +295,13 @@ namespace ThePrinterSpyService.Core
             try
             {
                 jobInfo = GetJob(jobId);
+
+                Console.WriteLine("8*. PrinterJobNotification. GetJob.Printed: " + jobInfo.PagesPrinted);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                 jobInfo.PagesPrinted = GetPagesPrinted(jobId);
 
-
-                Console.WriteLine("8. PrinterJobNotification. Printed: " + jobInfo.PagesPrinted);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                
+                Console.WriteLine("8. PrinterJobNotification. GetPagesPrinted.Printed: " + jobInfo.PagesPrinted);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 
                 if (jobInfo.PagesPrinted == 0) return;
