@@ -211,7 +211,8 @@ namespace ThePrinterSpyService.Core
                     if ((data[i].Type == (ushort)PRINTERNOTIFICATIONTYPES.JOB_NOTIFY_TYPE) &&
                             ((data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_STATUS)
                                 || (data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_PAGES_PRINTED)
-                                || (data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_BYTES_PRINTED)
+                                || (data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_DATATYPE)
+                                || (data[i].Field == (ushort)PRINTERJOBNOTIFICATIONTYPES.JOB_NOTIFY_FIELD_TOTAL_PAGES)
                                 ))
                     {
                         PrinterJobNotification(data[i]);
@@ -298,7 +299,8 @@ namespace ThePrinterSpyService.Core
 
                 Console.WriteLine("8*. PrinterJobNotification. GetJob.Printed: " + jobInfo.PagesPrinted);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                jobInfo.PagesPrinted = GetPagesPrinted(jobId);
+                if (jobInfo.PagesPrinted == 0)
+                    jobInfo.PagesPrinted = GetPagesPrinted(jobId);
 
                 
                 Console.WriteLine("8. PrinterJobNotification. GetPagesPrinted.Printed: " + jobInfo.PagesPrinted);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
