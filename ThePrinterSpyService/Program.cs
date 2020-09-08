@@ -1,5 +1,4 @@
-﻿using System;
-using System.ServiceProcess;
+﻿using System.ServiceProcess;
 
 namespace ThePrinterSpyService
 {
@@ -8,10 +7,10 @@ namespace ThePrinterSpyService
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
-        static void Main(string[] args)
+        static void Main()
         {
             //debug begin
-            if (Environment.UserInteractive)
+            /*if (Environment.UserInteractive)
             {
                 Service service1 = new Service();
                 service1.TestStartupAndStop(args);
@@ -20,11 +19,11 @@ namespace ThePrinterSpyService
             {
                 ServiceBase[] servicesToRun = { new Service() };
                 ServiceBase.Run(servicesToRun);
-            }
+            }*/
             //debug end
 
-            /*ServiceBase[] servicesToRun = { new Service() };
-            ServiceBase.Run(servicesToRun);*/
+            ServiceBase[] servicesToRun = { new Service() };
+            ServiceBase.Run(servicesToRun);
         }
     }
 }

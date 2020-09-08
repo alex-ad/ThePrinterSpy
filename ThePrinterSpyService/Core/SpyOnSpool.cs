@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
@@ -32,7 +31,6 @@ namespace ThePrinterSpyService.Core
 
             ManagementObjectCollection collection = searcher.Get();
             string userName = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
-            //string userName = @"vgtz\is5493";
             var slash = userName.LastIndexOf('\\');
             if (slash > 0) userName = userName.Substring(slash + 1);
 
@@ -72,13 +70,6 @@ namespace ThePrinterSpyService.Core
 
         private void AddPrintJob(JobInfo job, int userId, int computerId, int serverId, int printerId)
         {
-
-
-            Console.WriteLine("14. AddPrintJob");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-
             var dtUtc = new DateTime(job.Submitted.wYear, job.Submitted.wMonth, job.Submitted.wDay, job.Submitted.wHour,
                 job.Submitted.wMinute, job.Submitted.wSecond, DateTimeKind.Utc);
             var dtLocal = TimeZoneInfo.ConvertTimeFromUtc(dtUtc, TimeZoneInfo.Local);
@@ -96,10 +87,6 @@ namespace ThePrinterSpyService.Core
             };
 
             PrintData.AddOrUpdate(jobInfo);
-
-
-
-            Console.WriteLine(" *** DONE ***");
         }
 
         private void ProceedError(Exception exception)
@@ -110,45 +97,22 @@ namespace ThePrinterSpyService.Core
 
         private void OnPrinterJobChange(object sender, PrinterJobChangeEventArgs e)
         {
-            Console.WriteLine("9. OnPrinterJobChange: begin");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
             if (string.IsNullOrEmpty(e.JobInfo.pPrinterName) || string.IsNullOrEmpty(e.JobInfo.pDocument) ||
                 string.IsNullOrEmpty(e.JobInfo.pMachineName) || string.IsNullOrEmpty(e.JobInfo.pUserName)) return;
 
-
-            Console.WriteLine("10. OnPrinterJobChange: JobInfo not null");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
             var computer = Computer.Get(e.JobInfo.pMachineName.Replace("\\", ""));
-
-
-            Console.WriteLine("11. OnPrinterJobChange. Computer: " + computer?.Name);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            
             if (computer == null) return;
+
             var user = User.GetByName(TruncateElemName(e.JobInfo.pUserName));
-
-
-            Console.WriteLine("12. OnPrinterJobChange. User: " + user?.AccountName);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
             if (user == null) return;
+
             var printer = Printer.Get(TruncateElemName(e.JobInfo.pPrinterName), computer.Id, user.Id);
-
-
-
-
-            Console.WriteLine("13. OnPrinterJobChange. Printer: " + printer?.Name);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
             if (printer == null || !printer.Enabled) return;
 
             if (!_pagesPrinted.ContainsKey(e.JobId))
                 _pagesPrinted.Add(e.JobId, (int)e.JobInfo.PagesPrinted);
             else if (_pagesPrinted[e.JobId] == (int)e.JobInfo.PagesPrinted)
                 return;
-
 
             _pagesPrinted[e.JobId] = (int)e.JobInfo.PagesPrinted;
 

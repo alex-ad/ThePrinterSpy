@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
@@ -156,18 +155,9 @@ namespace ThePrinterSpyService.Core
 
         private void PrinterNotifyWaitCallback(object state, bool timeOut)
         {
-
-            Console.WriteLine("----------------------------------------------------");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            Console.WriteLine("1. PrinterNotifyWaitCallback: begin");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
             if (_printerHandle == IntPtr.Zero) return;
             _notifyOptions.Count = 1;
             bool bResult = NativeMethods.FindNextPrinterChangeNotification(_changeHandle, out int pdwChange, _notifyOptions, out IntPtr pNotifyInfo);
-
-
-            Console.WriteLine("2. PrinterNotifyWaitCallback: FindNext");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
             if (bResult == false) return;
 
@@ -180,10 +170,6 @@ namespace ThePrinterSpyService.Core
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_DELETE_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_DELETE_PRINTER) ||
                 ((pdwChange & PRINTER_CHANGES.PRINTER_CHANGE_SET_PRINTER) == PRINTER_CHANGES.PRINTER_CHANGE_SET_PRINTER);
             if (!relatedChange) return;
-
-
-            Console.WriteLine("3. PrinterNotifyWaitCallback: catched");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
             if (pNotifyInfo != IntPtr.Zero)
             {
@@ -234,10 +220,6 @@ namespace ThePrinterSpyService.Core
 
         private JobInfo GetJob(int jobId)
         {
-            Console.WriteLine("5. GetJob: begin");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
             var bytesWritten = new int();
             var ptBuf = new byte[0];
 
@@ -258,26 +240,14 @@ namespace ThePrinterSpyService.Core
 
         private uint GetPagesPrinted(int jobId)
         {
-            Console.WriteLine("6. GetPagesPrinted: begin");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
             var searcher = new ManagementObjectSearcher($"SELECT * FROM Win32_PrintJob WHERE JobId='{jobId}'");
             var collection = searcher.Get();
             if (collection.Count < 1) return 0;
             uint pages = 0;
-
-
-            Console.WriteLine("7. GetPagesPrinted: collection count > 0");//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
+        
             foreach (var job in collection)
             {
                 pages = (uint)int.Parse(job.Properties["PagesPrinted"].Value.ToString());
-
-                Console.WriteLine("7*. GetPagesPrinted: foreach. Pages: " + pages.ToString());//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
                 if (pages > 0) break;
             }
 
@@ -286,9 +256,6 @@ namespace ThePrinterSpyService.Core
 
         private void PrinterJobNotification(PRINTER_NOTIFY_INFO_DATA data)
         {
-
-            Console.WriteLine("4. PrinterJobNotification: begin");
-
             JOBSTATUS jStatus = (JOBSTATUS)Enum.Parse(typeof(JOBSTATUS), data.NotifyData.Data.cbBuf.ToString());
             int jobId = (int)data.Id;
             JobInfo jobInfo;
@@ -296,26 +263,15 @@ namespace ThePrinterSpyService.Core
             try
             {
                 jobInfo = GetJob(jobId);
-
-                Console.WriteLine("8*. PrinterJobNotification. GetJob.Printed: " + jobInfo.PagesPrinted);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
                 if (jobInfo.PagesPrinted == 0)
                     jobInfo.PagesPrinted = GetPagesPrinted(jobId);
-
-                
-                Console.WriteLine("8. PrinterJobNotification. GetPagesPrinted.Printed: " + jobInfo.PagesPrinted);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-                
                 if (jobInfo.PagesPrinted == 0) return;
+
                 if (!_jobDocNames.ContainsKey(jobId))
                     _jobDocNames[jobId] = jobInfo.pDocument;
             }
             catch
             {
-
-                Console.WriteLine("9*. PrinterJobNotification: exception");
-
-
                 return;
             }
 
