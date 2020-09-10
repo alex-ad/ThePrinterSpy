@@ -18,7 +18,8 @@ namespace ThePrinterSpyService.Models
             return server;
         }
 
-        public static Server Get(string name) => SpyOnSpool.PrintSpyContext.Servers.FirstOrDefault(s => s.Name == name);
-        public static bool IsExists(string name) => SpyOnSpool.PrintSpyContext.Servers.FirstOrDefault(s => s.Name == name) != null;
+        private static Server Get(string name) => SpyOnSpool.PrintSpyContext.Servers.FirstOrDefault(s => s.Name == name);
+
+        private static bool IsExists(string name) => SpyOnSpool.PrintSpyContext.Servers.FirstOrDefault(s => s.Name == name) != null;
     }
 }

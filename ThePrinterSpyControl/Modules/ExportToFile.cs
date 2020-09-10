@@ -40,7 +40,7 @@ namespace ThePrinterSpyControl.Modules
             }
             catch
             {
-                MessageBox.Show("Excel error: make sure the Excel is installed on your computer", "Excel error");
+                MessageBox.Show(Resources.ExportExcelErrorMessage, Resources.ExportErrorTitle);
             }
         }
     }

@@ -111,8 +111,7 @@
                             x:Name="TabUsers"
                             TabIndex="0"
                             Header="{x:Static loc:Resources.TabUsers}"
-                            Visibility="{Binding IsChecked, ElementName=MenuTabUsers, Converter={StaticResource TabVisibilityValueConverter}}"
-                            IsVisibleChanged="tabUsers_IsVisibleChanged">
+                            Visibility="{Binding IsChecked, ElementName=MenuTabUsers, Converter={StaticResource TabVisibilityValueConverter}}">
                             <TreeView
                                 x:Name="TreeUsers"
                                 ItemsSource="{Binding Path=UsersCollection.Users}"
@@ -144,8 +143,7 @@
                             x:Name="TabComputers"
                             TabIndex="1"
                             Header="{x:Static loc:Resources.TabComputers}"
-                            Visibility="{Binding IsChecked, ElementName=MenuTabComputers, Converter={StaticResource TabVisibilityValueConverter}}"
-                            IsVisibleChanged="tabComputers_IsVisibleChanged">
+                            Visibility="{Binding IsChecked, ElementName=MenuTabComputers, Converter={StaticResource TabVisibilityValueConverter}}">
                             <TreeView
                                 x:Name="TreeComputers"
                                 HorizontalAlignment="Stretch"
@@ -176,8 +174,7 @@
                             x:Name="TabDepartments"
                             TabIndex="2"
                             Header="{x:Static loc:Resources.TabDepartments}"
-                            Visibility="{Binding IsChecked, ElementName=MenuTabDepartments, Converter={StaticResource TabVisibilityValueConverter}}"
-                            IsVisibleChanged="tabDepartments_IsVisibleChanged">
+                            Visibility="{Binding IsChecked, ElementName=MenuTabDepartments, Converter={StaticResource TabVisibilityValueConverter}}">
                             <TreeView
                                 x:Name="TreeDepartments"
                                 HorizontalAlignment="Stretch"
@@ -206,8 +203,7 @@
                             x:Name="TabPrinters"
                             TabIndex="3"
                             Header="{x:Static loc:Resources.TabPrinters}"
-                            Visibility="{Binding IsChecked, ElementName=MenuTabPrinters, Converter={StaticResource TabVisibilityValueConverter}}"
-                            IsVisibleChanged="tabPrinters_IsVisibleChanged">
+                            Visibility="{Binding IsChecked, ElementName=MenuTabPrinters, Converter={StaticResource TabVisibilityValueConverter}}">
                             <ListView
                                 x:Name="TreePrinters"
                                 HorizontalAlignment="Stretch"

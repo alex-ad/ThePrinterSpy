@@ -126,7 +126,6 @@
     <Compile Include="Core\PrintSpoolAPI.cs" />
     <Compile Include="Core\RegistryConfig.cs" />
     <Compile Include="Core\SpyOnSpool.cs" />
-    <Compile Include="Exceptions\ThePrinterSpyException.cs" />
     <Compile Include="Installer.cs">
       <SubType>Component</SubType>
     </Compile>

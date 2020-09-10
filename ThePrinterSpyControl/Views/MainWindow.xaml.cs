@@ -246,26 +246,6 @@ namespace ThePrinterSpyControl.Views
             MenuTabUsers.IsChecked = Props.Default.TabUsers;
         }
 
-        private void tabUsers_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            //if ((bool) e.NewValue) MainViewModel.BuildPrintersByUserCollection();
-        }
-
-        private void tabComputers_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            //if ((bool)e.NewValue) MainViewModel.BuildPrintersByComputerCollection();
-        }
-
-        private void tabDepartments_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            //if ((bool)e.NewValue) MainViewModel.BuildUsersByDepartmentsCollection();
-        }
-
-        private void tabPrinters_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            //if ((bool)e.NewValue) MainViewModel.BuildPrinterCollection();
-        }
-
         private void SelectActivePrinter(int printerId)
         {
             var p = _printers.GetPrinter(printerId);

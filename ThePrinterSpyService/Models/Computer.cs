@@ -18,6 +18,6 @@ namespace ThePrinterSpyService.Models
         }
 
         public static Computer Get(string name) => SpyOnSpool.PrintSpyContext.Computers.FirstOrDefault(c => c.Name == name);
-        public static bool IsExists(string name) => SpyOnSpool.PrintSpyContext.Computers.FirstOrDefault(c => c.Name == name) != null;
+        private static bool IsExists(string name) => SpyOnSpool.PrintSpyContext.Computers.FirstOrDefault(c => c.Name == name) != null;
     }
 }

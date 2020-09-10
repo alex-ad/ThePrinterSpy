@@ -22,10 +22,6 @@ namespace ThePrinterSpyControl.Models
                         ClearErrors(nameof(User));
                         if (IsEnabled) AddErrors(nameof(User), GetErrorsFromAnnotations(nameof(User), User));
                         break;
-                    /*case nameof(Password):
-                        ClearErrors(nameof(Password));
-                        if (IsEnabled) AddErrors(nameof(Password), GetErrorsFromAnnotations(nameof(Password), Password));
-                        break;*/
                 }
 
                 return string.Empty;

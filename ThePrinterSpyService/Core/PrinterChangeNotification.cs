@@ -41,12 +41,10 @@ namespace ThePrinterSpyService.Core
     public class PrinterJobChangeEventArgs : EventArgs
     {
         public int JobId { get; }
-        public JOBSTATUS JobStatus { get; }
         public JobInfo JobInfo { get; }
-        public PrinterJobChangeEventArgs(int jobId, JOBSTATUS jobStatus, JobInfo jobInfo)
+        public PrinterJobChangeEventArgs(int jobId, JobInfo jobInfo)
         {
             JobId = jobId;
-            JobStatus = jobStatus;
             JobInfo = jobInfo;
         }
     }
@@ -256,7 +254,6 @@ namespace ThePrinterSpyService.Core
 
         private void PrinterJobNotification(PRINTER_NOTIFY_INFO_DATA data)
         {
-            JOBSTATUS jStatus = (JOBSTATUS)Enum.Parse(typeof(JOBSTATUS), data.NotifyData.Data.cbBuf.ToString());
             int jobId = (int)data.Id;
             JobInfo jobInfo;
 
@@ -275,7 +272,7 @@ namespace ThePrinterSpyService.Core
                 return;
             }
 
-            OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(jobId, jStatus, jobInfo));
+            OnPrinterJobChange?.Invoke(this, new PrinterJobChangeEventArgs(jobId, jobInfo));
         }
 
         private void PrinterNameNotification(PRINTER_NOTIFY_INFO_DATA data)

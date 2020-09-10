@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using ThePrinterSpyControl.Modules;
+using ThePrinterSpyControl.Properties;
 
 namespace ThePrinterSpyControl.Models
 {
@@ -23,8 +24,8 @@ namespace ThePrinterSpyControl.Models
             }
         }
 
-        [MinLength(5, ErrorMessage = "Минимальное количество символов - 5")]
-        [RegularExpression("^\\w{2,}\\.\\w{2,}.*$", ErrorMessage = "Неверный формат имени. Должно быть: 'XX.YY[Z]'")]
+        [MinLength(5, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ConfigADServerLengthError")]
+        [RegularExpression("^\\w{2,}\\.\\w{2,}.*$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ConfigADServerValueError")]
         public string Server
         {
             get => _server;
@@ -35,7 +36,7 @@ namespace ThePrinterSpyControl.Models
                 OnPropertyChanged();
             }
         }
-        [MinLength(2, ErrorMessage = "Минимальное количество символов - 2")]
+        [MinLength(2, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ConfigADUserLengthError")]
         public string User
         {
             get => _user;
@@ -46,7 +47,7 @@ namespace ThePrinterSpyControl.Models
                 OnPropertyChanged();
             }
         }
-        [MinLength(1, ErrorMessage = "Минимальное количество символов - 1")]
+        [MinLength(1, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ConfigADPasswordLengthError")]
         public string Password
         {
             get => _password;

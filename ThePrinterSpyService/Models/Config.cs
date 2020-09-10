@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ThePrinterSpyService.Models
+﻿namespace ThePrinterSpyService.Models
 {
     public class Config
     {

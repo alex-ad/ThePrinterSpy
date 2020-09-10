@@ -30,7 +30,7 @@ namespace ThePrinterSpyService.Models
 
         public static PrintData AddOrUpdate(PrintDataStruct jobInfo) => IsExists(jobInfo) ? Update(jobInfo) : Add(jobInfo);
 
-        public static PrintData Add(PrintDataStruct jobInfo)
+        private static PrintData Add(PrintDataStruct jobInfo)
         {
             PrintData printData = new PrintData
             {
@@ -48,7 +48,7 @@ namespace ThePrinterSpyService.Models
             return printData;
         }
 
-        public static PrintData Update(PrintDataStruct jobInfo)
+        private static PrintData Update(PrintDataStruct jobInfo)
         {
             PrintData printData = GetPrintData(jobInfo);
             if (printData.Pages == jobInfo.Pages)
@@ -59,7 +59,7 @@ namespace ThePrinterSpyService.Models
             return printData;
         }
 
-        public static PrintData GetPrintData(PrintDataStruct jobInfo) => SpyOnSpool.PrintSpyContext.PrintDatas.FirstOrDefault(
+        private static PrintData GetPrintData(PrintDataStruct jobInfo) => SpyOnSpool.PrintSpyContext.PrintDatas.FirstOrDefault(
             d => (d.JobId == jobInfo.JobId)
                  && (DateTime.Compare(d.TimeStamp, jobInfo.TimeStamp) == 0)
                  && (d.PrinterId == jobInfo.PrinterId)
@@ -68,7 +68,7 @@ namespace ThePrinterSpyService.Models
                  && (d.ServerId == jobInfo.ServerId)
                  && (d.DocName == jobInfo.DocName));
 
-        public static bool IsExists(PrintDataStruct jobInfo) => SpyOnSpool.PrintSpyContext.PrintDatas.FirstOrDefault(
+        private static bool IsExists(PrintDataStruct jobInfo) => SpyOnSpool.PrintSpyContext.PrintDatas.FirstOrDefault(
             d => (d.JobId == jobInfo.JobId)
                  && (DateTime.Compare(d.TimeStamp, jobInfo.TimeStamp) == 0)
                  && (d.PrinterId == jobInfo.PrinterId)

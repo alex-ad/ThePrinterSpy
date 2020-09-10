@@ -4,13 +4,12 @@ using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
 using ThePrinterSpyService.Models;
-using ThePrinterSpyService.Exceptions;
 
 namespace ThePrinterSpyService.Core
 {
     public class SpyOnSpool
     {
-        public static PrintSpyDbContext PrintSpyContext = new PrintSpyDbContext();
+        public static readonly PrintSpyDbContext PrintSpyContext = new PrintSpyDbContext();
 
         private readonly Computer _currentComputer;
         private readonly User _currentUser;
@@ -26,7 +25,7 @@ namespace ThePrinterSpyService.Core
             if (searcher == null)
             {
                 Log.AddTextLine("ManagementObjectSearcher: WMI is unavailable");
-                throw new ThePrinterSpyException("WMI is unavailable", "ManagementObjectSearcher");
+                throw  new Exception("WMI is unavailable");
             }
 
             ManagementObjectCollection collection = searcher.Get();

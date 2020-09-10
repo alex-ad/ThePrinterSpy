@@ -25,12 +25,10 @@ namespace ThePrinterSpyControl.ViewModels
         public static PrintersCollection PrintersCollection { get; private set; }
         public static ComputersCollection ComputersCollection { get; private set; }
         public static DepartmentsCollection DepartmentsCollection { get; private set; }
-        public static ServersCollection ServersCollection { get; private set; }
+        private static ServersCollection ServersCollection { get; set; }
         public static PrinterMaskedNameCollection PrinterNamesCollection { get; private set; }
         public ObservableCollection<PrintDataGrid> PrintDatas { get; }
         public static TotalCountStat TotalStat { get; private set; }
-        public static ConfigReportDate ReportDate { get; set; }
-        public AppConfig AppConfig { get; }
         public static SelectedPrinter SelectedPrinter { get; private set; }
 
         private readonly DBase _base;
@@ -43,18 +41,13 @@ namespace ThePrinterSpyControl.ViewModels
         {
             _base = new DBase();
             TotalStat = new TotalCountStat();
-            ReportDate = new ConfigReportDate();
-
             PrintersCollection = new PrintersCollection();
             UsersCollection = new UsersCollection();
             ComputersCollection = new ComputersCollection();
             DepartmentsCollection = new DepartmentsCollection();
             PrinterNamesCollection = new PrinterMaskedNameCollection();
             ServersCollection = new ServersCollection();
-
             PrintDatas = new ObservableCollection<PrintDataGrid>();
-
-            AppConfig = new AppConfig();
             SelectedPrinter = new SelectedPrinter();
 
             GetAll();

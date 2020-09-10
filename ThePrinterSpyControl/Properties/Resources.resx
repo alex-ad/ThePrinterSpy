@@ -124,7 +124,7 @@
     <value>Home page</value>
   </data>
   <data name="AboutLabelProgramName" xml:space="preserve">
-    <value>The Printer Spy</value>
+    <value>Spy On Printer</value>
   </data>
   <data name="AboutLabelVersion" xml:space="preserve">
     <value>Version</value>
@@ -140,6 +140,18 @@
   </data>
   <data name="CheckPrinterEnabled" xml:space="preserve">
     <value>Enabled</value>
+  </data>
+  <data name="ConfigADPasswordLengthError" xml:space="preserve">
+    <value>Minimum Value Length - 1</value>
+  </data>
+  <data name="ConfigADServerLengthError" xml:space="preserve">
+    <value>Minimum Value Length - 5</value>
+  </data>
+  <data name="ConfigADServerValueError" xml:space="preserve">
+    <value>Server Name Format Error. Must be: 'XX.YY[Z]'</value>
+  </data>
+  <data name="ConfigADUserLengthError" xml:space="preserve">
+    <value>Minimum Value Length - 2</value>
   </data>
   <data name="ConfigButtonADSync" xml:space="preserve">
     <value>Synchronize all users</value>
@@ -186,6 +198,12 @@
   <data name="ConfigLabelReportPeriodType" xml:space="preserve">
     <value>Period Type</value>
   </data>
+  <data name="ConfigMaskValueError" xml:space="preserve">
+    <value>The field value must be "1" or greater</value>
+  </data>
+  <data name="ConfigPrinterNameValueError" xml:space="preserve">
+    <value>The field length must be "1" or greater</value>
+  </data>
   <data name="ConfigWindowsButtonCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -194,6 +212,15 @@
   </data>
   <data name="ConfigWindowTitle" xml:space="preserve">
     <value>Config</value>
+  </data>
+  <data name="DepartmentNoName" xml:space="preserve">
+    <value>&lt;noname&gt;</value>
+  </data>
+  <data name="ExportErrorTitle" xml:space="preserve">
+    <value>Export Error</value>
+  </data>
+  <data name="ExportExcelErrorMessage" xml:space="preserve">
+    <value>Excel error: make sure the Excel is installed on your computer</value>
   </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>The Printer Spy - Control Panel</value>

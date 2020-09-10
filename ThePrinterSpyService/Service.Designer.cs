@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            this.ServiceName = "ThePrinterSpyService";
+            this.ServiceName = "SpyOnPrinterService";
             this.CanStop = true;
             this.CanPauseAndContinue = true;
         }

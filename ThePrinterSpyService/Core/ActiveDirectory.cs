@@ -2,7 +2,6 @@
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
-using ThePrinterSpyService.Exceptions;
 using ThePrinterSpyService.Models;
 
 namespace ThePrinterSpyService.Core
@@ -29,7 +28,7 @@ namespace ThePrinterSpyService.Core
             }
             catch (InvalidOperationException ex)
             {
-                throw new ThePrinterSpyException("DataBase is missing or not initialized. Please, reinstall program.", ex.Message, DateTime.Now);
+                throw new Exception("DataBase is missing or not initialized. Please, reinstall program.", ex);
             }
 
             _domain = ad?.AdServer;
@@ -37,15 +36,15 @@ namespace ThePrinterSpyService.Core
             _password = ad?.AdPassword;
         }
 
-        public bool TryGetUser(string sid)
+        public void TryGetUser(string sid)
         {
             TryGetPrincipalContext(out PrincipalContext oPrincipalContext);
-            if (oPrincipalContext == null) return false;
+            if (oPrincipalContext == null) return;
 
             try
             {
                 UserPrincipal user = UserPrincipal.FindByIdentity(oPrincipalContext, IdentityType.Sid, sid);
-                if (user == null) return false;
+                if (user == null) return;
                 DirectoryEntry userExt = user.GetUnderlyingObject() as DirectoryEntry;
                 Position = Convert.ToString(userExt?.Properties["title"].Value);
                 Department = Convert.ToString(userExt?.Properties["department"].Value);
@@ -53,12 +52,10 @@ namespace ThePrinterSpyService.Core
                 AccountName = user.SamAccountName;
                 FullName = user.DisplayName;
                 Sid = user.Sid.ToString();
-                return true;
             }
             catch (Exception ex)
             {
                 Log.AddException(ex);
-                return false;
             }
         }
 

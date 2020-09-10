@@ -108,8 +108,6 @@ namespace ThePrinterSpyControl.ModelBuilders
 
         private async Task SetDbPrinterEnabled(int id, bool enabled) => await _base.SetPrinterEnabled(id, enabled);
 
-        //private void SetDbPrinterName(int id, string name) => _base.SetPrinterName(id, name);
-
         private async Task RemoveFromDb(int id)
         {
             await _base.RemovePrinter(id);

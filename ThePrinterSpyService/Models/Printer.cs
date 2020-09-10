@@ -25,6 +25,47 @@ namespace ThePrinterSpyService.Models
         public int ServerId { get; set; }
         public bool Enabled { get; set; }
 
+        public static List<Printer> BuildLocalPrintersList(int computerId, int userId)
+        {
+            List<Printer> prnList = new List<Printer>();
+            ManagementScope scope = new ManagementScope(ManagementPath.DefaultPath);
+            scope.Connect();
+            ManagementClass m = new ManagementClass("Win32_Printer");
+            using (ManagementObjectCollection o = m.GetInstances())
+                foreach (ManagementObject p in o)
+                {
+                    Server server = Server.Add(GetServerName(p["ServerName"]?.ToString(), p["PortName"]?.ToString()));
+                    PrinterStruct prn = new PrinterStruct
+                    {
+                        Name = PrinterNameConvert(p["Name"].ToString()),
+                        UserId = userId,
+                        ComputerId = computerId,
+                        ServerId = server.Id,
+                        Enabled = !IsFilter(p["Name"].ToString())
+                    };
+                    prnList.Add(Add(prn));
+                }
+            if (prnList.Count > 0)
+                SpyOnSpool.PrintSpyContext.SaveChanges();
+
+            return prnList;
+        }
+
+        public static Printer Get(string printerName, int computerId, int userId) =>
+            SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(x =>
+                x.Name == printerName && x.ComputerId == computerId && x.UserId == userId);
+
+        public static void Rename(int computerId, int userId, string printerName, ref List<Printer> printersList)
+        {
+            var printer = GetRenamedPrinter(printersList, GetLocalList(computerId, userId), printerName);
+            if (printer == null) return;
+
+            printersList.Find(x => x.Id == printer.Id).Name = printerName;
+            printer.Name = printerName;
+            SpyOnSpool.PrintSpyContext.Entry(printer).State = EntityState.Modified;
+            SpyOnSpool.PrintSpyContext.SaveChanges();
+        }
+
         private static Printer Add(PrinterStruct printer)
         {
             Printer p = Get(printer);
@@ -56,33 +97,7 @@ namespace ThePrinterSpyService.Models
             return p;
         }
 
-        public static List<Printer> BuildLocalPrintersList(int computerId, int userId)
-        {
-            List<Printer> prnList = new List<Printer>();
-            ManagementScope scope = new ManagementScope(ManagementPath.DefaultPath);
-            scope.Connect();
-            ManagementClass m = new ManagementClass("Win32_Printer");
-            using (ManagementObjectCollection o = m.GetInstances())
-                foreach (ManagementObject p in o)
-                {
-                    Server server = Server.Add(GetServerName(p["ServerName"]?.ToString(), p["PortName"]?.ToString()));
-                    PrinterStruct prn = new PrinterStruct
-                    {
-                        Name = PrinterNameConvert(p["Name"].ToString()),
-                        UserId = userId,
-                        ComputerId = computerId,
-                        ServerId = server.Id,
-                        Enabled = !IsFilter(p["Name"].ToString())
-                    };
-                    prnList.Add(Add(prn));
-                }
-            if (prnList.Count > 0)
-                SpyOnSpool.PrintSpyContext.SaveChanges();
-
-            return prnList;
-        }
-
-        public static List<Printer> GetLocalList(int computerId, int userId)
+        private static List<Printer> GetLocalList(int computerId, int userId)
         {
             List<Printer> prnList = new List<Printer>();
             ManagementScope scope = new ManagementScope(ManagementPath.DefaultPath);
@@ -107,21 +122,6 @@ namespace ThePrinterSpyService.Models
         }
 
         private static Printer Get(PrinterStruct printer) => SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(p => ((p.ComputerId == printer.ComputerId) && (p.ServerId == printer.ServerId) && (p.Name == printer.Name) ));
-
-        public static Printer Get(string printerName, int computerId, int userId) =>
-            SpyOnSpool.PrintSpyContext.Printers.FirstOrDefault(x =>
-                x.Name == printerName && x.ComputerId == computerId && x.UserId == userId);
-
-        public static void Rename(int computerId, int userId, string printerName, ref List<Printer> printersList)
-        {
-            var printer = GetRenamedPrinter(printersList, GetLocalList(computerId, userId), printerName);
-            if (printer == null) return;
-
-            printersList.Find(x => x.Id == printer.Id).Name = printerName;
-            printer.Name = printerName;
-            SpyOnSpool.PrintSpyContext.Entry(printer).State = EntityState.Modified;
-            SpyOnSpool.PrintSpyContext.SaveChanges();
-        }
 
         private static bool IsFilter(string printerName)
         {

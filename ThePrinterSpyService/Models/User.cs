@@ -34,8 +34,10 @@ namespace ThePrinterSpyService.Models
             return user;
         }
 
-        public static User GetBySid(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid);
         public static User GetByName(string name) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.AccountName == name);
-        public static bool IsExists(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid) != null;
+
+        private static User GetBySid(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid);
+        
+        private static bool IsExists(string sid) => SpyOnSpool.PrintSpyContext.Users.FirstOrDefault(u => u.Sid == sid) != null;
     }
 }

@@ -124,7 +124,7 @@
     <value>Домашний адрес</value>
   </data>
   <data name="AboutLabelProgramName" xml:space="preserve">
-    <value>The Printer Spy</value>
+    <value>Spy On Printer</value>
   </data>
   <data name="AboutLabelVersion" xml:space="preserve">
     <value>Версия</value>
@@ -140,6 +140,18 @@
   </data>
   <data name="CheckPrinterEnabled" xml:space="preserve">
     <value>Включен</value>
+  </data>
+  <data name="ConfigADPasswordLengthError" xml:space="preserve">
+    <value>Минимальное количество символов - 1</value>
+  </data>
+  <data name="ConfigADServerLengthError" xml:space="preserve">
+    <value>Минимальное количество символов - 5</value>
+  </data>
+  <data name="ConfigADServerValueError" xml:space="preserve">
+    <value>Неверный формат имени. Должно быть: 'XX.YY[Z]'</value>
+  </data>
+  <data name="ConfigADUserLengthError" xml:space="preserve">
+    <value>Минимальное количество символов - 2</value>
   </data>
   <data name="ConfigButtonADSync" xml:space="preserve">
     <value>Синхронизировать всех пользователей</value>
@@ -186,6 +198,12 @@
   <data name="ConfigLabelReportPeriodType" xml:space="preserve">
     <value>Тип периода</value>
   </data>
+  <data name="ConfigMaskValueError" xml:space="preserve">
+    <value>Поле должно содержать положительное числовое значение, от 1 и больше</value>
+  </data>
+  <data name="ConfigPrinterNameValueError" xml:space="preserve">
+    <value>Поле должно содержать непустое значение</value>
+  </data>
   <data name="ConfigWindowsButtonCancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
@@ -194,6 +212,15 @@
   </data>
   <data name="ConfigWindowTitle" xml:space="preserve">
     <value>Настройки</value>
+  </data>
+  <data name="DepartmentNoName" xml:space="preserve">
+    <value>&lt;без имени&gt;</value>
+  </data>
+  <data name="ExportErrorTitle" xml:space="preserve">
+    <value>Ошибка экспорта</value>
+  </data>
+  <data name="ExportExcelErrorMessage" xml:space="preserve">
+    <value>Ошибка Excel: убедитесь, что Excel установлен на Вашем компьютере</value>
   </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>The Printer Spy - Control Panel</value>

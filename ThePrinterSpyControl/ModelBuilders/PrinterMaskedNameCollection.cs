@@ -67,7 +67,7 @@ namespace ThePrinterSpyControl.ModelBuilders
             }
         }
 
-        public void GetMaskedPrinterName(string name, ref List<PrinterNode> printers, out string mask, out List<int> ids)
+        private void GetMaskedPrinterName(string name, ref List<PrinterNode> printers, out string mask, out List<int> ids)
         {
             string m;
             int len;

@@ -79,7 +79,7 @@ namespace ThePrinterSpyControl.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на The Printer Spy.
+        ///   Ищет локализованную строку, похожую на Spy On Printer.
         /// </summary>
         public static string AboutLabelProgramName {
             get {
@@ -129,6 +129,42 @@ namespace ThePrinterSpyControl.Properties {
         public static string CheckPrinterEnabled {
             get {
                 return ResourceManager.GetString("CheckPrinterEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Minimum Value Length - 1.
+        /// </summary>
+        public static string ConfigADPasswordLengthError {
+            get {
+                return ResourceManager.GetString("ConfigADPasswordLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Minimum Value Length - 5.
+        /// </summary>
+        public static string ConfigADServerLengthError {
+            get {
+                return ResourceManager.GetString("ConfigADServerLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Server Name Format Error. Must be: &apos;XX.YY[Z]&apos;.
+        /// </summary>
+        public static string ConfigADServerValueError {
+            get {
+                return ResourceManager.GetString("ConfigADServerValueError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Minimum Value Length - 2.
+        /// </summary>
+        public static string ConfigADUserLengthError {
+            get {
+                return ResourceManager.GetString("ConfigADUserLengthError", resourceCulture);
             }
         }
         
@@ -268,6 +304,24 @@ namespace ThePrinterSpyControl.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The field value must be &quot;1&quot; or greater.
+        /// </summary>
+        public static string ConfigMaskValueError {
+            get {
+                return ResourceManager.GetString("ConfigMaskValueError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The field length must be &quot;1&quot; or greater.
+        /// </summary>
+        public static string ConfigPrinterNameValueError {
+            get {
+                return ResourceManager.GetString("ConfigPrinterNameValueError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
         public static string ConfigWindowsButtonCancel {
@@ -291,6 +345,33 @@ namespace ThePrinterSpyControl.Properties {
         public static string ConfigWindowTitle {
             get {
                 return ResourceManager.GetString("ConfigWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на &lt;noname&gt;.
+        /// </summary>
+        public static string DepartmentNoName {
+            get {
+                return ResourceManager.GetString("DepartmentNoName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Export Error.
+        /// </summary>
+        public static string ExportErrorTitle {
+            get {
+                return ResourceManager.GetString("ExportErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Excel error: make sure the Excel is installed on your computer.
+        /// </summary>
+        public static string ExportExcelErrorMessage {
+            get {
+                return ResourceManager.GetString("ExportExcelErrorMessage", resourceCulture);
             }
         }
         

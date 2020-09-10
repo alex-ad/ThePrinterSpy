@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using ThePrinterSpyControl.ModelBuilders;
 using ThePrinterSpyControl.ViewModels;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
@@ -68,15 +66,6 @@ namespace ThePrinterSpyControl.Models
                 OnPropertyChanged();
             }
         }
-
-        public Dictionary<MaskType, string> TypeList { get; } = new Dictionary<MaskType, string>
-        {
-            { MaskType.WholeName, "Оригинальное имя (вся строка)" },
-            { MaskType.BeginName, "Количество символов от начала строки" },
-            { MaskType.EndName, "Количество символов от конца строки" },
-            { MaskType.ContainsName, "Строка содержит символы" },
-            { MaskType.RegexpName, "Регулярное выражение" }
-        };
 
         public ConfigPrinterNameMask()
         {
