@@ -12,7 +12,7 @@ namespace ThePrinterSpyControl.DataBase
         public string DbPassword { get; }
         public string DbName { get; }
 
-        private const string RegKey = @"SOFTWARE\alex-ad\SpyOnPrinter";
+        private const string RegKey = @"SOFTWARE\alex-ad\ThePrinterSpy";
         private const string RegServer = "DbServer";
         private const string RegUser = "DbUser";
         private const string RegPassword = "DbPassword";

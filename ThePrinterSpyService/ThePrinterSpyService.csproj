@@ -8,7 +8,7 @@
     <ProjectGuid>{1E0F76A6-6E8F-4EFB-BA9A-2975FEC8F172}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ThePrinterSpyService</RootNamespace>
-    <AssemblyName>SpyOnPrinterService</AssemblyName>
+    <AssemblyName>ThePrinterSpyService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

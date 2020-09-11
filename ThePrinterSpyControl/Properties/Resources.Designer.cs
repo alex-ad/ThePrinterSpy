@@ -79,7 +79,7 @@ namespace ThePrinterSpyControl.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Spy On Printer.
+        ///   Ищет локализованную строку, похожую на The Printer Spy.
         /// </summary>
         public static string AboutLabelProgramName {
             get {
