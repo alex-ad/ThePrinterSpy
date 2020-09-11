@@ -673,6 +673,51 @@ namespace ThePrinterSpyControl.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Number of Chars from the String Beginning.
+        /// </summary>
+        public static string ReportPrinterNameBeginName {
+            get {
+                return ResourceManager.GetString("ReportPrinterNameBeginName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Contains Symbols....
+        /// </summary>
+        public static string ReportPrinterNameContainsName {
+            get {
+                return ResourceManager.GetString("ReportPrinterNameContainsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Number of Chars from the String End.
+        /// </summary>
+        public static string ReportPrinterNameEndName {
+            get {
+                return ResourceManager.GetString("ReportPrinterNameEndName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Regular Expresion.
+        /// </summary>
+        public static string ReportPrinterNameRegexpName {
+            get {
+                return ResourceManager.GetString("ReportPrinterNameRegexpName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Original Name (full value).
+        /// </summary>
+        public static string ReportPrinterNameWholeName {
+            get {
+                return ResourceManager.GetString("ReportPrinterNameWholeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на User.
         /// </summary>
         public static string ReportUser {

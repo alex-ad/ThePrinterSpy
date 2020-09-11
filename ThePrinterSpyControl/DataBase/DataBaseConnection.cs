@@ -14,12 +14,14 @@ namespace ThePrinterSpyControl.DataBase
 
         public EntityConnection Get()
         {
-            SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder();
-            sb.Password = Cfg.DbPassword;
-            sb.DataSource = Cfg.DbServer;
-            sb.UserID = Cfg.DbUser;
-            sb.InitialCatalog = Cfg.DbName;
-            
+            SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder
+            {
+                Password = Cfg.DbPassword,
+                DataSource = Cfg.DbServer,
+                UserID = Cfg.DbUser,
+                InitialCatalog = Cfg.DbName
+            };
+
             string sqlConn = sb.ToString();
             string providerName = "System.Data.SqlClient";
 

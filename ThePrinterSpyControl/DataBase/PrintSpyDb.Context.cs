@@ -16,10 +16,10 @@ namespace ThePrinterSpyControl.DataBase
     public partial class PrintSpyEntities : DbContext
     {
         public PrintSpyEntities()
-            : base("name=PrintSpyEntities")
+            : base(new DataBaseConnection().Get(), true)
         {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

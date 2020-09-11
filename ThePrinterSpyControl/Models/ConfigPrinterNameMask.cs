@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ThePrinterSpyControl.Properties;
 using ThePrinterSpyControl.ViewModels;
 using Props = ThePrinterSpyControl.Properties.Settings;
 
@@ -66,6 +68,15 @@ namespace ThePrinterSpyControl.Models
                 OnPropertyChanged();
             }
         }
+
+        public Dictionary<MaskType, string> TypeList { get; } = new Dictionary<MaskType, string>
+        {
+            { MaskType.WholeName, Resources.ReportPrinterNameWholeName },
+            { MaskType.BeginName, Resources.ReportPrinterNameBeginName },
+            { MaskType.EndName, Resources.ReportPrinterNameEndName },
+            { MaskType.ContainsName, Resources.ReportPrinterNameContainsName },
+            { MaskType.RegexpName, Resources.ReportPrinterNameRegexpName }
+        };
 
         public ConfigPrinterNameMask()
         {

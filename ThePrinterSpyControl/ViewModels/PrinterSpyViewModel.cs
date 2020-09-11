@@ -30,6 +30,7 @@ namespace ThePrinterSpyControl.ViewModels
         public ObservableCollection<PrintDataGrid> PrintDatas { get; }
         public static TotalCountStat TotalStat { get; private set; }
         public static SelectedPrinter SelectedPrinter { get; private set; }
+        public AppConfig AppConfig { get; }
 
         private readonly DBase _base;
         private RelayCommand<string> _showOptionsWindowCommand;
@@ -48,6 +49,7 @@ namespace ThePrinterSpyControl.ViewModels
             PrinterNamesCollection = new PrinterMaskedNameCollection();
             ServersCollection = new ServersCollection();
             PrintDatas = new ObservableCollection<PrintDataGrid>();
+            AppConfig = new AppConfig();
             SelectedPrinter = new SelectedPrinter();
 
             GetAll();

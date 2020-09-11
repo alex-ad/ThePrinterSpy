@@ -8,7 +8,7 @@
     <ProjectGuid>{1E0F76A6-6E8F-4EFB-BA9A-2975FEC8F172}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ThePrinterSpyService</RootNamespace>
-    <AssemblyName>ThePrinterSpyService</AssemblyName>
+    <AssemblyName>SpyOnPrinterService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -26,7 +26,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ProductName>ThePrinterSpyService</ProductName>
+    <ProductName>SpyOnPrinterService</ProductName>
     <PublisherName>alex-ad</PublisherName>
     <AutorunEnabled>true</AutorunEnabled>
     <ApplicationRevision>0</ApplicationRevision>

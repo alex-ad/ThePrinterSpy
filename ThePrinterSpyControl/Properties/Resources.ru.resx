@@ -321,6 +321,21 @@
   <data name="ReportPrinter" xml:space="preserve">
     <value>Принтер</value>
   </data>
+  <data name="ReportPrinterNameBeginName" xml:space="preserve">
+    <value>Количество символов от начала строки</value>
+  </data>
+  <data name="ReportPrinterNameContainsName" xml:space="preserve">
+    <value>Строка содержит символы</value>
+  </data>
+  <data name="ReportPrinterNameEndName" xml:space="preserve">
+    <value>Количество символов от конца строки</value>
+  </data>
+  <data name="ReportPrinterNameRegexpName" xml:space="preserve">
+    <value>Регулярное выражение</value>
+  </data>
+  <data name="ReportPrinterNameWholeName" xml:space="preserve">
+    <value>Оригинальное имя (вся строка)</value>
+  </data>
   <data name="ReportUser" xml:space="preserve">
     <value>Пользователь</value>
   </data>
