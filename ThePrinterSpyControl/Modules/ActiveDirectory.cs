@@ -35,10 +35,6 @@ namespace ThePrinterSpyControl.Modules
         public IEnumerator<Principal> GetEnumerator()
         {
             return GetUsers().GetEnumerator();
-            /*foreach (var p in GetUsers())
-            {
-                yield return p;
-            }*/
         }
     }
 }

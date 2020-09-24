@@ -21,19 +21,11 @@ namespace ThePrinterSpyService.Core
 
         public ActiveDirectory()
         {
-            Config ad;
-            try
-            {
-                ad = SpyOnSpool.PrintSpyContext.Configs.First();
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new Exception("DataBase is missing or not initialized. Please, reinstall program.", ex);
-            }
+            Config ad = SpyOnSpool.PrintSpyContext.Configs.Any() ? SpyOnSpool.PrintSpyContext.Configs.First() : new Config();
 
-            _domain = ad?.AdServer;
-            _accountName = ad?.AdUser;
-            _password = ad?.AdPassword;
+            _domain = ad?.AdServer ?? string.Empty;
+            _accountName = ad?.AdUser ?? string.Empty;
+            _password = ad?.AdPassword ?? string.Empty;
         }
 
         public void TryGetUser(string sid)

@@ -27,7 +27,7 @@ namespace ThePrinterSpyControl.Modules
             ReportDate = new ConfigReportDate();
 
             _base = new PrintSpyEntities();
-            if (_base == null || !_base.Configs.Any()) return;
+            if (_base == null) return;
 
             Config data = _base.Configs.Any() ? _base.Configs.First() : new Config();
 
@@ -54,12 +54,12 @@ namespace ThePrinterSpyControl.Modules
 
         public void SaveToBase()
         {
-            Config data = _base.Configs.First();
+            Config data = _base.Configs.Any() ? _base.Configs.First() : new Config();
             data.AdEnabled = ActiveDirectory.IsEnabled ? (byte)1 : (byte)0;
-            data.AdPassword = ActiveDirectory.Password;
-            data.AdServer = ActiveDirectory.Server;
-            data.AdUser = ActiveDirectory.User;
-            _base.Entry(data).State = EntityState.Modified;
+            data.AdPassword = ActiveDirectory.Password ?? string.Empty;
+            data.AdServer = ActiveDirectory.Server ?? string.Empty;
+            data.AdUser = ActiveDirectory.User ?? string.Empty;
+           _base.Entry(data).State = _base.Configs.Any() ? EntityState.Modified : EntityState.Added;
             _base.SaveChanges();
         }
     }
